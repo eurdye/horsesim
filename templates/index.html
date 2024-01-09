@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Horse Simulator Remastered</title>
+        <style>
+.output {
+    margin-bottom: 10px;
+}
+
+body {
+    background-color: #000;
+    font-family: 'Courier', 'Courier New', monospace;
+    font-size: 20px;
+    color: #00ff00;
+    padding: 20px;
+    margin: 0;
+    display: flex;
+    /*align-items: center;*/
+    justify-content: center;
+    height: 100vj;
+    line-height: 1.6;
+    position: relative;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.responses {
+    overflow-y: hidden;
+    font-weight: 150;
+}
+
+.terminal {
+    background-color: #000;
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px;
+    height: 95vh;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+
+.terminal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.5) 2px
+    );
+    z-index: 1;
+}
+
+.terminal pre {
+    margin: 0;
+    line-height: 1.5;
+    position: relative;
+    z-index: 0;
+}
+
+.terminal input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Courier', 'Courier New', monospace;
+    font-size: 20px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.terminal input:focus {
+    outline: none;
+}
+
+
+#output {
+    flex-grow: 1;
+    overflow: hidden;
+    padding-bottom: 8px; /* Add some padding at the bottom to avoid cutoff */
+}
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px; /* Adjust the margin as desired */
+    position: sticky; /* Add sticky positioning to keep it visible */
+    bottom: 0; /* Stick it to the bottom */
+    background-color: #000;
+    padding: 4px;
+    pointer-events: auto;
+}
+
+.input-container span {
+    color: #00ff00;
+    margin-right: 5px;
+}
+
+.input-container input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #00ff00;
+    font-family: 'Courier', 'Courier New', monospace;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    pointer-events: auto;
+}
+
+.input-container input:focus {
+    outline: none;
+}
+        </style>
+
+
+<script>
+    // Automatically scroll to the bottom of the div
+    function scrollToBottom() {
+        var div = document.getElementById('responses');
+        div.scrollTop = div.scrollHeight;
+    }
+
+    // Call the function to scroll to the bottom after the content is loaded
+    window.onload = scrollToBottom;
+  
+    const inputBox = document.getElementById('input-form');
+
+    // Input box autofocus coder
+    document.addEventListener('click', function(event) {
+      // Check if the clicked element is not the input box
+      if (event.target.id !== 'user_input') {
+        // Focus on the input box
+        document.getElementById('user_input').focus();
+      }
+    });
+
+</script>
+
+
+    </head>
+    <body>
+        <div class="terminal" style="width: 30vw;">
+            <pre>Horse Simulator Remastered
+v0.0.1 Alpha
+
+Commands:
+- Help
+- Look
+- Clear
+            </pre>
+            </div>
+            <br>
+        <div class="terminal">
+            <div class="responses" id="responses">
+                <div class="text-wrapper">
+                {% for previous_response in previous_responses %}
+                <br>{{ previous_response }}<br>
+                {% endfor %}
+                </div>
+            </div>
+
+        <div id="output"></div>
+
+                    <pre>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</pre>
+            <div class="input-container">
+                <span/>> </span>
+                <form id="input-form" method="post" action="{{ url_for('update_input') }}">
+                    <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus />
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+
