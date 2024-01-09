@@ -28,6 +28,7 @@ body {
     overflow-y: hidden;
     font-weight: 150;
     white-space: pre-line;
+    height: inherit;
 }
 
 .terminal {
@@ -175,11 +176,9 @@ Lvl 1 HORSE of NATURE
             <br>
         <div class="terminal">
             <div class="responses" id="responses">
-                <div class="text-wrapper">
                 {% for previous_response in previous_responses %}
                 {{ previous_response }}
                 {% endfor %}
-                </div>
             </div>
 
         <div id="output"></div>
@@ -188,7 +187,7 @@ Lvl 1 HORSE of NATURE
             <div class="input-container">
                 <span/>> </span>
                 <form id="input-form" method="post" action="{{ url_for('update_input') }}">
-                    <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus />
+                    <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus style="width: 40em;"/>
                 </form>
             </div>
         </div>

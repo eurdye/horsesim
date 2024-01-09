@@ -39,6 +39,8 @@ def go_action(session, user_input, direction):
         current_location['x'] += 1
     elif direction == 'west':
         current_location['x'] -= 1
+    else:
+        return "ERROR: No direction specified.\nUse \'go [north/south/east/west]\' to move in the specified direction."
     session['location'] = current_location
     if prev_location != current_location:
         return f'You head {direction}\n\n' + look_action(session, user_input)
@@ -47,7 +49,10 @@ def go_action(session, user_input, direction):
 
 # Help command lists possible actions
 def help_action(session, user_input):
-    return """COMMAND LIST:\nlook\nlook [object]\nget [object]\ngo [north, south, east, west]\nintrospect\ntalk [being]"""
+    #return """COMMAND LIST:\nlook\nlook [object]\nget [object]\ngo [north, south, east, west]\nintrospect\ntalk [being]"""
+    action_list = list(action_dict.keys())
+    print_actions = lambda keys: '\n'.join(keys)
+    return ("COMMAND LIST:\n"+print_actions(action_list))
 
 # Find current moon phase
 def moon_action(session, user_input):
