@@ -27,6 +27,7 @@ body {
 .responses {
     overflow-y: hidden;
     font-weight: 150;
+    white-space: pre-line;
 }
 
 .terminal {
@@ -154,22 +155,29 @@ body {
 
     </head>
     <body>
-        <div class="terminal" style="width: 30vw;">
-            <pre>Horse Simulator Remastered
-v0.0.1 Alpha
-
-Commands:
-- Help
-- Look
-- Clear
+        <div style="width: 30vw; padding: 20px;">
+            <p style="margin-bottom: 3em">
+            Horse Simulator Remastered
+            <br>v0.0.1 Alpha
+            </p>
+Current status:
+            <pre style="line-height: 1;">
+   _____,,;;;`;  
+,~(  )  , )~~\|
+' / / --`--,  
+ /  \    | '  
             </pre>
+Lvl 1 HORSE of NATURE
+                <p style="margin-top: 3em;">
+            Type 'help' and press enter for a list of commands.
+                </p>
             </div>
             <br>
         <div class="terminal">
             <div class="responses" id="responses">
                 <div class="text-wrapper">
                 {% for previous_response in previous_responses %}
-                <br>{{ previous_response }}<br>
+                {{ previous_response }}
                 {% endfor %}
                 </div>
             </div>
@@ -186,4 +194,3 @@ Commands:
         </div>
     </body>
 </html>
-

@@ -1,5 +1,6 @@
 from act_one import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
+import ephem
 
 
 app = Flask(__name__)
@@ -39,8 +40,8 @@ def update_input():
     clear_command = 'clear'
 
     # Game variables to store player progress
-    game_vars = session.get('game_vars', {'grass_eaten': 0, 'guitar_get': 0})
-    location = session.get('location', {'beach': True, 'town': False})
+    #game_vars = session.get('game_vars', {'grass_eaten': 0, 'guitar_get': 0})
+    #location = session.get('location', {'beach': True, 'town': False})
 
     # Check if the user input is the clear command
     if user_input.lower() == clear_command:
@@ -49,13 +50,8 @@ def update_input():
         # Clear the current response
         session[response_key] = ''
     else:
-        if user_input.lower() == 'eat':
-            game_vars['grass_eaten'] = (game_vars['grass_eaten'] + 1)
-            session['game_vars'] = game_vars
-            session[response_key] = game_vars['grass_eaten']
-        else:
-            session[response_key] = user_input_parser(user_input.lower())
-            # session[response_key] = f'{user_input}'
+        session[response_key] = user_input_parser(user_input.lower())
+        # session[response_key] = f'{user_input}'
 
     # Store the user input in the session
     # [I don't think this is needed, but if enabled it prevents clearing the input box]

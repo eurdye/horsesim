@@ -7,5 +7,7 @@
 3. Visit 127.0.0.1:5000 in browser to play
 
 ### Todo
-* Figure out game logic for keeping track of actions taken
+* ~~Figure out game logic for keeping track of actions taken~~
+* Refactor game logic to use dictionaries
+* Keep player location using x,y coordinates
 * Implement real-time clock, calendar, moon phases, tides
