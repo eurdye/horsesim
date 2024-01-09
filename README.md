@@ -6,7 +6,6 @@
 2. Run `python server.py` to start the server
 3. Visit 127.0.0.1:5000 in browser to play
 
-Todo
+### Todo
 * Figure out game logic for keeping track of actions taken
 * Implement real-time clock, calendar, moon phases, tides
-
