@@ -1,7 +1,6 @@
-# Horse Simulator Remastered???
+# Horse Simulator Remastered
 
-How to run
-
+### Installation Instructions
 1. Run `source virt/bin/activate` to activate the Python venv. 
 1.5 Make sure you have Flask installed. See requirements.txt for all reqs.
 2. Run `python server.py` to start the server
