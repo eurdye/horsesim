@@ -122,11 +122,36 @@ def go_action(session, user_input, direction):
     else:
         return "Where? Use \'go [north/south/east/west]\' to move in the specified direction."
 
+
+
     # Check if the new location is within valid bounds (0 to 9)
     if not (0 <= current_location['x'] <= 8 and 0 <= current_location['y'] <= 10):
         # If not within bounds, revert the move and return an error message
         session['location'] = prev_location
         return f"You can\'t go {direction.upper()} from here."
+
+    # Check if new location is available at the current time
+    global current_time
+    global earlymorning_start
+    global morning_start
+    global afternoon_start
+    global evening_start
+    global latenight_start
+    # Mysterious Grotto only available in early morning
+    if current_location['x'] == 1 and current_location['y'] == 9:
+        if latenight_start >= current_time >= earlymorning_start:
+            session['location'] = prev_location
+            return "The tide is too high to access the Mysterious Grotto."
+    # Monastery only open during day
+    if current_location['x'] == 1 and current_location['y'] == 2:
+        if evening_start <= current_time <= morning_start:
+            session['location'] = prev_location
+            return "The Monastery is only open during the day."
+    # Observatory only open at night
+    if current_location['x'] == 0 and current_location['y'] == 0:
+        if evening_start >= current_time >= morning_start:
+            session['location'] = prev_location
+            return "The Observatory is only open at night."
 
     global location_dict
     current_key = f"{current_location['x']},{current_location['y']}"
@@ -207,16 +232,23 @@ def moon_action(session, user_input):
     else:
         return moon_response + "Unknown Moon Phase" + " right now."
 
+# Global variables for time. Define time ranges and associated values.
+current_time = datetime.now().time()
+earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
+morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
+afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
+evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
+latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
+
 # Find current datetime
 def time_action(session, user_input):
-    current_time = datetime.now().time()
-    
-    # Define time ranges and associated values
-    earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
-    morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
-    afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
-    evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
-    latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
+    global current_time
+    global earlymorning_start
+    global morning_start
+    global afternoon_start
+    global evening_start
+    global latenight_start
+
     if current_time < earlymorning_start:
         return "It's late at night!"
     elif current_time < morning_start:
@@ -376,13 +408,52 @@ def reset_action(session, user_input):
     session.clear()
     return("Session cleared.")
 
-
 # Function to get the moon phase
 def get_moon_phase():
     today = ephem.now()
     moon = ephem.Moon(today)
     phase_name = moon.phase
     return phase_name
+
+# Global variable to store player inventory
+# 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
+#player_inventory = session.setdefault('inventory', {'apple': 0})
+
+# Function to handle "get" action
+def get_action(session, user_input):
+    # Get or initialize the player's inventory from the session
+    player_inventory = session.setdefault('inventory', {'apple': 0})
+
+    # Check if the user input contains "get"
+    if "get" in user_input:
+        # Extract the item name after "get"
+        item_name = user_input.split("get", 1)[-1].strip().lower()
+
+        # Check if the item name is valid
+        if item_name:
+            # Check the value of the item in the player's inventory
+            item_status = player_inventory.get(item_name)
+            if item_status is None:
+                # Item not in dictionary
+                return f"{item_name} not found."
+            if item_status == 0:
+                # Item is obtainable, add it to the inventory
+                player_inventory[item_name] = 1
+                session['inventory'] = player_inventory
+                return f"You obtained {item_name}."
+            elif item_status == 1:
+                # Item is already in the inventory
+                return f"You already have {item_name} in your inventory."
+            elif item_status == 2:
+                # Item was given to NPC
+                return f"You no longer have {item_name}."
+            else:
+                # Item is unobtainable
+                return f"{item_name} is unobtainable."
+        else:
+            return "Please specify an item to get."
+    else:
+        return "You can use the 'get' command to obtain items."
 
 # Rest of the code remains the same...
 # Dictionary mapping user input to corresponding functions
@@ -391,6 +462,7 @@ action_dict = {
     'look': look_action,
     'where': where_action,
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
+    'get': get_action,
     'moon': moon_action,
     'talk': talk_action,
     'time': time_action,
