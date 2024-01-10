@@ -61,7 +61,7 @@ body {
     0deg,
     transparent,
     transparent 1px,
-    rgba(0, 0, 0, 0.5) 2px
+    rgba(0, 0, 0, 0) 2px
     );
     z-index: 1;
 }
@@ -207,7 +207,7 @@ Newly-deceased Equine
 
                     <pre>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</pre>
             <div class="input-container">
-                <span/>> </span>
+                <pre>> </pre>
                 <form id="input-form" method="post" action="{{ url_for('update_input') }}">
                     <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus style="width: 40em;"/>
                 </form>
