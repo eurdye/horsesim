@@ -3,6 +3,10 @@ import ephem
 from datetime import datetime
 import random
 from john import john_responses
+from eliza_interaction import ElizaBot  # Import the ElizaBot class
+
+# Instantiate ElizaBot
+eliza_bot = ElizaBot()
 
 location_dict = {
         "0,0": "Summit Observatory",
@@ -342,7 +346,7 @@ npc_dict = {
     "Peace of Pizza": ['Pizza Girl'],
     "Slime Park": [],
     "Botanical Garden West": [],
-    "Awakening Beach": ['John'],
+    "Awakening Beach": ['John', 'Eliza'],
     "Your Apartment": [],
     "Slime Apartments": [],
     "Confectioner": ['The Confectioner'],
@@ -387,9 +391,13 @@ def talk_action(session, user_input):
                         else:
                             greeting = "\""+random.choice(john_responses['greeting'])+"\""
                             return greeting
-                    elif npc_name == 'Alice':
-                        # Add responses for Alice if needed
-                        return f"You are now talking to {npc_name} at {current_place}."
+                    elif npc_name == 'Eliza':
+                        # Sanitize user_input if it begins with "talk eliza "
+                        prefix = "talk eliza "
+                        if user_input.lower().startswith(prefix):
+                            user_input = user_input[len(prefix):].strip()
+                        eliza_response = eliza_bot.respond(user_input)
+                        return eliza_response
                     else:
                         return f"No specific responses defined for {npc_name}."
                 else:
@@ -402,7 +410,14 @@ def talk_action(session, user_input):
         return "You are in an unknown location."
 
 def status_action(session, user_input):
-    return session.get('game_progress', {})
+    # Get the player's current emotion from the session
+    player_emotion = session.get('emotion', 'neutral')
+
+    # Check if the user input is "status"
+    if user_input.strip().lower() == "status":
+        return f"You are feeling {player_emotion}."
+    else:
+        return "Unknown command."
 
 def reset_action(session, user_input):
     session.clear()
@@ -455,7 +470,34 @@ def get_action(session, user_input):
     else:
         return "You can use the 'get' command to obtain items."
 
-# Rest of the code remains the same...
+# Function to handle "emote" action
+def emote_action(session, user_input):
+    # Get or initialize the player's emotion from the session
+    player_emotion = session.setdefault('emotion', 'neutral')
+
+    # List of possible emotions
+    possible_emotions = ['joy', 'sadness', 'anger', 'surprise', 'fear', 'neutral']
+
+    # Extract the emotion name after "emote"
+    emotion_name = user_input.split("emote", 1)[-1].strip().lower()
+
+    # Check if the emotion name is valid
+    if emotion_name:
+        # Check if the emotion is in the list of possible emotions
+        if emotion_name in possible_emotions:
+            # Check if the player is already feeling the same emotion
+            if emotion_name == player_emotion:
+                return f"You are already feeling {emotion_name}."
+            else:
+                # Update the player's emotion in the session
+                session['emotion'] = emotion_name
+                return f"You are now feeling {emotion_name}."
+        else:
+            return f"You don't know how to feel {emotion_name}."
+    else:
+        return "Please specify an emotion to emote."
+
+
 # Dictionary mapping user input to corresponding functions
 action_dict = {
     'introspect': introspect_action,
@@ -464,6 +506,7 @@ action_dict = {
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'get': get_action,
     'moon': moon_action,
+    'emote': emote_action,
     'talk': talk_action,
     'time': time_action,
     'help': help_action,

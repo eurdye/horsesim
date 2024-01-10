@@ -2,7 +2,6 @@ from act_one import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
 
-
 app = Flask(__name__)
 app.secret_key = 'horsae' # Change this to a secret key for secure sessions
 
@@ -39,10 +38,6 @@ def update_input():
     # Use a fixed key for the clear command
     clear_command = 'clear'
 
-    # Game variables to store player progress
-    #game_vars = session.get('game_vars', {'grass_eaten': 0, 'guitar_get': 0})
-    #location = session.get('location', {'beach': True, 'town': False})
-
     # Check if the user input is the clear command
     if user_input.lower() == clear_command:
         # Clear the screen by removing all previous responses
@@ -51,11 +46,6 @@ def update_input():
         session[response_key] = ''
     else:
         session[response_key] = user_input_parser(user_input.lower())
-        # session[response_key] = f'{user_input}'
-
-    # Store the user input in the session
-    # [I don't think this is needed, but if enabled it prevents clearing the input box]
-    # session[user_input_key] = user_input
 
     # Append the current response to the list of previous responses
     previous_responses = session.get(previous_responses_key, [])
