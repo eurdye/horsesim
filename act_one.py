@@ -1,6 +1,7 @@
 from flask import Flask, session
 import ephem
 from datetime import datetime
+import random
 
 location_dict = {
         "0,0": "Summit Observatory",
@@ -272,6 +273,115 @@ def look_action(session, user_input):
     else:
         return "You are in an unknown location."
 
+import random
+
+# Dictionary of available NPCs in each location
+npc_dict = {
+    "Summit Observatory": ['Astrologer'],
+    "Devil's Tail": ['Wanderer'],
+    "Temple of Fire": ['Prophet of Fire'],
+    "Monastery": ['Monk'],
+    "Campgrounds": ['Deer Ghost'],
+    "Hillside Caves": [],
+    "Unspoken Hills": [],
+    "Western Glassrock Cliffs": [],
+    "Mysterious Grotto": ['Abyss'],
+    "Hermitage": ['The Hermit'],
+    "Lonesome Path": [],
+    "Bath House": ['Attendant'],
+    "Tea Cart": ['Tea Lady'],
+    "Unspoken Hills": [],
+    "Western Glassrock Cliffs": [],
+    "Upper Mountain Path": [],
+    "Lower Mountain Path": [],
+    "Western Beach": [],
+    "Mountain Train Station": ['Conductor'],
+    "Slime City Train Station": ['Conductor'],
+    "Western Beach": [],
+    "Slime City Uptown": [],
+    "Slime City Downtown": [],
+    "Slime City Transport Center": [],
+    "Slime City Bus Stop": ['Bus Driver'],
+    "Beach Bus Stop": ['Bus Driver'],
+    "Central Beach": [],
+    "Pier": [],
+    "Slime Commons": [],
+    "Peace of Pizza": ['Pizza Girl'],
+    "Slime Park": [],
+    "Botanical Garden West": [],
+    "Awakening Beach": ['John'],
+    "Your Apartment": [],
+    "Slime Apartments": [],
+    "Confectioner": ['The Confectioner'],
+    "Botanical Garden East": [],
+    "Eastern Glassrock Cliffs": [],
+    "Farm North": ['Farm Wife'],
+    "Farm South": ['Farm Wife'],
+    "Town Hall": ['Princess'],
+    "General Store": ['Trader'], 
+    "Casino": ['Gambler'],
+    "Club": ['Raver'],
+    "Island": ['Castaway']
+}
+
+# Dictionary of possible responses for John
+john_responses = {
+    'greeting': [
+        "I heard one day even the sea will no longer be here...",
+        "What is your punishment?",
+        "What do you remember?",
+        "What have you forgotten?",
+        "I've been here longer than I can remember... yet, I remember something more still... "
+    ],
+    'new_moon_comment': [
+        "Oh, would you look at that. It's a new moon right now.",
+    ],
+}
+
+# Function for talking to NPCs
+def talk_action(session, user_input):
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    global npc_dict
+    global location_dict
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+        adjacent_places = get_adjacent_places(current_location, location_dict)
+
+        # Check if current_place is in npc_dict
+        if current_place in npc_dict:
+            available_npcs = npc_dict[current_place]
+
+            # Check if user specified an NPC
+            if len(user_input.split()) > 1:
+                npc_name = user_input.split()[1].capitalize()
+
+                if npc_name in available_npcs:
+                    if npc_name == 'John':
+                        # Check for full moon and add comment
+                        moon_phase = get_moon_phase()
+                        if 0<= moon_phase <= 5:
+                            greeting = "\""+random.choice(john_responses['new_moon_comment'])+"\""
+                            return greeting
+                        else:
+                            greeting = "\""+random.choice(john_responses['greeting'])+"\""
+                            return greeting
+                    elif npc_name == 'Alice':
+                        # Add responses for Alice if needed
+                        return f"You are now talking to {npc_name} at {current_place}."
+                    else:
+                        return f"No specific responses defined for {npc_name}."
+                else:
+                    return f"{npc_name} is not at {current_place}. Available talkers: {', '.join(available_npcs)}."
+            else:
+                return f"You can talk to the following at {current_place}: \n{', '.join(available_npcs)}."
+        else:
+            return f"No one available to talk to at {current_place}"
+    else:
+        return "You are in an unknown location."
+
 def status_action(session, user_input):
     return session.get('game_progress', {})
 
@@ -279,13 +389,23 @@ def reset_action(session, user_input):
     session.clear()
     return("Session cleared.")
 
+
+# Function to get the moon phase
+def get_moon_phase():
+    today = ephem.now()
+    moon = ephem.Moon(today)
+    phase_name = moon.phase
+    return phase_name
+
+# Rest of the code remains the same...
 # Dictionary mapping user input to corresponding functions
 action_dict = {
     'introspect': introspect_action,
     'look': look_action,
-    'location': where_action,
+    'where': where_action,
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'moon': moon_action,
+    'talk': talk_action,
     'time': time_action,
     'help': help_action,
     'status': status_action,

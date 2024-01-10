@@ -11,7 +11,7 @@ Horse Simulator Remastered is a loose remake of my 2014 game *Horse Simulator*. 
 
 ### Todo
 * Implement real-time clock, calendar, moon phases, tides
-    * Moon phases currently partially implemented
-
-### License
-I don't know what license to use right now, but I'd like to use an open-source license at some point. I will figure this out when I make more progress on this game. Right now all code (C) me.
+    * Moon phases partially implemented
+    * Datetime partially implemented
+* Add more NPCs
+* Add stuff to do
