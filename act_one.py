@@ -1,5 +1,6 @@
 from flask import Flask, session
 import ephem
+from datetime import datetime
 
 location_dict = {
         "0,0": "Summit Observatory",
@@ -22,13 +23,13 @@ location_dict = {
         "3,8": "Western Beach",
         "4,4": "Mountain Train Station",
         "4,5": "Slime City Train Station",
-        "4,8": "Beach",
+        "4,8": "Western Beach",
         "5,3": "Slime City Uptown",
         "5,4": "Slime City Downtown",
         "5,5": "Slime City Transport Center",
         "5,6": "Slime City Bus Stop",
         "5,7": "Beach Bus Stop",
-        "5,8": "Beach",
+        "5,8": "Central Beach",
         "5,9": "Pier",
         "6,2": "Slime Commons",
         "6,3": "Peace of Pizza",
@@ -99,7 +100,8 @@ def get_direction(current_location, adjacent_location):
         return "WEST"
     else:
         return "UNKNOWN"
-# Show user's x, y coords when they type 'where'
+
+# Show user's x, y coords when they type 'xy'
 def xy_action(session, user_input):
     return session.get('location', {})
 
@@ -178,7 +180,7 @@ def moon_action(session, user_input):
     # Determine the moon phase
     phase_angle = moon.phase % 360
 
-    moon_response = "You look into the sky and find the moon softly staring back.\n\nYou're pretty sure it's a "
+    moon_response = "You're pretty sure it's a "
 
     if 0 < phase_angle < 7.4 or 352.6 <= phase_angle <= 360:
         return moon_response + "New Moon" + " right now."
@@ -203,6 +205,73 @@ def moon_action(session, user_input):
     else:
         return moon_response + "Unknown Moon Phase" + " right now."
 
+# Find current datetime
+def time_action(session, user_input):
+    current_time = datetime.now().time()
+    
+    # Define time ranges and associated values
+    earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
+    morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
+    afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
+    evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
+    latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
+    if current_time < earlymorning_start:
+        return "It's late at night!"
+    elif current_time < morning_start:
+        return "It's early morning!"
+    elif current_time < afternoon_start:
+        return "It's morning!"
+    elif current_time < evening_start:
+        return "It's afternoon!"
+    elif current_time < latenight_start:
+        return "It's evening!"
+    else:
+        return "It's night time!"
+
+def where_action_with_dynamic_value(session, user_input, location_dict, look_dict):
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+        adjacent_places = get_adjacent_places(current_location, location_dict)
+
+        # Check if current_place is in look_dict
+        if current_place in look_dict:
+            dynamic_value = get_value_based_on_time()
+            return f"You are at {current_place}. {adjacent_places}. Look: {look_dict[current_place]} ({dynamic_value})"
+        else:
+            return f"You are at {current_place}. {adjacent_places}. No additional information in look_dict."
+    else:
+        return "You are in an unknown location."
+
+# Code for the 'look' command
+# Put descriptions in look_dict
+look_dict = {
+        'Awakening Beach': 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
+        'Central Beach': 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.'
+        }
+
+def look_action(session, user_input):
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    global look_dict
+    global location_dict
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+        adjacent_places = get_adjacent_places(current_location, location_dict)
+
+        # Check if current_place is in look_dict
+        if current_place in look_dict:
+            value_in_look_dict = look_dict[current_place]
+            return f"You are at {current_place}.\n\n{value_in_look_dict}\n\n{adjacent_places}"
+        else:
+            return f"You are at {current_place}. {adjacent_places}. No additional information in look_dict."
+    else:
+        return "You are in an unknown location."
+
 def status_action(session, user_input):
     return session.get('game_progress', {})
 
@@ -213,9 +282,11 @@ def reset_action(session, user_input):
 # Dictionary mapping user input to corresponding functions
 action_dict = {
     'introspect': introspect_action,
+    'look': look_action,
     'location': where_action,
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'moon': moon_action,
+    'time': time_action,
     'help': help_action,
     'status': status_action,
     'xy': xy_action,
