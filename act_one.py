@@ -1,192 +1,114 @@
 from flask import Flask, session
 import ephem
 
-def introspect_action(session, user_input):
-    quests = session.setdefault('quests', {'introspect': 0})
-    current_location = session.setdefault('location', {'x': 6, 'y': 7})
-    if quests['introspect'] == 1 and current_location['x'] == 6 and current_location['y'] == 7:
-        quests['introspect'] = 1
-        return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
-    elif quests['introspect'] == 0 and current_location['x'] == 6 and current_location['y'] == 6:
-        return "It's awfully difficult to introspect on the city streets. The heat of the city gets to your pounding brain, throbs your sweaty forehead. Better go to the BEACH."
-
 def status_action(session, user_input):
     return session.get('quests', {})
 
+location_dict = {
+        "0,0": "Summit Observatory",
+        "0,1": "Devil's Tail",
+        "1,1": "Temple of Fire",
+        "1,2": "Monastery",
+        "1,3": "Campgrounds",
+        "1,6": "Hillside Caves",
+        "1,7": "Unspoken Hills",
+        "1,8": "Western Glassrock Cliffs",
+        "1,9": "Mysterious Grotto",
+        "2,0": "Hermitage",
+        "2,1": "Lonesome Path",
+        "2,3": "Bath House",
+        "2,4": "Tea Cart",
+        "2,7": "Unspoken Hills",
+        "2,8": "Western Glassrock Cliffs",
+        "3,3": "Upper Mountain Path",
+        "3,4": "Lower Mountain Path",
+        "3,8": "Western Beach",
+        "4,4": "Mountain Train Station",
+        "4,5": "Slime City Train Station",
+        "4,8": "Beach",
+        "5,3": "Slime City Uptown",
+        "5,4": "Slime City Downtown",
+        "5,5": "Slime City Transport Center",
+        "5,6": "Slime City Bus Stop",
+        "5,7": "Beach Bus Stop",
+        "5,8": "Beach",
+        "5,9": "Pier",
+        "6,2": "Slime Commons",
+        "6,3": "Peace of Pizza",
+        "6,4": "Slime Park",
+        "6,5": "Botanical Garden West",
+        "6,8": "Awakening Beach",
+        "7,2": "Your Apartment",
+        "7,3": "Slime Apartments",
+        "7,4": "Confectioner",
+        "7,5": "Botanical Garden East",
+        "7,8": "Eastern Glassrock Cliffs",
+        "8,0": "Farm North",
+        "8,1": "Farm South",
+        "8,2": "Town Hall",
+        "8,3": "General Store", 
+        "8,4": "Casino",
+        "8,5": "Club",
+        "8,9": "Island"
+    }
+
 def look_action(session, user_input):
-    current_location = session.setdefault('location', {'x': 6, 'y': 7})
-    if current_location['x'] == 0 and current_location['y'] == 0:
-        return "You reach the peak of the MOUNTAIN. At the summit lies the OBSERVATORY. To your SOUTH is the MOUNTAIN PATH back down."
-    elif current_location['x'] == 0 and current_location['y'] == 1:
-        return "You are on the MOUNTAIN PATH. To your NORTH lies the SUMMIT OBSERVATORY. To the EAST is the TEMPLE OF FIRE."
-    elif current_location['x'] == 0 and current_location['y'] == 2:
-        return "You are at X=0, Y=2."
-    elif current_location['x'] == 0 and current_location['y'] == 3:
-        return "You are at X=0, Y=3."
-    elif current_location['x'] == 0 and current_location['y'] == 4:
-        return "You are at X=0, Y=4."
-    elif current_location['x'] == 0 and current_location['y'] == 5:
-        return "You are at X=0, Y=5."
-    elif current_location['x'] == 0 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 0 and current_location['y'] == 7:
-        return "You are at X=0, Y=7."
-    elif current_location['x'] == 0 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 1 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 1 and current_location['y'] == 1:
-        return "You are at the TEMPLE OF FIRE. To your WEST lies the MOUNTAIN PATH to the SUMMIT OBSERVATORY. To your EAST lies the MOUNTAIN PATH to the HERMITAGE. To your SOUTH lies the MONASTERY."
-    elif current_location['x'] == 1 and current_location['y'] == 2:
-        return "You are at the MONASTERY. To your NORTH lies the TEMPLE OF FIRE. To your SOUTH lies the TEA CART."
-    elif current_location['x'] == 1 and current_location['y'] == 3:
-        return "You are at the TEA CART. To your NORTH lies the MONASTERY. To your EAST lies the BATH HOUSE."
-    elif current_location['x'] == 1 and current_location['y'] == 4:
-        return "You are at X=0, Y=4."
-    elif current_location['x'] == 1 and current_location['y'] == 5:
-        return "You are at X=0, Y=5."
-    elif current_location['x'] == 1 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 1 and current_location['y'] == 7:
-        return "You are on the WESTERN GLASSROCK CLIFFS. To your SOUTH lies the MYSTERIOUS GROTTO. To the EAST lies more WESTERN GLASSROCK CLIFFS."
-    elif current_location['x'] == 1 and current_location['y'] == 8:
-        return "You are at the MYSTERIOUS GROTTO in the WESTERN BEACH. To the EAST lies the IMPENETRABLE OCEAN. To your NORTH are the WESTERN GLASSROCK CLIFFS."
-    elif current_location['x'] == 2 and current_location['y'] == 0:
-        return "You are at the MOUNTAINTOP HERMITAGE. To your SOUTH lies the MOUNTAIN PATH."
-    elif current_location['x'] == 2 and current_location['y'] == 1:
-        return "You are on the MOUNTAIN PATH. To your NORTH lies the HERMITAGE. To your WEST lies the TEMPLE OF FIRE."
-    elif current_location['x'] == 2 and current_location['y'] == 2:
-        return "You are at X=0, Y=2."
-    elif current_location['x'] == 2 and current_location['y'] == 3:
-        return "You are at the BATH HOUSE. To your WEST lies the TEA CART. To your EAST lies the MOUNTAIN PATH."
-    elif current_location['x'] == 2 and current_location['y'] == 4:
-        return "You are at X=0, Y=4."
-    elif current_location['x'] == 2 and current_location['y'] == 5:
-        return "You are at X=0, Y=5."
-    elif current_location['x'] == 2 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 2 and current_location['y'] == 7:
-        return "You are on the WESTERN GLASSROCK CLIFFS. To your WEST lies more GLASSROCK CLIFFS. To your EAST lies the BEACH."
-    elif current_location['x'] == 2 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 3 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 3 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 3 and current_location['y'] == 2:
-        return "You are at X=0, Y=2."
-    elif current_location['x'] == 3 and current_location['y'] == 3:
-        return "You are on the MOUNTAIN PATH. To the WEST lies the BATH HOUSE. To the EAST is the TRAIN STATION."
-    elif current_location['x'] == 3 and current_location['y'] == 4:
-        return "You are at X=0, Y=4."
-    elif current_location['x'] == 3 and current_location['y'] == 5:
-        return "You are at X=0, Y=5."
-    elif current_location['x'] == 3 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 3 and current_location['y'] == 7:
-        return "You are on the WESTERN BEACH. To the WEST lies the GLASSROCK CLIFFS. To the EAST lies more BEACH."
-    elif current_location['x'] == 3 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 4 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 4 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 4 and current_location['y'] == 2:
-        return "You are at X=0, Y=2."
-    elif current_location['x'] == 4 and current_location['y'] == 3:
-        return "You are at the TRAIN STATION. Here you can RIDE TRAIN WEST to get to the MOUNTAIN PATH, or RIDE TRAIN EAST to go to SLIME CITY, or RIDE TRAIN SOUTH to visit the FARM."
-    elif current_location['x'] == 4 and current_location['y'] == 4:
-        return "You are on the FARM. To your NORTH lies the TRAIN STATION. To the SOUTH is more FARM land. To your EAST is SLIME CITY."
-    elif current_location['x'] == 4 and current_location['y'] == 5:
-        return "You are on the FARM. To your NORTH is more FARM land. To your EAST is the BOTANICAL GARDEN."
-    elif current_location['x'] == 4 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 4 and current_location['y'] == 7:
-        return "You are on the BEACH. To your WEST and EAST stretch more BEACH."
-    elif current_location['x'] == 4 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 5 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 5 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 5 and current_location['y'] == 2:
-        return "You are at the COMMONS. To the EAST lies your APARTMENT. To the SOUTH is SLIME CITY."
-    elif current_location['x'] == 5 and current_location['y'] == 3:
-        return "You are in SLIME CITY. To your NORTH is the COMMONS. To the WEST is the TRAIN STATION. To the SOUTH and EAST is more SLIME CITY."
-    elif current_location['x'] == 5 and current_location['y'] == 4:
-        return "You are in SLIME CITY. To your NORTH and EAST is more SLIME CITY. To the WEST is the FARM. To the SOUTH is the BOTANICAL GARDEN."
-    elif current_location['x'] == 5 and current_location['y'] == 5:
-        return "You are at the BOTANICAL GARDEN. To the NORTH is SLIME CITY. To the WEST is the FARM. To the SOUTH is the BUS STATION to the BEACH. To the EAST is more BOTANICAL GARDEN."
-    elif current_location['x'] == 5 and current_location['y'] == 6:
-        return "You are at the BUS STATION. You can RIDE BUS to go the BEACH, or go NORTH to visit the BOTANICAL GARDEN."
-    elif current_location['x'] == 5 and current_location['y'] == 7:
-        return '''You are on the BEACH. You see more BEACH stretching to the EAST and WEST. To your NORTH is the BUS STATION. To the SOUTH is the PIER.'''
-    elif current_location['x'] == 5 and current_location['y'] == 8:
-        return "You are at the PIER. To your NORTH lies the BEACH."
-    elif current_location['x'] == 6 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 6 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 6 and current_location['y'] == 2:
-        return "You are at your APARTMENT in NORTHERN SLIME CITY. To the WEST lies the COMMONS. To the EAST lies the TOWN HALL. To the SOUTH is SLIME CITY."
-    elif current_location['x'] == 6 and current_location['y'] == 3:
-        return "You are in SLIME CITY. To the NORTH is your APARTMENT. To the WEST and SOUTH is more SLIME CITY. To the EAST is the STORE."
-    elif current_location['x'] == 6 and current_location['y'] == 4:
-        return "You are in SLIME CITY. To the NORTH and WEST is more SLIME CITY. To the SOUTH is the BOTANICAL GARDEN. To the EAST is the CASINO."
-    elif current_location['x'] == 6 and current_location['y'] == 5:
-        return "You are in the BOTANICAL GARDEN. To the NORTH is SLIME CITY. To the WEST is more BOTANICAL GARDEN. To the EAST is the CLUB."
-    elif current_location['x'] == 6 and current_location['y'] == 6:
-        # return '''You are in Slime City center, baby. Hustle, bustle, and some of that old-school funk. Nearby, you see the SHOP, the CASINO, your HOME, the TRAIN, and the BEACH.'''
-        return "Inaccessible."
-    elif current_location['x'] == 6 and current_location['y'] == 7:
-        return '''You are on the BEACH. Before you stretches the Endless Ocean\'s purple waves, pounding rhythmically against the shore. You see more BEACH to the WEST. To the EAST are the impenetrable GLASSROCK CLIFFS.'''
-    elif current_location['x'] == 6 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 7 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 7 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 7 and current_location['y'] == 2:
-        return "You are at the TOWN HALL. To the WEST is your APARTMENT. To the SOUTH is the STORE."
-    elif current_location['x'] == 7 and current_location['y'] == 3:
-        return "You are at the STORE. To the NORTH is the TOWN HALL. To the WEST is SLIME CITY. To the SOUTH is the CASINO."
-    elif current_location['x'] == 7 and current_location['y'] == 4:
-        return "You are at the CASINO. To the NORTH is the STORE. To the WEST is SLIME CITY. To the SOUTH is the CLUB."
-    elif current_location['x'] == 7 and current_location['y'] == 5:
-        return "You are at the CLUB. To the NORTH is the CASINO. To the WEST is the BOTANICAL GARDEN."
-    elif current_location['x'] == 7 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 7 and current_location['y'] == 7:
-        return "You are at the EASTERN GLASSROCK CLIFFS. To the WEST is the BEACH. You think you see an ISLAND to the SOUTHEAST, but you're not sure how to get there."
-    elif current_location['x'] == 7 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
-    elif current_location['x'] == 8 and current_location['y'] == 0:
-        return "You are at X=0, Y=0."
-    elif current_location['x'] == 8 and current_location['y'] == 1:
-        return "You are at X=0, Y=1."
-    elif current_location['x'] == 8 and current_location['y'] == 2:
-        return "You are at X=0, Y=2."
-    elif current_location['x'] == 8 and current_location['y'] == 3:
-        return "You are at X=0, Y=3."
-    elif current_location['x'] == 8 and current_location['y'] == 4:
-        return "You are at X=0, Y=4."
-    elif current_location['x'] == 8 and current_location['y'] == 5:
-        return "You are at X=0, Y=5."
-    elif current_location['x'] == 8 and current_location['y'] == 6:
-        return "You are at X=0, Y=6."
-    elif current_location['x'] == 8 and current_location['y'] == 7:
-        return "You are at X=0, Y=7."
-    elif current_location['x'] == 8 and current_location['y'] == 8:
-        return "You are at X=0, Y=8."
+    global location_dict
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+        adjacent_places = get_adjacent_places(current_location, location_dict)
+        return f"You are at {current_place}. {adjacent_places}"
     else:
         return "You are in an unknown location."
 
+
+def get_adjacent_places(current_location, location_dict):
+    adjacent_places = []
+
+    x = current_location['x']
+    y = current_location['y']
+
+    adjacent_coords = [
+        (x, y + 1),  # North
+        (x, y - 1),  # South
+        (x + 1, y),  # East
+        (x - 1, y),  # West
+    ]
+
+    for coord in adjacent_coords:
+        key = f"{coord[0]},{coord[1]}"
+        if key in location_dict:
+            place_name = location_dict[key]
+            direction = get_direction(current_location, coord)
+            adjacent_places.append(f"To the {direction} is {place_name}.")
+
+    return " ".join(adjacent_places)
+
+
+def get_direction(current_location, adjacent_location):
+    x_diff = adjacent_location[0] - current_location['x']
+    y_diff = adjacent_location[1] - current_location['y']
+
+    if x_diff == 0 and y_diff == 1:
+        return "NORTH"
+    elif x_diff == 0 and y_diff == -1:
+        return "SOUTH"
+    elif x_diff == 1 and y_diff == 0:
+        return "EAST"
+    elif x_diff == -1 and y_diff == 0:
+        return "WEST"
+    else:
+        return "UNKNOWN"
 # Show user's x, y coords when they type 'where'
 def where_action(session, user_input):
     return session.get('location', {})
 
+
 def go_action(session, user_input, direction):
-    current_location = session.setdefault('location', {'x': 6, 'y': 7})
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
     prev_location = dict(current_location)  # Store previous location for comparison
     if direction == 'north':
         current_location['y'] -= 1
@@ -205,10 +127,11 @@ def go_action(session, user_input, direction):
         session['location'] = prev_location
         return f"You can\'t go {direction.upper()} from here."
 
-    # Check if the new location is in the list of invalid coordinates
-    invalid_coordinates = [(0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (1, 0), (1, 4), (1, 5), (1, 6), (2, 2), (2, 4), (2, 5), (2, 6), (2, 8), (3, 0), (3, 1), (3, 2), (3, 4), (3, 5), (3, 6), (3, 8), (4, 0), (4, 1), (4, 2), (4, 6), (4, 8), (5, 0), (5, 1), (6, 0), (6, 1), (6, 6), (6, 8), (7, 0), (7, 1), (7, 6), (7, 8), (8, 0), (8, 1), (8, 2), (8, 3), (8, 4), (8, 5), (8, 6), (8, 7)]  # Add your list of invalid (x, y) coordinates here
-    if (current_location['x'], current_location['y']) in invalid_coordinates:
-        # If in the list, revert the move and return an error message
+    global location_dict
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key not in location_dict:
+        # If the new location is not in location_dict, revert the move and return an error message
         session['location'] = prev_location
         return f"You can\'t go {direction.upper()} from here."
 
@@ -217,6 +140,15 @@ def go_action(session, user_input, direction):
         return f'You head {direction.upper()}.\n\n' + look_action(session, user_input)
     else:
         return f'Already at {direction.upper()}.'
+
+def introspect_action(session, user_input):
+    global location_dict
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key == "6,8":
+        return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
+
 
 # Help command lists possible actions
 def help_action(session, user_input):
