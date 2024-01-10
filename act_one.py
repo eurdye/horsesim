@@ -90,9 +90,9 @@ def get_direction(current_location, adjacent_location):
     y_diff = adjacent_location[1] - current_location['y']
 
     if x_diff == 0 and y_diff == 1:
-        return "NORTH"
-    elif x_diff == 0 and y_diff == -1:
         return "SOUTH"
+    elif x_diff == 0 and y_diff == -1:
+        return "NORTH"
     elif x_diff == 1 and y_diff == 0:
         return "EAST"
     elif x_diff == -1 and y_diff == 0:
