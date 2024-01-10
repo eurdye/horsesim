@@ -1,9 +1,6 @@
 from flask import Flask, session
 import ephem
 
-def status_action(session, user_input):
-    return session.get('quests', {})
-
 location_dict = {
         "0,0": "Summit Observatory",
         "0,1": "Devil's Tail",
@@ -52,7 +49,7 @@ location_dict = {
         "8,9": "Island"
     }
 
-def look_action(session, user_input):
+def where_action(session, user_input):
     global location_dict
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
@@ -103,10 +100,10 @@ def get_direction(current_location, adjacent_location):
     else:
         return "UNKNOWN"
 # Show user's x, y coords when they type 'where'
-def where_action(session, user_input):
+def xy_action(session, user_input):
     return session.get('location', {})
 
-
+# Function for navigating the world and moving around
 def go_action(session, user_input, direction):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     prev_location = dict(current_location)  # Store previous location for comparison
@@ -122,7 +119,7 @@ def go_action(session, user_input, direction):
         return "Where? Use \'go [north/south/east/west]\' to move in the specified direction."
 
     # Check if the new location is within valid bounds (0 to 9)
-    if not (0 <= current_location['x'] <= 8 and 0 <= current_location['y'] <= 8):
+    if not (0 <= current_location['x'] <= 8 and 0 <= current_location['y'] <= 10):
         # If not within bounds, revert the move and return an error message
         session['location'] = prev_location
         return f"You can\'t go {direction.upper()} from here."
@@ -137,25 +134,35 @@ def go_action(session, user_input, direction):
 
     session['location'] = current_location
     if prev_location != current_location:
-        return f'You head {direction.upper()}.\n\n' + look_action(session, user_input)
+        return f'You head {direction.upper()}.\n\n' + where_action(session, user_input)
     else:
         return f'Already at {direction.upper()}.'
 
+# Function to introspect, should check player's location and game progress then display the relevant message
 def introspect_action(session, user_input):
     global location_dict
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
+    game_progress = session.setdefault('game_progress', {'introspect': False})
 
-    if current_key == "6,8":
+    # Introspect to begin the game
+    if current_key == "6,8" and game_progress["introspect"] == False:
+        game_progress["introspect"] = True
+        session['game_progress'] = game_progress
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
-
+    elif current_key == "6,8":
+        return "Test"
 
 # Help command lists possible actions
 def help_action(session, user_input):
-    #return """COMMAND LIST:\nlook\nlook [object]\nget [object]\ngo [north, south, east, west]\nintrospect\ntalk [being]"""
+    game_progress = session.setdefault('game_progress', {'introspect': False})
     action_list = list(action_dict.keys())
     print_actions = lambda keys: '\n'.join(keys)
-    return ("COMMAND LIST:\n"+print_actions(action_list))
+        
+    if game_progress['introspect'] == False:
+        return "COMMAND LIST:\n" + print_actions(action_list) + "\n\nType 'introspect' and press enter to begin your adventure."
+    else:
+        return ("COMMAND LIST:\n" + print_actions(action_list))
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -196,20 +203,22 @@ def moon_action(session, user_input):
     else:
         return moon_response + "Unknown Moon Phase" + " right now."
 
+def status_action(session, user_input):
+    return session.get('game_progress', {})
+
 def reset_action(session, user_input):
     session.clear()
     return("Session cleared.")
 
-
 # Dictionary mapping user input to corresponding functions
 action_dict = {
     'introspect': introspect_action,
-    'status': status_action,
-    'look': look_action,
-    'where': where_action,
+    'location': where_action,
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
-    'help': help_action,
     'moon': moon_action,
+    'help': help_action,
+    'status': status_action,
+    'xy': xy_action,
     'reset': reset_action
 }
 
