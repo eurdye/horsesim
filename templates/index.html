@@ -45,7 +45,6 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    pointer-events: none;
 }
 
 
@@ -56,7 +55,6 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    pointer-events: none;
     background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -144,13 +142,13 @@ body {
     const inputBox = document.getElementById('input-form');
 
     // Input box autofocus coder
-    document.addEventListener('click', function(event) {
+    //document.addEventListener('click', function(event) {
       // Check if the clicked element is not the input box
-      if (event.target.id !== 'user_input') {
+      //if (event.target.id !== 'user_input') {
         // Focus on the input box
-        document.getElementById('user_input').focus();
-      }
-    });
+        //document.getElementById('user_input').focus();
+      //}
+    //});
 
 </script>
 
@@ -173,7 +171,7 @@ body {
                                                                 v0.0.1 Alpha
 </div>
             </p>
-            SCENARIO:<br>
+              SCENARIO:<br>
             You are a horse.<br>
             You are dead.<br><br>
 STATUS:
@@ -184,21 +182,14 @@ STATUS:
 ' / / --`--,  
  /  \    | '  
             </pre>
-Newly-deceased Equine
-<br><br>
-
+            Newly-deceased Equine<br><br>
                 START:<br>
                 Type 'introspect' to begin your journey.<br>
                 <br>
-                SUPPORT:<br>
-                Type 'help' for a list of commands<br>
-                <br>
-                STRATEGIZE:<br>
+                SUGGESTIONS:<br>
+                Type 'help' for a list of commands.<br>
                 This game takes place in real time.<br>
                 It is recommended to take notes.<br>
-                <br>
-                SOURCE:<br>
-                Eurydice
             </div>
             <br>
         <div class="terminal">
