@@ -375,7 +375,7 @@ def look_action(session, user_input):
             value_in_look_dict = look_dict[current_place]
 
 
-            return f"You are at {current_place.upper()}.{value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
+            return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
 
         else:
             return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}."
