@@ -41,12 +41,12 @@ location_dict = {
         "6,2": "Slime Commons",
         "6,3": "Peace of Pizza",
         "6,4": "Slime Park",
-        "6,5": "Botanical Garden West",
+        "6,5": "Botanical Garden",
         "6,8": "Awakening Beach",
         "7,2": "Your Apartment",
         "7,3": "Slime Apartments",
         "7,4": "Confectioner",
-        "7,5": "Botanical Garden East",
+        "7,5": "Therapist",
         "7,8": "Eastern Glassrock Cliffs",
         "8,0": "Farm North",
         "8,1": "Farm South",
@@ -115,6 +115,7 @@ def xy_action(session, user_input):
 
 # Function for navigating the world and moving around
 def go_action(session, user_input, direction):
+    global location_dict
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     prev_location = dict(current_location)  # Store previous location for comparison
     if direction == 'north':
@@ -126,7 +127,12 @@ def go_action(session, user_input, direction):
     elif direction == 'west':
         current_location['x'] -= 1
     else:
-        return "Where? Use \'go [north/south/east/west]\' to move in the specified direction."
+        current_location = session.setdefault('location', {'x': 6, 'y': 8})
+        current_key = f"{current_location['x']},{current_location['y']}"
+        if current_key in location_dict:
+            current_place = location_dict[current_key]
+            adjacent_places = get_adjacent_places(current_location, location_dict)
+            return f"Where do you want to go? {adjacent_places}"
 
     # Check if the new location is within valid bounds (0 to 9)
     if not (0 <= current_location['x'] <= 8 and 0 <= current_location['y'] <= 10):
@@ -169,7 +175,6 @@ def go_action(session, user_input, direction):
             session['location'] = prev_location
             return "The OBSERVATORY is only open at night."
 
-    global location_dict
     current_key = f"{current_location['x']},{current_location['y']}"
 
     if current_key not in location_dict:
@@ -208,7 +213,7 @@ def help_action(session, user_input):
         return "COMMAND LIST:\n" + print_actions(action_list) + "\n\nType 'introspect' and press enter to begin your adventure."
     else:
         #return ("COMMAND LIST:\n" + print_actions(action_list))
-        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\n\nDEBUG:\nstatus\nxy\nreset")
+        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\n\nDEBUG:\nstatus\nxy\nwarp [x,y]\nreset")
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -319,8 +324,7 @@ def look_action(session, user_input):
         # Check if current_place is in npc_dict
         if current_place in npc_dict:
             available_npcs = npc_dict[current_place]
-
-        available_npcs = [item.upper() for item in available_npcs]
+            available_npcs = [item.upper() for item in available_npcs]
 
         # Check if current_place is in look_dict
         if current_place in look_dict:
@@ -330,7 +334,7 @@ def look_action(session, user_input):
             return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
 
         else:
-            return f"You are at {current_place.upper()}. {adjacent_places}. No additional information in look_dict."
+            return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}."
     else:
         return "You are in an unknown location."
 
@@ -339,10 +343,10 @@ import random
 # Dictionary of available NPCs in each location
 npc_dict = {
     "Summit Observatory": ['Astrologer'],
-    "Devil's Tail": ['Wanderer'],
-    "Temple of Fire": ['Prophet of Fire'],
+    "Devil's Tail": ['Pilgrim'],
+    "Hallowed Ground": ['Angel'],
     "Dream Temple": ['Monk'],
-    "Campgrounds": ['Deer Ghost'],
+    "Hidden Path": ['Deer Spirit'],
     "Hillside Caves": [],
     "Unspoken Hills": [],
     "Western Glassrock Cliffs": [],
@@ -369,12 +373,12 @@ npc_dict = {
     "Slime Commons": [],
     "Peace of Pizza": ['Pizza Girl'],
     "Slime Park": [],
-    "Botanical Garden West": [],
-    "Awakening Beach": ['John', 'Eliza'],
+    "Botanical Garden": [],
+    "Awakening Beach": ['John'],
     "Your Apartment": [],
     "Slime Apartments": [],
     "Confectioner": ['The Confectioner'],
-    "Botanical Garden East": [],
+    "Therapist": ['Eliza'],
     "Eastern Glassrock Cliffs": [],
     "Farm North": ['Farm Wife'],
     "Farm South": ['Farm Wife'],
@@ -408,7 +412,7 @@ def talk_action(session, user_input):
                 if npc_name in available_npcs:
                     if npc_name == 'John':
                         # Check for full moon and add comment
-                        moon_phase = get_moon_phase()
+                        moon_phase = get_moon_phase(session, user_input)
                         if 0<= moon_phase <= 5:
                             greeting = "\""+random.choice(john_responses['new_moon_comment'])+"\""
                             return greeting
@@ -531,6 +535,23 @@ def emote_action(session, user_input):
     else:
         return "What do you want to feel?"
 
+def warp_action(session, user_input, location):
+    # Extract X and Y coordinates from the input
+    try:
+        x, y = map(int, location.split(','))
+    except ValueError:
+        return "Invalid warp coordinates. Please use 'warp X,Y' format."
+
+    # Check if the new location is within valid bounds (0 to 8 for X, 0 to 10 for Y)
+    if not (0 <= x <= 8 and 0 <= y <= 10):
+        return "Invalid warp coordinates. Coordinates must be within the valid bounds."
+
+    # Update the user's location
+    session['location'] = {'x': x, 'y': y}
+
+    # Return a message indicating the successful warp
+    return f"You have warped to {x},{y}."
+
 
 # Dictionary mapping user input to corresponding functions
 action_dict = {
@@ -548,6 +569,8 @@ action_dict = {
     'xy': xy_action,
     'reset': reset_action
 }
+
+action_dict['warp'] = lambda session, user_input: warp_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else '')
 
 def user_input_parser(user_input):
     action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
