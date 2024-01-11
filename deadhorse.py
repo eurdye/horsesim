@@ -306,7 +306,7 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 look_dict = {
         'Awakening Beach': 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
         'Central Beach': 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
-        'Dream Temple': 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but do not care to.'
+        'Dream Temple': 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to.'
         }
 
 def look_action(session, user_input):
@@ -331,7 +331,7 @@ def look_action(session, user_input):
             value_in_look_dict = look_dict[current_place]
 
 
-            return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
+            return f"You are at {current_place.upper()}.\n\n{value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
 
         else:
             return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}."
