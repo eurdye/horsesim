@@ -216,7 +216,16 @@ def help_action(session, user_input):
         return "COMMAND LIST:\n" + print_actions(action_list) + "\n\nType 'introspect' and press enter to begin your adventure."
     else:
         #return ("COMMAND LIST:\n" + print_actions(action_list))
-        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\n\nDEBUG:\nstatus\nxy\nwarp [x,y]\nreset")
+        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\nhelp\nguide\n\nDEBUG:\nstatus\nxy\nwarp [x,y]\nreset")
+
+# Guide command for more in depth game guide manual info
+def guide_action(session, user_input):
+    return("""Welcome to DEAD HORSE.\n
+    DEAD HORSE is a real-time afterlife simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
+    DEAD HORSE is an ambient game. There is no way to win or lose. All you can do is exist.\n
+    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. Don't be afraid to get personal -- the folks in DEAD HORSE love to chat, whether that's helping you talk about your feelings or attempting to divine your future.\n
+    When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing 'talk [npc name] [your message]'.\n
+    Example: 'talk monk hello, how are you?'""")
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -616,6 +625,7 @@ action_dict = {
     'talk': talk_action,
     'time': time_action,
     'help': help_action,
+    'guide': guide_action,
     'status': status_action,
     'xy': xy_action,
     'reset': reset_action

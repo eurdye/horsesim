@@ -29,8 +29,10 @@ post: you I
 post: my your
 post: i'm you are
 synon: belief feel think believe wish
+synon: hello hi howdy greetings
 synon: family mother mom father dad sister brother wife children child
-synon: god divine gods devil
+synon: god divine gods devil divinity holy demon
+synon: reality universe existence plane planet dimension afterlife life
 synon: fate planet planets sign
 synon: future luck fortune
 synon: sad unhappy depressed sick
@@ -38,23 +40,28 @@ synon: happy elated glad better
 synon: cannot can't
 synon: everyone everybody nobody noone
 synon: be am is are was
+synon: love romance loving
 key: xnone
   decomp: *
-    reasmb: Greetings, ungulate one.
-    reasmb: Hello, young ungulate. Do you seek guidance?
-    reasmb: A horse? I haven't seen.
+    reasmb: The threads of fate are unclear.
+    reasmb: I'm not sure I understand...
+    reasmb: What is this you speak of?
+    reasmb: The planets murmur.
+    reasmb: Why do you say that?
 key: sorry
   decomp: *
-    reasmb: Forgiveness is free, ponyboy.
+    reasmb: Forgiveness is free, ungulate.
+    reasmb: No need to apologize. I have already forgiven you.
 key: apologise
   decomp: *
     reasmb: goto sorry
 key: remember 5
   decomp: * i remember *
-    reasmb: What do you remember this time of year?
+    reasmb: What do you remember?
+    reasmb: I see it now... (2) .
   decomp: * do you remember *
     reasmb: Did you think I would forget (2) ?
-    reasmb: (2) ? I feel.
+    reasmb: (2) ? I feel it now.
     reasmb: goto what
 key: if 3
   decomp: * if *
@@ -97,8 +104,25 @@ key: xforeign
   decomp: *
     reasmb: I speak only English.
 key: hello
-  decomp: *
-    reasmb: Hello. How may I assist your dream journey?
+  decomp: * *
+    reasmb: Hello. How may I divine your fate?
+    reasmb: Greetings. Which thread of fate should we follow?
+    reasmb: Hello. Our fates cross again, equine one.
+key: hi 
+  decomp: * *
+    reasmb: Hello. How may I divine your fate?
+    reasmb: Greetings. Which thread of fate should we follow?
+    reasmb: Hello. Our fates cross again, equine one.
+key: howdy 
+  decomp: * *
+    reasmb: Hello. How may I divine your fate?
+    reasmb: Greetings. Which thread of fate should we follow?
+    reasmb: Hello. Our fates cross again, equine one.
+key: greetings 
+  decomp: * *
+    reasmb: Hello. How may I divine your fate?
+    reasmb: Greetings. Which thread of fate should we follow?
+    reasmb: Hello. Our fates cross again, equine one.
 key: computer 50
   decomp: *
     reasmb: They say we're all in a computer, you know...
@@ -188,8 +212,9 @@ key: can
     reasmb: goto what
 key: what
   decomp: *
-    reasmb: I cannot explain the whats.
-    reasmb: Don't think; feel.
+    reasmb: I cannot explain what I know.
+    reasmb: The planets tell me many secrets.
+    reasmb: What do you think?
 key: because
   decomp: *
     reasmb: What other reasons might there be?
@@ -232,3 +257,16 @@ key: future
     reasmb: I see the (2) of (3) now.  
   decomp: * @future *
     reasmb: Only time can reveal the (2) .
+key: love
+  decomp: * @love *
+    reasmb: What does your heart say about (2) ?
+    reasmb: Who do you (2) ?
+    reasmb: Are you in (2) ?
+    reasmb: The planets decide the fate of all (2) .
+key: god
+  decomp: * @god *
+    reasmb: You ask about the gods of this land? Ungulate child, are you prepared to receive the knowledge which you seek? If so... ask me about the nature of reality. I will reveal what I know.
+key: reality
+   decomp: * @reality *
+    reasmb: Ungulate child, you are dead. You may have gathered as much. Given your equine body, your past life was full of guilt. Do you remember hurting someone? Do you remember your selfishness? You are being punished, as we all are.
+    reasmb: This world appears to be in a dimension all its own. The planets of heaven rule the motions of us dead folk, yet we must still atone for our actions using what little will we have. To rebel against the stars themselves--this is our fate, ungulate.
