@@ -1,0 +1,227 @@
+initial: How do you do.  Please tell me your problem.
+final: Goodbye.  Thank you for talking to me.
+quit: bye
+quit: goodbye
+quit: quit
+pre: dont don't
+pre: cant can't
+pre: wont won't
+pre: recollect remember
+pre: dreamt dreamed
+pre: dreams dream
+pre: maybe perhaps
+pre: how what
+pre: when what
+pre: certainly yes
+pre: machine computer
+pre: computers computer
+pre: were was
+pre: you're you are
+pre: i'm i am
+pre: same alike
+post: am are
+post: your my
+post: me you
+post: myself yourself
+post: yourself myself
+post: i you
+post: you I
+post: my your
+post: i'm you are
+synon: belief feel think believe wish
+synon: family mother mom father dad sister brother wife children child
+synon: god divine gods devil
+synon: fate planet planets sign
+synon: fortune future luck
+synon: sad unhappy depressed sick
+synon: happy elated glad better
+synon: cannot can't
+synon: everyone everybody nobody noone
+synon: be am is are was
+key: xnone
+  decomp: *
+    reasmb: Embrace the chaos.
+    reasmb: It speaks in tongues?
+key: sorry
+  decomp: *
+    reasmb: Forgiveness is free, ponyboy.
+key: apologise
+  decomp: *
+    reasmb: goto sorry
+key: remember 5
+  decomp: * i remember *
+    reasmb: What do you remember this time of year?
+  decomp: * do you remember *
+    reasmb: Did you think I would forget (2)?
+    reasmb: (2)? I feel...
+    reasmb: goto what
+key: if 3
+  decomp: * if *
+    reasmb: I find it likely that (2)...
+    reasmb: Do you wish for (2)?
+    reasmb: What do you want to know about (2)?
+key: dreamed 4
+  decomp: * i dreamed *
+    reasmb: Have you ever dreamed (2) before?
+    reasmb: What do you think it means?
+    reasmb: goto dream
+key: dream 3
+  decomp: *
+    reasmb: Do you dream often?
+    reasmb: When did this dream occur?
+key: perhaps
+  decomp: *
+    reasmb: You aren't sure?
+    reasmb: Don't you know?
+key: name 15
+  decomp: *
+    reasmb: I care not for names.
+key: deutsch
+  decomp: *
+    reasmb: goto xforeign
+    reasmb: I told you before, I don't understand German.
+key: francais
+  decomp: *
+    reasmb: goto xforeign
+    reasmb: I told you before, I don't understand French.
+key: italiano
+  decomp: *
+    reasmb: goto xforeign
+    reasmb: I told you before, I don't understand Italian.
+key: espanol
+  decomp: *
+    reasmb: goto xforeign
+    reasmb: I told you before, I don't understand Spanish.
+key: xforeign
+  decomp: *
+    reasmb: I speak only English.
+key: hello
+  decomp: *
+    reasmb: Alei. What is your sun sign?
+key: computer 50
+  decomp: *
+    reasmb: They say we're all in a computer, you know!
+key: am
+  decomp: * am i *
+    reasmb: Do you believe you are (2)?
+    reasmb: goto what
+  decomp: *
+    reasmb: Being... how funny....
+key: are
+  decomp: * are you *
+    reasmb: Why are you interested in whether I am (2) or not?
+    reasmb: goto what
+  decomp: * are *
+    reasmb: (2) are not always as they seem.
+key: your
+  decomp: * your *
+    reasmb: Oh, my (2)?
+key: was 2
+  decomp: * was i *
+    reasmb: What if you were (2)?
+    reasmb: goto what
+  decomp: * i was *
+    reasmb: Perhaps I already know you were (2) .
+  decomp: * was you *
+    reasmb: Sorry, I was holding the planets in alignment. 
+key: i
+  decomp: * i @fortune *
+    reasmb: You want (3)? Stupid!
+  decomp: * i am * @sad *
+    reasmb: Even within (3) you may find enlightenment.
+  decomp: * i am * @happy *
+    reasmb: Cherish these moments of (3).
+  decomp: * i was *
+    reasmb: goto was
+  decomp: * i @belief * i *
+    reasmb: Do you really think so?
+  decomp: * i * @belief * you *
+    reasmb: goto you
+  decomp: * i am *
+    reasmb: Is it because you are (2) that you came to me?
+  decomp: * i @cannot *
+    reasmb: How do you think that you can't (3)?
+  decomp: * i don't *
+    reasmb: Don't you really (2)?
+  decomp: * do i feel *
+    reasmb: Tell me more about such feelings.
+  decomp: * i * you *
+    reasmb: Perhaps the fates will allow us to (2) each other.
+  decomp: *
+    reasmb: You say (1)?
+key: you
+  decomp: * you remind me of *
+    reasmb: goto alike
+  decomp: * you are *
+    reasmb: What makes you think I am (2)?
+  decomp: * you * me *
+    reasmb: My, you think I (2) you?
+  decomp: * you *
+    reasmb: Maybe I do (2).
+    reasmb: Perhaps you are the one who (2).
+key: yes
+  decomp: *
+    reasmb: You seem to be quite positive.
+    reasmb: I understand.
+key: no
+  decomp: *
+    reasmb: Your opinion does not matter.
+    reasmb: Do you think you have a say?
+key: my 2
+  decomp: $ * my *
+    reasmb: Your (2)?
+    reasmb: Does that have anything to do with the fact that your (2)?
+  decomp: * my * @family *
+    reasmb: Who else in your family (4)?
+    reasmb: Your (3)?
+    reasmb: What else comes to mind when you think of your (3)?
+  decomp: * my *
+    reasmb: Your (2)?
+key: can
+  decomp: * can you *
+    reasmb: You believe I can (2) don't you?
+    reasmb: goto what
+  decomp: * can i *
+    reasmb: goto what
+key: what
+  decomp: *
+    reasmb: I cannot explain the whats...
+    reasmb: Don't think; feel...
+key: because
+  decomp: *
+    reasmb: What other reasons might there be?
+key: why
+  decomp: * why don't you *
+    reasmb: Have you (2) yourself?
+    reasmb: goto what
+  decomp: * why can't i *
+    reasmb: You can (2) if you set your intentions.
+    reasmb: goto what
+  decomp: *
+    reasmb: goto what
+key: everyone 2
+  decomp: * @everyone *
+    reasmb: (2)?
+    reasmb: (2)...
+key: everybody 2
+  decomp: *
+    reasmb: goto everyone
+key: nobody 2
+  decomp: *
+    reasmb: goto everyone
+key: noone 2
+  decomp: *
+    reasmb: goto everyone
+key: always 1
+  decomp: *
+    reasmb: What incident are you thinking of?
+    reasmb: Really, always?
+key: alike 10
+  decomp: *
+    reasmb: In what way?
+    reasmb: Could here really be some connection?
+    reasmb: How?
+key: like 10
+  decomp: * @be * like *
+    reasmb: goto alike
+   

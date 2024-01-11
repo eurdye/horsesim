@@ -1,0 +1,7 @@
+notes.md
+__pycache__
+GameDocs
+venv
+.deadhorse.py.swp
+.swp
+.DS_Store
