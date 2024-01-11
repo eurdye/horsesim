@@ -1,4 +1,4 @@
-from act_one import user_input_parser
+from deadhorse import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
 

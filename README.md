@@ -17,9 +17,19 @@ DEAD HORSE is a "spiritual" sequel to my 2014 student game *Horse Simulator*. DE
 4. Visit 127.0.0.1:5000 in browser to play.
 
 ### Todo
-* Implement calendar, real-time tides?
+* Implement real-time clock
+    * ~~Real-time clock~~
+    * ~~Moon phases~~
+    * Calendar?
+    * Tides?
 * Add `use` and `give` commands
 * Improve dialogue system
+    * ~~Implement Eliza chatbot~~
+* Add non-chatbot NPCs?
+* Add events (observatory new moon, hermitage full moon, grotto low tide, pier high tide)
+* Add things to interact with at various locations
+    * Make user take the bus or train when going to/from town
+    * Add customizable apartment
 
 ### Credits
 * Eliza chatbot based on [Eliza](https://github.com/wadetb/eliza/tree/master)

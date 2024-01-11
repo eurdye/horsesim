@@ -3,7 +3,7 @@ import ephem
 from datetime import datetime
 import random
 from john import john_responses
-from eliza_interaction import ElizaBot, MonkBot # Import the ElizaBot class
+from eliza_action import ElizaBot, MonkBot # Import the ElizaBot class
 
 # Instantiate ElizaBot
 eliza_bot = ElizaBot()
@@ -347,7 +347,7 @@ npc_dict = {
     "Peace of Pizza": ['Pizza Girl'],
     "Slime Park": [],
     "Botanical Garden West": [],
-    "Awakening Beach": ['John', 'Eliza', 'Monk'],
+    "Awakening Beach": ['John', 'Eliza'],
     "Your Apartment": [],
     "Slime Apartments": [],
     "Confectioner": ['The Confectioner'],
