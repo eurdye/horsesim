@@ -128,8 +128,6 @@ def go_action(session, user_input, direction):
     else:
         return "Where? Use \'go [north/south/east/west]\' to move in the specified direction."
 
-
-
     # Check if the new location is within valid bounds (0 to 9)
     if not (0 <= current_location['x'] <= 8 and 0 <= current_location['y'] <= 10):
         # If not within bounds, revert the move and return an error message
@@ -143,21 +141,33 @@ def go_action(session, user_input, direction):
     global afternoon_start
     global evening_start
     global latenight_start
+    observer = ephem.Observer()
+    moon = ephem.Moon()
+
+    # Set the observer's location (latitude and longitude)
+    observer.lat = '34.135559'  # Replace with your latitude
+    observer.lon = '-116.054169'  # Replace with your longitude
+
+    # Compute the moon's phase
+    moon.compute(observer)
+    # Determine the moon phase
+    phase_angle = moon.phase % 360
+
     # Mysterious Grotto only available in early morning
     if current_location['x'] == 1 and current_location['y'] == 9:
         if latenight_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
-            return "The tide is too high to access the Mysterious Grotto."
-    # Dream Temple only open during day
+            return "The tide is too high to access the MYSTERIOUR GROTTO."
+    # Dream Temple only open during new and full moons
     if current_location['x'] == 1 and current_location['y'] == 2:
-        if evening_start <= current_time <= morning_start:
+        if (7.4 <= phase_angle < 59.5) or (66.9 <= phase_angle <= 118.4):
             session['location'] = prev_location
-            return "The Dream Temple is only open during the day."
+            return "The DREAM TEMPLE is only open during lunar maxima."
     # Observatory only open at night
     if current_location['x'] == 0 and current_location['y'] == 0:
         if evening_start >= current_time >= morning_start:
             session['location'] = prev_location
-            return "The Observatory is only open at night."
+            return "The OBSERVATORY is only open at night."
 
     global location_dict
     current_key = f"{current_location['x']},{current_location['y']}"
@@ -448,7 +458,7 @@ def reset_action(session, user_input):
     return("Session cleared.")
 
 # Function to get the moon phase
-def get_moon_phase():
+def get_moon_phase(session, user_input):
     today = ephem.now()
     moon = ephem.Moon(today)
     phase_name = moon.phase
