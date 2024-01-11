@@ -3,11 +3,12 @@ import ephem
 from datetime import datetime
 import random
 from john import john_responses
-from eliza_action import ElizaBot, MonkBot # Import the ElizaBot class
+import eliza_action # Import the ElizaBot class
 
 # Instantiate ElizaBot
-eliza_bot = ElizaBot()
-monk_bot = MonkBot()
+eliza_bot = eliza_action.ElizaBot()
+monk_bot = eliza_action.MonkBot()
+astrologer_bot = eliza_action.AstrologerBot()
 
 location_dict = {
         "0,0": "Summit Observatory",
@@ -202,6 +203,8 @@ def introspect_action(session, user_input):
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
     elif current_key == "6,8":
         return "Test"
+    elif current_key == "0,0":
+        return "The peak of the world... wherever this place is. Up here, above the clouds, the firmament above is so clear... You lift an equine eye to the heavens. If heaven is still up there, where does that put you? You try not to think about it.\n\nThe OBSERVATORY here has a powerful telescope. Maybe the ASTROLOGER will let you take a look. Maybe they know more about what this place is."
 
 # Help command lists possible actions
 def help_action(session, user_input):
@@ -303,11 +306,52 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 
 # Code for the 'look' command
 # Put descriptions in look_dict
-look_dict = {
-        'Awakening Beach': 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
-        'Central Beach': 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
-        'Dream Temple': 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to.'
-        }
+look_dict = {"Summit Observatory": 'At the top of the mountain, an OBSERVATORY. The half-dome houses a large TELESCOPE. Beneath you, clouds. Above, stars.',
+             "Devil's Tail": '',
+            "Hallowed Ground": '',
+            "Dream Temple": 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to.',
+            "Hidden Path": '',
+            "Hillside Caves": '',
+            "Unspoken Hills": '',
+            "Western Glassrock Cliffs": '',
+            "Mysterious Grotto": '',
+            "Hermitage": '',
+            "Lonesome Path": '',
+            "Bath House": '',
+            "Tea Cart": '',
+            "Unspoken Hills": '',
+            "Western Glassrock Cliffs": '',
+            "Upper Mountain Path": '',
+            "Lower Mountain Path": '',
+            "Western Beach": '',
+            "Mountain Train Station": '',
+            "Slime City Train Station": '',
+            "Western Beach": '',
+            "Slime City Uptown": '',
+            "Slime City Downtown": '',
+            "Slime City Transport Center": '',
+            "Slime City Bus Stop": '',
+            "Beach Bus Stop": '',
+            "Central Beach": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
+            "Pier": '',
+            "Slime Commons": '',
+            "Peace of Pizza": '',
+            "Slime Park": '',
+            "Botanical Garden": '',
+            "Awakening Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
+            "Your Apartment": '',
+            "Slime Apartments": '',
+            "Confectioner": '',
+            "Therapist": '',
+            "Eastern Glassrock Cliffs": '',
+            "Farm North": '',
+            "Farm South": '',
+            "Town Hall": '',
+            "General Store": '', 
+            "Casino": '',
+            "Club": '',
+             "Island": ''
+             }
 
 def look_action(session, user_input):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
@@ -433,6 +477,13 @@ def talk_action(session, user_input):
                             user_input = user_input[len(prefix):].strip()
                         monk_response = monk_bot.respond(user_input)
                         return monk_response
+                    elif npc_name == 'Astrologer':
+                        # Sanitize user_input if it begins with "talk astrologer "
+                        prefix = "talk astrologer "
+                        if user_input.lower().startswith(prefix):
+                            user_input = user_input[len(prefix):].strip()
+                        astrologer_response = astrologer_bot.respond(user_input)
+                        return astrologer_response
                     else:
                         available_npcs = [item.upper() for item in available_npcs]
                         return f"No specific responses defined for {npc_name}."
