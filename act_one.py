@@ -3,10 +3,11 @@ import ephem
 from datetime import datetime
 import random
 from john import john_responses
-from eliza_interaction import ElizaBot  # Import the ElizaBot class
+from eliza_interaction import ElizaBot, MonkBot # Import the ElizaBot class
 
 # Instantiate ElizaBot
 eliza_bot = ElizaBot()
+monk_bot = MonkBot()
 
 location_dict = {
         "0,0": "Summit Observatory",
@@ -346,7 +347,7 @@ npc_dict = {
     "Peace of Pizza": ['Pizza Girl'],
     "Slime Park": [],
     "Botanical Garden West": [],
-    "Awakening Beach": ['John', 'Eliza'],
+    "Awakening Beach": ['John', 'Eliza', 'Monk'],
     "Your Apartment": [],
     "Slime Apartments": [],
     "Confectioner": ['The Confectioner'],
@@ -398,6 +399,13 @@ def talk_action(session, user_input):
                             user_input = user_input[len(prefix):].strip()
                         eliza_response = eliza_bot.respond(user_input)
                         return eliza_response
+                    elif npc_name == 'Monk':
+                        # Sanitize user_input if it begins with "talk monk "
+                        prefix = "talk monk "
+                        if user_input.lower().startswith(prefix):
+                            user_input = user_input[len(prefix):].strip()
+                        monk_response = monk_bot.respond(user_input)
+                        return monk_response
                     else:
                         return f"No specific responses defined for {npc_name}."
                 else:
