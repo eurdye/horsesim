@@ -12,9 +12,9 @@ monk_bot = MonkBot()
 location_dict = {
         "0,0": "Summit Observatory",
         "0,1": "Devil's Tail",
-        "1,1": "Temple of Fire",
-        "1,2": "Monastery",
-        "1,3": "Campgrounds",
+        "1,1": "Hallowed Ground",
+        "1,2": "Dream Temple",
+        "1,3": "Hidden Path",
         "1,6": "Hillside Caves",
         "1,7": "Unspoken Hills",
         "1,8": "Western Glassrock Cliffs",
@@ -65,7 +65,7 @@ def where_action(session, user_input):
     if current_key in location_dict:
         current_place = location_dict[current_key]
         adjacent_places = get_adjacent_places(current_location, location_dict)
-        return f"You are at {current_place}. {adjacent_places}"
+        return f"You are at {current_place.upper()}. {adjacent_places}"
     else:
         return "You are in an unknown location."
 
@@ -87,6 +87,7 @@ def get_adjacent_places(current_location, location_dict):
         key = f"{coord[0]},{coord[1]}"
         if key in location_dict:
             place_name = location_dict[key]
+            place_name = place_name.upper()
             direction = get_direction(current_location, coord)
             adjacent_places.append(f"To the {direction} is {place_name}.")
 
@@ -147,11 +148,11 @@ def go_action(session, user_input, direction):
         if latenight_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
             return "The tide is too high to access the Mysterious Grotto."
-    # Monastery only open during day
+    # Dream Temple only open during day
     if current_location['x'] == 1 and current_location['y'] == 2:
         if evening_start <= current_time <= morning_start:
             session['location'] = prev_location
-            return "The Monastery is only open during the day."
+            return "The Dream Temple is only open during the day."
     # Observatory only open at night
     if current_location['x'] == 0 and current_location['y'] == 0:
         if evening_start >= current_time >= morning_start:
@@ -196,7 +197,8 @@ def help_action(session, user_input):
     if game_progress['introspect'] == False:
         return "COMMAND LIST:\n" + print_actions(action_list) + "\n\nType 'introspect' and press enter to begin your adventure."
     else:
-        return ("COMMAND LIST:\n" + print_actions(action_list))
+        #return ("COMMAND LIST:\n" + print_actions(action_list))
+        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\n\nDEBUG:\nstatus\nxy\nreset")
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -288,7 +290,8 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 # Put descriptions in look_dict
 look_dict = {
         'Awakening Beach': 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
-        'Central Beach': 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.'
+        'Central Beach': 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
+        'Dream Temple': 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but do not care to.'
         }
 
 def look_action(session, user_input):
@@ -297,17 +300,27 @@ def look_action(session, user_input):
 
     global look_dict
     global location_dict
-
+    global npc_dict
+    
     if current_key in location_dict:
         current_place = location_dict[current_key]
         adjacent_places = get_adjacent_places(current_location, location_dict)
 
+        # Check if current_place is in npc_dict
+        if current_place in npc_dict:
+            available_npcs = npc_dict[current_place]
+
+        available_npcs = [item.upper() for item in available_npcs]
+
         # Check if current_place is in look_dict
         if current_place in look_dict:
             value_in_look_dict = look_dict[current_place]
-            return f"You are at {current_place}.\n\n{value_in_look_dict}\n\n{adjacent_places}"
+
+
+            return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
+
         else:
-            return f"You are at {current_place}. {adjacent_places}. No additional information in look_dict."
+            return f"You are at {current_place.upper()}. {adjacent_places}. No additional information in look_dict."
     else:
         return "You are in an unknown location."
 
@@ -318,7 +331,7 @@ npc_dict = {
     "Summit Observatory": ['Astrologer'],
     "Devil's Tail": ['Wanderer'],
     "Temple of Fire": ['Prophet of Fire'],
-    "Monastery": ['Monk'],
+    "Dream Temple": ['Monk'],
     "Campgrounds": ['Deer Ghost'],
     "Hillside Caves": [],
     "Unspoken Hills": [],
@@ -377,7 +390,7 @@ def talk_action(session, user_input):
         # Check if current_place is in npc_dict
         if current_place in npc_dict:
             available_npcs = npc_dict[current_place]
-
+            current_place = current_place.upper()
             # Check if user specified an NPC
             if len(user_input.split()) > 1:
                 npc_name = user_input.split()[1].capitalize()
@@ -407,11 +420,14 @@ def talk_action(session, user_input):
                         monk_response = monk_bot.respond(user_input)
                         return monk_response
                     else:
+                        available_npcs = [item.upper() for item in available_npcs]
                         return f"No specific responses defined for {npc_name}."
                 else:
-                    return f"{npc_name} is not at {current_place}. Available talkers: {', '.join(available_npcs)}."
+                    available_npcs = [item.upper() for item in available_npcs]
+                    return f"{npc_name} is not here. You can talk to the following at {current_place}: {', '.join(available_npcs)}"
             else:
-                return f"You can talk to the following at {current_place}: \n{', '.join(available_npcs)}."
+                available_npcs = [item.upper() for item in available_npcs]
+                return f"You can talk to the following at {current_place}: \n\n{', '.join(available_npcs)}"
         else:
             return f"No one available to talk to at {current_place}"
     else:
@@ -484,10 +500,10 @@ def emote_action(session, user_input):
     player_emotion = session.setdefault('emotion', 'neutral')
 
     # List of possible emotions
-    possible_emotions = ['joy', 'sadness', 'anger', 'surprise', 'fear', 'neutral']
+    possible_emotions = ['joy', 'sadness', 'anger', 'surprise', 'fear', 'neutral', 'mirth']
 
     # Extract the emotion name after "emote"
-    emotion_name = user_input.split("emote", 1)[-1].strip().lower()
+    emotion_name = user_input.split("feel", 1)[-1].strip().lower()
 
     # Check if the emotion name is valid
     if emotion_name:
@@ -495,15 +511,15 @@ def emote_action(session, user_input):
         if emotion_name in possible_emotions:
             # Check if the player is already feeling the same emotion
             if emotion_name == player_emotion:
-                return f"You are already feeling {emotion_name}."
+                return f"You are already feeling {emotion_name.upper()}."
             else:
                 # Update the player's emotion in the session
                 session['emotion'] = emotion_name
-                return f"You are now feeling {emotion_name}."
+                return f"You are now feeling {emotion_name.upper()}."
         else:
-            return f"You don't know how to feel {emotion_name}."
+            return f"You don't know how to feel {emotion_name.upper()}."
     else:
-        return "Please specify an emotion to emote."
+        return "What do you want to feel?"
 
 
 # Dictionary mapping user input to corresponding functions
@@ -514,7 +530,7 @@ action_dict = {
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'get': get_action,
     'moon': moon_action,
-    'emote': emote_action,
+    'feel': emote_action,
     'talk': talk_action,
     'time': time_action,
     'help': help_action,
