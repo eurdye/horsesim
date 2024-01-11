@@ -1,7 +1,7 @@
 # DEAD HORSE
 A text adventure written in Python using Flask.
 
-DEAD HORSE is a "spiritual" sequel to my 2014 student game *Horse Simulator*. DEAD HORSE is designed to be played in browser and should look fine at resolutions between 720p and 4K. 
+DEAD HORSE is a spiritual sequel to my 2014 student game *Horse Simulator*. DEAD HORSE is designed to be played in browser and should look fine at resolutions between 720p and 4K. 
 
 ### Features
 * Exhilarating command line gameplay
