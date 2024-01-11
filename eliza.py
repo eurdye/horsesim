@@ -172,6 +172,9 @@ class Eliza:
     def respond(self, text):
         if text.lower() in self.quits:
             return "Goodbye."
+        
+        # Remove punctuation from the user's input
+        text = re.sub(r'[^\w\s]', '', text)
 
         text = re.sub(r'\s*\.+\s*', ' . ', text)
         text = re.sub(r'\s*,+\s*', ' , ', text)
@@ -204,7 +207,19 @@ class Eliza:
                 output = self._next_reasmb(self.keys['xnone'].decomps[0])
                 log.debug('Output from xnone: %s', output)
 
-        return " ".join(output)
+        output = " ".join(output)
+        output_final = ""
+        # Fix spaces before punctuation
+        for i in range(len(output)):
+            # Check if the current character is a space and the next character is a punctuation mark
+            if i < len(output) - 1 and output[i] == ' ' and output[i + 1] in ",.?!":
+                # Skip the space
+                continue
+            
+            # Add the current character to the modified string
+            output_final += output[i]
+
+        return output_final
     
     def initial(self):
         return random.choice(self.initials)

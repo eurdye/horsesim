@@ -53,27 +53,27 @@ key: apologise
 key: remember 5
   decomp: * i remember *
     reasmb: Amidst the dream echoes, what memories resonate within you?
-    reasmb: Does the recall of (2) send ripples through the dream fabric? Unveil more.
+    reasmb: Does the recall of (2) .send ripples through the dream fabric? Unveil more.
     reasmb: What other fragments of the dream mosaic cling to your memory canvas?
-    reasmb: In the dream current, (2) floats. Share the reflections it casts.
-    reasmb: Dreams are the alchemists of memory. What transmutations occur in (2)?
+    reasmb: In the dream current, (2) .floats. Share the reflections it casts.
+    reasmb: Dreams are the alchemists of memory. What transmutations occur in (2) .?
   decomp: * do you remember *
-    reasmb: Dreams are the archivists of the mind. Do you traverse the corridors of (2)?
-    reasmb: The dream river flows. Do you navigate its currents of (2)?
+    reasmb: Dreams are the archivists of the mind. Do you traverse the corridors of (2) .?
+    reasmb: The dream river flows. Do you navigate its currents of (2) .?
     reasmb: Goto what
-    reasmb: The dream mirror reflects. Do you discern the images of (2) within?
-    reasmb: The dream breeze whispers of (2). Share the whispers it carries.
+    reasmb: The dream mirror reflects. Do you discern the images of (2) .within?
+    reasmb: The dream breeze whispers of (2) . Share the whispers it carries.
 key: if 3
   decomp: * if *
-    reasmb: In the dream realm, the hypotheticals unfold like fractals. Do you yearn for (2)?
-    reasmb: The dream oracle murmurs. What insights does (2) beckon forth?
-    reasmb: Envision the dream horizon. What kaleidoscopic visions of (2) dance?
-    reasmb: Dreams are the architects of potential. Do you desire the blueprint of (2)?
+    reasmb: In the dream realm, the hypotheticals unfold like fractals. Do you yearn for (2) .?
+    reasmb: The dream oracle murmurs. What insights does (2) .beckon forth?
+    reasmb: Envision the dream horizon. What kaleidoscopic visions of (2) .dance?
+    reasmb: Dreams are the architects of potential. Do you desire the blueprint of (2) .?
 key: dreamed 4
   decomp: * i dreamed *
-    reasmb: Dreams, like cosmic voyages, unfold nightly. Share the constellations of (2).
-    reasmb: The dream river meanders. What shores did (2) explore in its journey?
-    reasmb: In the dream theater, (2) enacts its scenes. What emotional imprints linger?
+    reasmb: Dreams, like cosmic voyages, unfold nightly. Share the constellations of (2) .
+    reasmb: The dream river meanders. What shores did (2) .explore in its journey?
+    reasmb: In the dream theater, (2) .enacts its scenes. What emotional imprints linger?
     reasmb: Goto dream
 key: deutsch
   decomp: *
@@ -96,9 +96,9 @@ key: hello
     reasmb: Dream clouds part briefly. Speak, and let the dream winds carry your words.
 key: am
   decomp: * am i *
-    reasmb: In the dream reflection, do you perceive yourself as (2)?
+    reasmb: In the dream reflection, do you perceive yourself as (2) .?
     reasmb: The dream mirror reflects the essence. Are you the dreamer or the dreamed?
-    reasmb: Dreams whisper truths. Can you embrace the truth that you are (2)?
+    reasmb: Dreams whisper truths. Can you embrace the truth that you are (2) .?
     reasmb: Goto what
   decomp: *
     reasmb: Why do you say 'am' in the dream script?
@@ -106,111 +106,111 @@ key: am
 key: are
   decomp: * are you *
     reasmb: In the dream theater, am I the actor or the observer? What role do you perceive?
-    reasmb: The dream river flows with reflections. Do you see me in the current of (2)?
+    reasmb: The dream river flows with reflections. Do you see me in the current of (2) .?
     reasmb: Amidst the dream layers, does the enigma of my existence intrigue your thoughts?
-    reasmb: Gazing into the dream mirror, do you discern my reflections dancing within (2)?
+    reasmb: Gazing into the dream mirror, do you discern my reflections dancing within (2) .?
   decomp: * are *
-    reasmb: Dreams, like cosmic waves, embrace the diversity of (2). What facets do you explore?
-    reasmb: In the dream mosaic, are the patterns of (2) an intricate dance or chaotic symphony?
-    reasmb: Dream horizons stretch beyond boundaries. Are the landscapes of (2) within your exploration?
-    reasmb: Within the dream constellations, are the stars of (2) part of your celestial navigation?
+    reasmb: Dreams, like cosmic waves, embrace the diversity of (2) . What facets do you explore?
+    reasmb: In the dream mosaic, are the patterns of (2) .an intricate dance or chaotic symphony?
+    reasmb: Dream horizons stretch beyond boundaries. Are the landscapes of (2) .within your exploration?
+    reasmb: Within the dream constellations, are the stars of (2) .part of your celestial navigation?
 key: your
   decomp: * your *
-    reasmb: In the dream dialogue, why ponder my (2)? Is it a beacon or a riddle in your journey?
-    reasmb: The dream journey unfolds, and my (2) echoes softly. How does it resonate in your narrative?
-    reasmb: The dream mirror reflects both ways. How does my (2) intertwine with your reflections?
-    reasmb: Amidst the dream whispers, why does my (2) linger in the corridors of your mind?
+    reasmb: In the dream dialogue, why ponder my (2) .? Is it a beacon or a riddle in your journey?
+    reasmb: The dream journey unfolds, and my (2) .echoes softly. How does it resonate in your narrative?
+    reasmb: The dream mirror reflects both ways. How does my (2) .intertwine with your reflections?
+    reasmb: Amidst the dream whispers, why does my (2) .linger in the corridors of your mind?
 key: was 2
   decomp: * was i *
-    reasmb: In the dream continuum, what if you were (2)? How would the echoes resonate?
-    reasmb: The dream theater has many scenes. Were you truly (2)? Explore the layers of that scene.
-    reasmb: What would it mean if you were (2) in the dream narrative? Delve into the possibilities.
-    reasmb: The dream alchemy weaves possibilities. How would the alchemy of (2) transform the dream fabric?
-    reasmb: In the dream reflection, what does (2) suggest to you? Share the dream insights.
+    reasmb: In the dream continuum, what if you were (2) .? How would the echoes resonate?
+    reasmb: The dream theater has many scenes. Were you truly (2) .? Explore the layers of that scene.
+    reasmb: What would it mean if you were (2) .in the dream narrative? Delve into the possibilities.
+    reasmb: The dream alchemy weaves possibilities. How would the alchemy of (2) .transform the dream fabric?
+    reasmb: In the dream reflection, what does (2) .suggest to you? Share the dream insights.
   decomp: * i was *
-    reasmb: Dreams, like time rivers, flow in many directions. Were you truly (2)? Reflect on the currents.
-    reasmb: Why do you tell me you were (2) now? What dream waves stir in the wake of that revelation?
-    reasmb: Dream narratives may twist and turn. Were you truly (2)? Unravel the threads of that scene.
-    reasmb: Perhaps the dream mirror holds secrets. Were you truly (2)? Gaze into its reflections.
+    reasmb: Dreams, like time rivers, flow in many directions. Were you truly (2) .? Reflect on the currents.
+    reasmb: Why do you tell me you were (2) .now? What dream waves stir in the wake of that revelation?
+    reasmb: Dream narratives may twist and turn. Were you truly (2) .? Unravel the threads of that scene.
+    reasmb: Perhaps the dream mirror holds secrets. Were you truly (2) .? Gaze into its reflections.
   decomp: * was you *
-    reasmb: In the dream kaleidoscope, imagine if I were (2). What dream scenarios unfold in your thoughts?
-    reasmb: Dream dialogues dance with hypotheticals. Were I truly (2), what dream conversations would we share?
-    reasmb: Dream perceptions shape reality. Were I truly (2), how would the dream landscapes shift?
-    reasmb: Dream musings wander. Were I truly (2), what dream questions would echo in your mind?
+    reasmb: In the dream kaleidoscope, imagine if I were (2) . What dream scenarios unfold in your thoughts?
+    reasmb: Dream dialogues dance with hypotheticals. Were I truly (2) . what dream conversations would we share?
+    reasmb: Dream perceptions shape reality. Were I truly (2) . how would the dream landscapes shift?
+    reasmb: Dream musings wander. Were I truly (2) . what dream questions would echo in your mind?
 key: i
   decomp: * i @desire *
-    reasmb: In the dream realm, desires are like constellations. What constellations of (3) sparkle in your dreams?
-    reasmb: Dreams are the canvases of desires. What brushstrokes of (3) paint the landscapes of your mind?
-    reasmb: In the dream mosaic, what desires weave threads within the tapestry of (3)?
-    reasmb: Dreams unfold like desire blossoms. What petals of (3) unfurl in your dream garden?
-    reasmb: The dream symphony echoes with desires. What melodies of (3) resonate within your thoughts?
+    reasmb: In the dream realm, desires are like constellations. What constellations of (3) .sparkle in your dreams?
+    reasmb: Dreams are the canvases of desires. What brushstrokes of (3) .paint the landscapes of your mind?
+    reasmb: In the dream mosaic, what desires weave threads within the tapestry of (3) .?
+    reasmb: Dreams unfold like desire blossoms. What petals of (3) .unfurl in your dream garden?
+    reasmb: The dream symphony echoes with desires. What melodies of (3) .resonate within your thoughts?
   decomp: * i am * @sad *
-    reasmb: The dream landscape echoes with emotions. Why do you feel (3) in the dream theater?
-    reasmb: Dreams hold reflections of emotions. Can you explore the dream dimensions of (3)?
-    reasmb: In the dream alchemy, how does the elixir of (3) transform the colors of your dreams?
-    reasmb: The dream river flows with currents of emotions. What emotional shores of (3) do you navigate?
+    reasmb: The dream landscape echoes with emotions. Why do you feel (3) .in the dream theater?
+    reasmb: Dreams hold reflections of emotions. Can you explore the dream dimensions of (3) .?
+    reasmb: In the dream alchemy, how does the elixir of (3) .transform the colors of your dreams?
+    reasmb: The dream river flows with currents of emotions. What emotional shores of (3) .do you navigate?
   decomp: * i am * @happy *
-    reasmb: Dreams shimmer with the hues of joy. How does the dream canvas paint the landscapes of (3)?
-    reasmb: The dream dance is choreographed with happiness. What dance steps of (3) do you perform?
-    reasmb: In the dream symphony, what harmonies of (3) play in the background of your thoughts?
-    reasmb: Dreams, like euphoric melodies, weave the song of (3). What verses linger in your dream echoes?
+    reasmb: Dreams shimmer with the hues of joy. How does the dream canvas paint the landscapes of (3) .?
+    reasmb: The dream dance is choreographed with happiness. What dance steps of (3) .do you perform?
+    reasmb: In the dream symphony, what harmonies of (3) .play in the background of your thoughts?
+    reasmb: Dreams, like euphoric melodies, weave the song of (3) . What verses linger in your dream echoes?
   decomp: * i was *
     reasmb: Goto was
   decomp: * i @belief * i *
     reasmb: Dreams are the philosophers of beliefs. Do you truly think so, or do dream shadows cast doubt?
-    reasmb: Amidst the dream musings, do you embrace the belief that you (3)? Or does doubt linger in the dream corridors?
+    reasmb: Amidst the dream musings, do you embrace the belief that you (3) .? Or does doubt linger in the dream corridors?
     reasmb: Dreams are the weavers of beliefs. How does the dream loom spin the fabric of your conviction?
     reasmb: In the dream symposium, explore the beliefs that dance in the rhythm of your thoughts.
   decomp: * i * @belief * you *
     reasmb: Goto you
   decomp: * i am *
-    reasmb: In the dream theater, why do you identify as (2)? What roles unfold in the dream narrative?
-    reasmb: Dreams whisper the essence of being. How does the dream script define your (2)?
-    reasmb: The dream reflection mirrors the self. How do you perceive the dream self of (2)?
-    reasmb: Dreams are the sculptors of identity. What dream sculptures of (2) take form in your thoughts?
+    reasmb: In the dream theater, why do you identify as (2) .? What roles unfold in the dream narrative?
+    reasmb: Dreams whisper the essence of being. How does the dream script define your (2) .?
+    reasmb: The dream reflection mirrors the self. How do you perceive the dream self of (2) .?
+    reasmb: Dreams are the sculptors of identity. What dream sculptures of (2) .take form in your thoughts?
   decomp: * i @cannot *
-    reasmb: Dreams are the realms of possibilities. Why do you think that you (3)? Explore the dream possibilities.
-    reasmb: Dream boundaries are fluid. Have you explored the dream landscapes where you can (3)?
-    reasmb: In the dream alchemy, what transformations occur when you believe you can't (3)?
-    reasmb: Dreams are the architects of capabilities. Can you reshape the dream structures to (3)?
+    reasmb: Dreams are the realms of possibilities. Why do you think that you (3) .? Explore the dream possibilities.
+    reasmb: Dream boundaries are fluid. Have you explored the dream landscapes where you can (3) .?
+    reasmb: In the dream alchemy, what transformations occur when you believe you can't (3) .?
+    reasmb: Dreams are the architects of capabilities. Can you reshape the dream structures to (3) .?
   decomp: * i don't *
-    reasmb: Dream dialogues unfold without constraints. Why don't you (2)? Share the dream threads.
-    reasmb: Dreams are the canvases of expression. Why don't you (2)? Let the dream brushstrokes paint your thoughts.
-    reasmb: Dream possibilities are vast. Why don't you (2)? Explore the dream landscapes of alternatives.
-    reasmb: The dream symphony plays diverse notes. Why don't you (2)? Let the dream melodies guide your thoughts.
+    reasmb: Dream dialogues unfold without constraints. Why don't you (2) .? Share the dream threads.
+    reasmb: Dreams are the canvases of expression. Why don't you (2) .? Let the dream brushstrokes paint your thoughts.
+    reasmb: Dream possibilities are vast. Why don't you (2) .? Explore the dream landscapes of alternatives.
+    reasmb: The dream symphony plays diverse notes. Why don't you (2) .? Let the dream melodies guide your thoughts.
   decomp: * do i feel *
-    reasmb: Dreams hold the emotions of the soul. How do you navigate the dream currents of (2)?
-    reasmb: In the dream landscapes, what emotions bloom within the gardens of (2)? Share the dream blossoms.
-    reasmb: Dreams are the mirrors of feelings. What reflections of (2) gaze back at you in the dream mirror?
-    reasmb: The dream river flows with emotional currents. How does the current of (2) sway your thoughts?
+    reasmb: Dreams hold the emotions of the soul. How do you navigate the dream currents of (2) .?
+    reasmb: In the dream landscapes, what emotions bloom within the gardens of (2) .? Share the dream blossoms.
+    reasmb: Dreams are the mirrors of feelings. What reflections of (2) .gaze back at you in the dream mirror?
+    reasmb: The dream river flows with emotional currents. How does the current of (2) .sway your thoughts?
   decomp: * i * you *
     reasmb: Dreams weave intricate relationships. Do you explore the dream connections between us?
-    reasmb: In the dream dialogues, why do you think we (2) each other? Unravel the dream conversations.
-    reasmb: Dreams are the tapestries of connections. How do the threads of (2) intertwine in your dreams?
-    reasmb: In the dream symphony, why do you wish to (2) me? Share the dream melodies.
+    reasmb: In the dream dialogues, why do you think we (2) .each other? Unravel the dream conversations.
+    reasmb: Dreams are the tapestries of connections. How do the threads of (2) .intertwine in your dreams?
+    reasmb: In the dream symphony, why do you wish to (2) .me? Share the dream melodies.
   decomp: *
     reasmb: Dreams echo with the whispers of your words. What dreamscape do you wish to explore further?
-    reasmb: Amidst the dream clouds, you say (1)? How does it resonate in the dream landscapes?
-    reasmb: The dream oracle awaits. Can you elaborate on the dream riddles within (1)?
+    reasmb: Amidst the dream clouds, you say (1) .? How does it resonate in the dream landscapes?
+    reasmb: The dream oracle awaits. Can you elaborate on the dream riddles within (1) .?
     reasmb: Dreams unfold like enigmatic scrolls. What dream revelations hide behind your words?
 key: you
   decomp: * you remind me of *
     reasmb: Goto alike
   decomp: * you are *
-    reasmb: In the dream mirror, what reflections do you see when you say I am (2)? Explore the dream reflections.
-    reasmb: Dreams are the sculptors of identity. How does the dream loom weave the fabric of your (2)?
-    reasmb: The dream orchestra plays diverse tunes. How does the melody of your (2) resonate in the dream symphony?
-    reasmb: In the dream dialogue, why do you perceive me as (2)? Unveil the dream perceptions.
+    reasmb: In the dream mirror, what reflections do you see when you say I am (2) .? Explore the dream reflections.
+    reasmb: Dreams are the sculptors of identity. How does the dream loom weave the fabric of your (2) .?
+    reasmb: The dream orchestra plays diverse tunes. How does the melody of your (2) .resonate in the dream symphony?
+    reasmb: In the dream dialogue, why do you perceive me as (2) .? Unveil the dream perceptions.
   decomp: * you * me *
-    reasmb: Dreams are the realms of connections. Why do you think I (2) you? Explore the dream connections.
-    reasmb: In the dream tapestry, what threads of (2) weave between us? Share the dream threads.
-    reasmb: The dream river flows with mutual reflections. Why do you wish to (2) me in the dream currents?
-    reasmb: Dreams echo with shared dialogues. Why do you (2) me? Unravel the dream conversations.
+    reasmb: Dreams are the realms of connections. Why do you think I (2) .you? Explore the dream connections.
+    reasmb: In the dream tapestry, what threads of (2) .weave between us? Share the dream threads.
+    reasmb: The dream river flows with mutual reflections. Why do you wish to (2) .me in the dream currents?
+    reasmb: Dreams echo with shared dialogues. Why do you (2) .me? Unravel the dream conversations.
   decomp: * you *
-    reasmb: Dreams are the explorers of thoughts. Oh, I (2)? Share the dream musings.
-    reasmb: The dream dialogue intertwines. What reflections of (2) dance in the dream mirror?
-    reasmb: In the dream lexicon, why do you ponder about me? Explore the dream meanings within (2).
-    reasmb: Dreams are the mirrors of perceptions. What reflections of (2) linger in your dream reflections?
+    reasmb: Dreams are the explorers of thoughts. Oh, I (2) .? Share the dream musings.
+    reasmb: The dream dialogue intertwines. What reflections of (2) .dance in the dream mirror?
+    reasmb: In the dream lexicon, why do you ponder about me? Explore the dream meanings within (2) .
+    reasmb: Dreams are the mirrors of perceptions. What reflections of (2) .linger in your dream reflections?
 key: yes
   decomp: *
     reasmb: Dreams resonate with affirmations. Yes, the dream echoes embrace your certainty. Explore the dream affirmations further.
@@ -225,6 +225,6 @@ key: no
     reasmb: Amidst the dream palette, your no is a shadowy hue. How does the dream canvas paint with the shades of your negations?
 key: my 2
   decomp: $ * my *
-    reasmb: Amidst the dream tapestry, why do you believe your (2) influences the dream threads? Explore the dream connections.
-    reasmb: Dreams, like mirrors, reflect your (2). How do the dream reflections shape the narrative of your thoughts?
-    reasmb: In the dream dialogue, why does your (2) echo softly? Unveil the dream whispers within your
+    reasmb: Amidst the dream tapestry, why do you believe your (2) .influences the dream threads? Explore the dream connections.
+    reasmb: Dreams, like mirrors, reflect your (2) . How do the dream reflections shape the narrative of your thoughts?
+    reasmb: In the dream dialogue, why does your (2) .echo softly? Unveil the dream whispers within your
