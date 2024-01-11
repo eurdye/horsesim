@@ -12,9 +12,8 @@ DEAD HORSE is a "spiritual" sequel to my 2014 student game *Horse Simulator*. DE
 
 ### Installation Instructions
 1. Run `pip install -r requirements.txt` to install the necessary Python modules.
-2. Run `source virt/bin/activate` to activate the Python venv. 
-3. Run `python server.py` to start the server.
-4. Visit 127.0.0.1:5000 in browser to play.
+2. Run `python server.py` to start the server.
+3. Visit 127.0.0.1:5000 in browser to play.
 
 ### Todo
 * Implement real-time clock
