@@ -30,5 +30,8 @@ DEAD HORSE is a spiritual sequel to my 2014 student game *Horse Simulator*. DEAD
     * Make user take the bus or train when going to/from town
     * Add customizable apartment
 
+### Known Bugs
+* The amount of data stored in the browser cookie grows over time, eventually hitting the limit of 4093 bytes with enough playtime. Cookie size resets if the user inputs 'clear', so as a workaround I've coded a function that automatically calls 'clear' if the cookie size reaches 4000 bytes.
+
 ### Credits
-* Eliza chatbot based on [Eliza](https://github.com/wadetb/eliza/tree/master)
+* NPC chatbot behavior based on [Eliza](https://github.com/wadetb/eliza/tree/master)

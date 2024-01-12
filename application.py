@@ -2,7 +2,7 @@ from deadhorse import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
 from collections import deque
-import csv
+import csv, sys
 
 app = Flask(__name__)
 app.secret_key = 'horsae'  # Change this to a secret key for secure sessions
@@ -39,12 +39,17 @@ def update_input():
     
     # Use a fixed key for the clear command
     clear_command = 'clear'
-
+   
+    # Check session size and trigger clear command if it exceeds 4000 bytes
+    if sys.getsizeof(session) > 4000:
+        session[previous_responses_key] = []
+    
     # Check if the user input is the clear command
     if user_input.lower() == clear_command:
         # Clear the screen by removing all previous responses
         session[previous_responses_key] = []
         return redirect(url_for('home'))
+    
     else:
         session[response_key] = user_input_parser(user_input.lower())
     # Append the current response to the list of previous responses
