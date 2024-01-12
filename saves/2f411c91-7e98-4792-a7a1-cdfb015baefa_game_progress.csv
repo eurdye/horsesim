@@ -1,2 +1,2 @@
 introspect,inventory,feel
-True,{'apple': 1},mirth
+False,{'apple': 0},mirth

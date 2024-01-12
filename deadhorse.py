@@ -496,7 +496,9 @@ def talk_action(session, user_input):
         session['uuid'] = str(uuid.uuid4())
     # Load game_progress from CSV file
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
-
+    save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    
     global npc_dict
     location_dict = load_location_from_csv('locations.csv')
 
