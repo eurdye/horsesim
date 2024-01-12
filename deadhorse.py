@@ -2,15 +2,8 @@ from flask import Flask, session
 import ephem
 from datetime import datetime
 import random
-from john import john_responses
-import eliza_action 
 import csv
 import uuid, os
-
-# Instantiate ElizaBot
-eliza_bot = eliza_action.ElizaBot()
-monk_bot = eliza_action.MonkBot()
-astrologer_bot = eliza_action.AstrologerBot()
 
 # Function to generate a unique identifier for each user
 def generate_unique_id():
@@ -336,51 +329,50 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 
 # Code for the 'look' command
 # Put descriptions in look_dict
-look_dict = {"Summit Observatory": 'At the top of the mountain, an OBSERVATORY. The half-dome houses a large TELESCOPE. Beneath you, clouds. Above, stars.',
-             "Devil's Tail": '',
-            "Hallowed Ground": '',
-            "Dream Temple": 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to.',
-            "Hidden Path": '',
-            "Hillside Caves": '',
-            "Unspoken Hills": '',
-            "Western Glassrock Cliffs": '',
-            "Mysterious Grotto": '',
-            "Hermitage": '',
-            "Lonesome Path": '',
-            "Bath House": '',
-            "Tea Cart": '',
-            "Unspoken Hills": '',
-            "Western Glassrock Cliffs": '',
-            "Upper Mountain Path": '',
-            "Lower Mountain Path": '',
-            "Western Beach": '',
-            "Mountain Train Station": '',
-            "Slime City Train Station": '',
-            "Western Beach": '',
-            "Slime City Uptown": '',
-            "Slime City Downtown": '',
-            "Slime City Transport Center": '',
-            "Slime City Bus Stop": '',
-            "Beach Bus Stop": '',
-            "Central Beach": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
-            "Pier": '',
-            "Slime Commons": '',
-            "Peace of Pizza": '',
-            "Slime Park": '',
-            "Botanical Garden": '',
-            "Awakening Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
-            "Your Apartment": '',
-            "Slime Apartments": '',
-            "Confectioner": '',
-            "Therapist": '',
-            "Eastern Glassrock Cliffs": '',
-            "Farm North": '',
-            "Farm South": '',
-            "Town Hall": '',
-            "General Store": '', 
-            "Casino": '',
-            "Club": '',
-             "Island": ''
+look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome houses a large TELESCOPE. Beneath you, clouds. Above, stars.',
+             "Devil's Tail": 'A precarious trail up to the top of the world. Careful--it\'s narrow. Your hooves quiver. The air sure is thin up here.',
+             "Hallowed Ground": 'Even death has grounds it respects. This area is hallowed. You aren\'t quite sure what that means, but you believe it. Every hair on your equine torso stands on end. You are in the presence of... something...',
+             "Dream Temple": 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to.',
+             "Hidden Path": 'A small hidden path further up the mountain. Only the most dedicated seekers uncover this trail.',
+             "Hillside Caves": 'There are a number of caves along the hillside here. Where do they lead?',
+             "Unspoken Hills": 'The Unspoken Hills are unspeakable.',
+             "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
+             "Mysterious Grotto": 'What goes on here?',
+             "Hermitage": 'The most solitary place in the whole afterlife. Is someone home?',
+             "Lonesome Path": 'A lonely path further up the mountain. You fear you are getting lost.',
+             "Bath House": 'Ah, a refreshing bath house. Take a hot bath and sit in the sauna. Let your equine muscles release. Restore sheen to your mane. Unblock your energies.',
+             "Tea Cart": 'Green tea, black tea, oolong... you can\'t decide!',
+             "Unspoken Hills": 'You dare not speak of them.',
+             "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
+             "Upper Mountain Path": 'This path leads further up the mountain.',
+             "Lower Mountain Path": 'This is the path at the base of the mountain.',
+             "Western Beach": 'The beach on the west side. Sandy.',
+             "Mountain Train Station": 'There are few travelers here. The train station lets you off at the base of the mountain, a short walk to the village to the WEST.',
+             "Slime City Train Station": 'The train station in SLIME CITY. Boy, you wonder where all these beings came from and where they are going. Are they all dead, too? Death is full of mysteries.',
+             "Slime City Uptown": 'Uptown Slime City, baby! Money, fame, and plenty of fortune, too. Ah--who are you kidding--it\'s empty here, too.',
+             "Slime City Downtown": 'Slime City Downtown, baby! Hustle, bustle, and plenty of old-school funk.',
+             "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
+             "Slime City Bus Stop": 'The bus to the BEACH departs from here.',
+             "Beach Bus Stop": 'The bus to the BEACH departs from here.',
+             "Central Beach": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
+             "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail.',
+             "Slime Commons": 'Everybody hangs out here!',
+             "Peace of Pizza": 'Your favorite restaurant ever.',
+             "Slime Park": 'The park. You have a sudden urge to eat grass.',
+             "Botanical Garden": 'So many plants! You resist the urge to eat them.',
+             "Awakening Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
+             "Your Apartment": 'You live here?',
+             "Slime Apartments": 'Other people live here',
+             "Confectioner": 'Do horses have sweet tooths? You\'re not sure. Do you want to find out? You\'re also not sure.',
+             "Therapist": 'You know, you could probably use some therapy, being dead and all.',
+             "Eastern Glassrock Cliffs": 'Yeeowch.',
+             "Farm North": 'This is where they grow food.',
+             "Farm South": 'This is where they keep the farm animals. No horses, hopefully.',
+             "Town Hall": 'The seat of the local government, you guess. Who\'s really in charge here, anyway?',
+             "General Store": 'Buy, sell, trade. Your three favorite things.', 
+             "Casino": 'Gambling is legal in the afterlife. Not that you have any money to gamble with.',
+             "Club": 'What else is there to do when you\'re dead but dance the night away?',
+             "Island": 'Woah. Is this one of those dessert islands? No. It\'s made of sand. It\'s one of those stupid desert islands instead.'
              }
 
 
@@ -419,51 +411,81 @@ import random
 # Dictionary of available NPCs in each location
 npc_dict = {
     "Summit Observatory": ['Astrologer'],
-    "Devil's Tail": ['Pilgrim'],
-    "Hallowed Ground": ['Angel'],
+    "Devil's Tail": [],
+    "Hallowed Ground": [],
     "Dream Temple": ['Monk'],
-    "Hidden Path": ['Deer Spirit'],
+    "Hidden Path": ['Deer'],
     "Hillside Caves": [],
     "Unspoken Hills": [],
     "Western Glassrock Cliffs": [],
-    "Mysterious Grotto": ['Abyss'],
-    "Hermitage": ['The Hermit'],
+    "Mysterious Grotto": ["Abyss"],
+    "Hermitage": ["Hermit"],
     "Lonesome Path": [],
-    "Bath House": ['Attendant'],
-    "Tea Cart": ['Tea Lady'],
+    "Bath House": ["Stranger"],
+    "Tea Cart": ["Lady"],
     "Unspoken Hills": [],
     "Western Glassrock Cliffs": [],
     "Upper Mountain Path": [],
     "Lower Mountain Path": [],
     "Western Beach": [],
-    "Mountain Train Station": ['Conductor'],
-    "Slime City Train Station": ['Conductor'],
+    "Mountain Train Station": ["Conductor"],
+    "Slime City Train Station": ["Conductor"],
     "Western Beach": [],
     "Slime City Uptown": [],
     "Slime City Downtown": [],
     "Slime City Transport Center": [],
-    "Slime City Bus Stop": ['Bus Driver'],
-    "Beach Bus Stop": ['Bus Driver'],
-    "Central Beach": [],
-    "Pier": [],
+    "Slime City Bus Stop": ["Driver"],
+    "Beach Bus Stop": ["Driver"],
+    "Central Beach": ["Mermaid"],
+    "Pier": ["Dolphin"],
     "Slime Commons": [],
-    "Peace of Pizza": ['Pizza Girl'],
+    "Peace of Pizza": ["Girl"],
     "Slime Park": [],
     "Botanical Garden": [],
-    "Awakening Beach": ['John'],
+    "Awakening Beach": [],
     "Your Apartment": [],
     "Slime Apartments": [],
-    "Confectioner": ['The Confectioner'],
+    "Confectioner": [],
     "Therapist": ['Eliza'],
     "Eastern Glassrock Cliffs": [],
-    "Farm North": ['Farm Wife'],
-    "Farm South": ['Farm Wife'],
-    "Town Hall": ['Princess'],
-    "General Store": ['Trader'], 
-    "Casino": ['Gambler'],
-    "Club": ['Raver'],
-    "Island": ['Castaway']
+    "Farm North": [],
+    "Farm South": [],
+    "Town Hall": ["Princess"],
+    "General Store": [], 
+    "Casino": [],
+    "Club": [],
+    "Island": []
 }
+
+# Create a dictionary to store the chatbot instances
+npc_bots = {}
+
+# Iterate through the dictionary and dynamically create classes and instances
+for location, npcs in npc_dict.items():
+    for npc in npcs:
+        # Define a new class dynamically
+        class_name = f"{npc}Bot"
+        class_definition = f"""
+import eliza_action
+
+class {class_name}:
+    def __init__(self):
+        self.eliza_instance = eliza_action.eliza.Eliza()
+        self.eliza_instance.load('npcs/{npc.lower()}.txt')
+
+    def respond(self, user_input):
+        return self.eliza_instance.respond(user_input)
+"""
+
+        # Create the class dynamically using exec
+        exec(class_definition)
+
+        # Instantiate the dynamically created class
+        bot_instance = locals()[class_name]()
+        
+        # Store the bot instance in the dictionary
+        npc_bots[npc] = bot_instance
+
 
 # Function for talking to NPCs
 def talk_action(session, user_input):
@@ -481,50 +503,32 @@ def talk_action(session, user_input):
         if current_place in npc_dict:
             available_npcs = npc_dict[current_place]
             current_place = current_place.upper()
+
             # Check if user specified an NPC
             if len(user_input.split()) > 1:
                 npc_name = user_input.split()[1].capitalize()
 
                 if npc_name in available_npcs:
-                    if npc_name == 'John':
-                        # Check for full moon and add comment
-                        moon_phase = get_moon_phase(session, user_input)
-                        if 0<= moon_phase <= 5:
-                            greeting = "\""+random.choice(john_responses['new_moon_comment'])+"\""
-                            return greeting
-                        else:
-                            greeting = "\""+random.choice(john_responses['greeting'])+"\""
-                            return greeting
-                    elif npc_name == 'Eliza':
-                        # Sanitize user_input if it begins with "talk eliza "
-                        prefix = "talk eliza "
+                    if npc_name in npc_bots:  # Check if the NPC has a corresponding chatbot instance
+                        # Get the chatbot instance from the dictionary
+                        bot_instance = npc_bots[npc_name]
+                        
+                        # Sanitize user_input if it begins with "talk {npc_name.lower()} "
+                        prefix = f"talk {npc_name.lower()} "
                         if user_input.lower().startswith(prefix):
                             user_input = user_input[len(prefix):].strip()
-                        eliza_response = eliza_bot.respond(user_input)
-                        return eliza_response
-                    elif npc_name == 'Monk':
-                        # Sanitize user_input if it begins with "talk monk "
-                        prefix = "talk monk "
-                        if user_input.lower().startswith(prefix):
-                            user_input = user_input[len(prefix):].strip()
-                        monk_response = monk_bot.respond(user_input)
-                        return monk_response
-                    elif npc_name == 'Astrologer':
-                        # Sanitize user_input if it begins with "talk astrologer "
-                        prefix = "talk astrologer "
-                        if user_input.lower().startswith(prefix):
-                            user_input = user_input[len(prefix):].strip()
-                        astrologer_response = astrologer_bot.respond(user_input)
-                        return astrologer_response
+
+                        # Use the chatbot instance to respond
+                        npc_response = bot_instance.respond(user_input)
+                        return npc_response
                     else:
-                        available_npcs = [item.upper() for item in available_npcs]
-                        return f"No specific responses defined for {npc_name}."
+                        return f"No chatbot instance found for {npc_name}."
                 else:
                     available_npcs = [item.upper() for item in available_npcs]
                     return f"{npc_name} is not here. You can talk to the following at {current_place}: {', '.join(available_npcs)}"
             else:
                 available_npcs = [item.upper() for item in available_npcs]
-                return f"You can talk to the following at {current_place}: \n\n{', '.join(available_npcs)}"
+                return f"You can talk to the following at {current_place}:\n\n{', '.join(available_npcs)}"
         else:
             return f"No one available to talk to at {current_place}"
     else:

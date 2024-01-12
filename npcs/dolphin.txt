@@ -1,0 +1,49 @@
+initial: How do you do.  Please tell me your problem.
+final: Goodbye.  Thank you for talking to me.
+quit: bye
+quit: goodbye
+quit: quit
+pre: dont don't
+pre: cant can't
+pre: wont won't
+pre: recollect remember
+pre: dreamt dreamed
+pre: dreams dream
+pre: maybe perhaps
+pre: how what
+pre: when what
+pre: certainly yes
+pre: machine computer
+pre: computers computer
+pre: were was
+pre: you're you are
+pre: i'm i am
+pre: same alike
+post: am are
+post: your my
+post: me you
+post: myself yourself
+post: yourself myself
+post: i you
+post: you I
+post: my your
+post: i'm you are
+synon: belief feel think believe wish
+synon: hello hi howdy greetings
+synon: family mother mom father dad sister brother wife children child
+synon: god divine gods devil divinity holy demon
+synon: reality universe existence plane planet dimension afterlife life
+synon: fate planet planets sign
+synon: future luck fortune
+synon: sad unhappy depressed sick
+synon: happy elated glad better
+synon: cannot can't
+synon: everyone everybody nobody noone
+synon: be am is are was
+synon: love romance loving
+key: xnone
+  decomp: *
+    reasmb: EeEee eEe e eEEeE
+    reasmb: eeE eEe EEeEeEe Ee
+    reasmb: Eee e Ee eEe
+    reasmb: eEeE eEe Ee eee
