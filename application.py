@@ -63,9 +63,6 @@ def update_input():
 import os
 from flask import send_from_directory
 
-#if __name__ == '__main__':
-#    app.run(debug=True)
-
 # Create the application object
 application = app
 
