@@ -5,7 +5,7 @@ import random
 from john import john_responses
 import eliza_action 
 import csv
-import uuid
+import uuid, os
 
 # Instantiate ElizaBot
 eliza_bot = eliza_action.ElizaBot()
@@ -18,35 +18,40 @@ def generate_unique_id():
 
 # Function to save game progress to a CSV file
 def save_game_progress(unique_id, game_progress):
-    filename = f"{unique_id}_game_progress.csv"
+    save_directory = "saves"
+    filename = os.path.join(save_directory, f"{unique_id}_game_progress.csv")
     
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         
-        # Assuming 'introspect' and 'inventory' are keys in game_progress
-        writer.writerow(['introspect', 'inventory'])
+        # Assuming 'introspect', 'inventory', and 'feel' are keys in game_progress
+        writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', False), game_progress.get('inventory', {'Apple':0})])
-
+        writer.writerow([game_progress.get('introspect', False), game_progress.get('inventory', {'apple': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
-    filename = f"{unique_id}_game_progress.csv"
+    save_directory = "saves"
+    filename = os.path.join(save_directory, f"{unique_id}_game_progress.csv")
 
     try:
         with open(filename, mode='r', newline='') as file:
             reader = csv.reader(file)
-            keys = next(reader)  # Read the header row
-            values = next(reader)  # Read the data row
+            keys = next(reader, None)  # Read the header row
+            values = next(reader, None)  # Read the data row
 
-            # Create a dictionary from keys and values
-            game_progress = dict(zip(keys, values))
+            if keys is not None and values is not None:
+                # Create a dictionary from keys and values
+                game_progress = dict(zip(keys, values))
 
-            # Ensure 'inventory' is a dictionary
-            game_progress['inventory'] = eval(game_progress['inventory']) if 'inventory' in game_progress else {}
+                # Ensure 'inventory' is a dictionary
+                game_progress['inventory'] = eval(game_progress.get('inventory', '{}'))
 
-            return game_progress
+                return game_progress
+            else:
+                # Return an empty dictionary if the file is empty
+                return {}
     except FileNotFoundError:
         # Return an empty dictionary if the file is not found
         return {}
@@ -601,7 +606,7 @@ def emote_action(session, user_input):
     # List of possible emotions
     possible_emotions = ['joy', 'sadness', 'anger', 'surprise', 'fear', 'neutral', 'mirth']
 
-    # Extract the emotion name after "emote"
+    # Extract the emotion name after "feel"
     emotion_name = user_input.split("feel", 1)[-1].strip().lower()
 
     # Check if the emotion name is valid
@@ -614,6 +619,14 @@ def emote_action(session, user_input):
             else:
                 # Update the player's emotion in the session
                 session['emotion'] = emotion_name
+                
+                # Load game_progress from CSV file
+                game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+                
+                # Save the updated emotion information in the 'feel' column
+                game_progress['feel'] = emotion_name
+                save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+
                 return f"You are now feeling {emotion_name.upper()}."
         else:
             return f"You don't know how to feel {emotion_name.upper()}."
