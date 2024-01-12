@@ -504,6 +504,9 @@ def talk_action(session, user_input):
             available_npcs = npc_dict[current_place]
             current_place = current_place.upper()
 
+            if available_npcs == []:
+                return f"There is no one available to talk to at {current_place}"
+
             # Check if user specified an NPC
             if len(user_input.split()) > 1:
                 npc_name = user_input.split()[1].capitalize()
