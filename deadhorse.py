@@ -491,6 +491,11 @@ class {class_name}:
 def talk_action(session, user_input):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     global npc_dict
     location_dict = load_location_from_csv('locations.csv')
@@ -513,6 +518,13 @@ def talk_action(session, user_input):
 
                 if npc_name in available_npcs:
                     if npc_name in npc_bots:  # Check if the NPC has a corresponding chatbot instance
+                        if npc_name == 'Mermaid' and game_progress['feel'] != 'joy':
+                            return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
+                        elif npc_name == 'Dolphin' and game_progress['feel'] != 'mirth':
+                            return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
+                        elif npc_name == 'Hermit' and game_progress['feel'] != 'calm':
+                            return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
+                        
                         # Get the chatbot instance from the dictionary
                         bot_instance = npc_bots[npc_name]
                         
@@ -609,9 +621,20 @@ def get_action(session, user_input):
 def emote_action(session, user_input):
     # Get or initialize the player's emotion from the session
     player_emotion = session.setdefault('emotion', 'neutral')
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+
+    player_inventory = game_progress.setdefault('emotion', 'neutral')
+    emote_name = user_input.split("get", 1)[-1].strip().lower()
+
+    # Check if the item name is valid
+    if emote_name:
+        # Check the value of the item in the player's inventory
+        emote_status = player_inventory
+
 
     # List of possible emotions
-    possible_emotions = ['joy', 'sadness', 'anger', 'surprise', 'fear', 'neutral', 'mirth']
+    possible_emotions = ['joy', 'sad', 'anger', 'fear', 'neutral', 'mirth', 'calm']
 
     # Extract the emotion name after "feel"
     emotion_name = user_input.split("feel", 1)[-1].strip().lower()
@@ -626,14 +649,9 @@ def emote_action(session, user_input):
             else:
                 # Update the player's emotion in the session
                 session['emotion'] = emotion_name
-                
-                # Load game_progress from CSV file
-                game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
-                
                 # Save the updated emotion information in the 'feel' column
                 game_progress['feel'] = emotion_name
                 save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
-
                 return f"You are now feeling {emotion_name.upper()}."
         else:
             return f"You don't know how to feel {emotion_name.upper()}."

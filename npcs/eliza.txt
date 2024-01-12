@@ -28,7 +28,8 @@ post: i you
 post: you I
 post: my your
 post: i'm you are
-synon: belief feel think believe wish
+synon: belief think believe wish
+synon: feel emote emotions feeling feelings
 synon: family mother mom father dad sister brother wife children child
 synon: desire want need
 synon: sad unhappy depressed sick
@@ -42,6 +43,9 @@ key: xnone
     reasmb: Please go on.
     reasmb: What does that suggest to you?
     reasmb: Do you feel strongly about discussing such things?
+key: feel
+  decomp: * @feel *
+    reasmb: There are many different ways to FEEL. JOY, SAD, ANGER... some even talk of MIRTH!
 key: sorry
   decomp: *
     reasmb: Please don't apologise.
@@ -357,4 +361,4 @@ key: alike 10
 key: like 10
   decomp: * @be * like *
     reasmb: goto alike
-   
+

@@ -24,6 +24,10 @@ DEAD HORSE is a spiritual sequel to my 2014 student game *Horse Simulator*. DEAD
 * Add `use` and `give` commands
 * Improve dialogue system
     * ~~Implement Eliza chatbot~~
+    * Have Eliza suggest emotions
+    * Have NPCs give keywords for each other to trigger loredumps
+* Have introspection reveal new emotions to player
+    * More introspections = further into story, unlock new esoteric emotions
 * Add non-chatbot NPCs?
 * Add events (observatory new moon, hermitage full moon, grotto low tide, pier high tide)
 * Add things to interact with at various locations
