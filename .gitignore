@@ -5,3 +5,5 @@ venv
 .deadhorse.py.swp
 .swp
 .DS_Store
+builds
+virt
