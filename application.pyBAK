@@ -3,8 +3,6 @@ from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
 from collections import deque
 import csv, sys
-import os
-from flask import send_from_directory
 
 app = Flask(__name__)
 app.secret_key = 'horsae'  # Change this to a secret key for secure sessions
@@ -62,9 +60,12 @@ def update_input():
 
     return redirect(url_for('home'))
 
+import os
+from flask import send_from_directory
+
 # Create the application object
 application = app
 
 if __name__ == '__main__':
-    application.run(debug=True, host='0.0.0.0', port=5000)
+    application.run(debug=True, port=443)
 

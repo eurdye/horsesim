@@ -467,11 +467,11 @@ for location, npcs in npc_dict.items():
         # Define a new class dynamically
         class_name = f"{npc}Bot"
         class_definition = f"""
-import eliza_action
+import npc_bot
 
 class {class_name}:
     def __init__(self):
-        self.eliza_instance = eliza_action.eliza.Eliza()
+        self.eliza_instance = npc_bot.eliza.Eliza()
         self.eliza_instance.load('npcs/{npc.lower()}.txt')
 
     def respond(self, user_input):
@@ -622,18 +622,25 @@ def get_action(session, user_input):
 
 # Function to handle "emote" action
 def emote_action(session, user_input):
+
+
+
+
     # Get or initialize the player's emotion from the session
     player_emotion = session.setdefault('emotion', 'neutral')
     # Load game_progress from CSV file
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    
 
-    player_inventory = game_progress.setdefault('emotion', 'neutral')
+
+    player_emotion = game_progress.setdefault('feel', 'neutral')
     emote_name = user_input.split("get", 1)[-1].strip().lower()
+
 
     # Check if the item name is valid
     if emote_name:
         # Check the value of the item in the player's inventory
-        emote_status = player_inventory
+        emote_status = player_emotion
 
 
     # List of possible emotions
@@ -659,7 +666,7 @@ def emote_action(session, user_input):
         else:
             return f"You don't know how to feel {emotion_name.upper()}."
     else:
-        return "What do you want to feel?"
+        return f"You are currently feeling {player_emotion}."
 
 def warp_action(session, user_input, location):
     # Extract X and Y coordinates from the input
