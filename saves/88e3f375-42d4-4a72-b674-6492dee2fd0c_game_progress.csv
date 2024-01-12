@@ -1,2 +1,2 @@
 introspect,inventory,feel
-False,{'apple': 0},joy
+True,{'apple': 1},neutral
