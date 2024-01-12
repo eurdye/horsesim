@@ -67,5 +67,5 @@ from flask import send_from_directory
 application = app
 
 if __name__ == '__main__':
-    application.run(debug=True)
+    application.run(debug=True, port=443)
 
