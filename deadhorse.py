@@ -213,6 +213,7 @@ def introspect_action(session, user_input):
     # Introspect to begin the game
     if current_key == "6,8" and not game_progress.get("introspect", False):
         game_progress["introspect"] = True
+        load_game_progress(session.get('uuid', 'default_uuid'))
         save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
     elif current_key == "6,8":
