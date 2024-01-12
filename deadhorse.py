@@ -398,19 +398,19 @@ def look_action(session, user_input):
         current_place = location_dict[current_key]
         adjacent_places = get_adjacent_places(current_location)
 
-        # Check if current_place is in npc_dict
-        if current_place in npc_dict:
-            available_npcs = npc_dict[current_place]
-            available_npcs = [item.upper() for item in available_npcs]
-
         # Check if current_place is in look_dict
         if current_place in look_dict:
             value_in_look_dict = look_dict[current_place]
-
-            return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
-
+            
+            # Check if current_place is in npc_dict
+            if npc_dict[current_place] == []:
+                return f"You are at {current_place.upper()}. {value_in_look_dict}\n\n{adjacent_places}"
+            elif npc_dict[current_place] is not []:
+                available_npcs = npc_dict[current_place]
+                available_npcs = [item.upper() for item in available_npcs]
+                return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
         else:
-            return f"You are at {current_place.upper()}.\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}."
+            return f"You are at {current_place.upper()}.\n\n{adjacent_places}."
     else:
         return "You are in an unknown location."
 
