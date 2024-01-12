@@ -7,3 +7,5 @@ venv
 .DS_Store
 builds
 virt
+.gitignore
+.ebignore
