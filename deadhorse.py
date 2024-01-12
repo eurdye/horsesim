@@ -666,10 +666,9 @@ action_dict = {
     'guide': guide_action,
     'status': status_action,
     'xy': xy_action,
+    'warp': lambda session, user_input: warp_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'reset': reset_action
 }
-
-action_dict['warp'] = lambda session, user_input: warp_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else '')
 
 def user_input_parser(user_input):
     action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
