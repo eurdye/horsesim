@@ -3,75 +3,80 @@ import ephem
 from datetime import datetime
 import random
 from john import john_responses
-import eliza_action # Import the ElizaBot class
+import eliza_action 
+import csv
+import uuid
 
 # Instantiate ElizaBot
 eliza_bot = eliza_action.ElizaBot()
 monk_bot = eliza_action.MonkBot()
 astrologer_bot = eliza_action.AstrologerBot()
 
-location_dict = {
-        "0,0": "Summit Observatory",
-        "0,1": "Devil's Tail",
-        "1,1": "Hallowed Ground",
-        "1,2": "Dream Temple",
-        "1,3": "Hidden Path",
-        "1,6": "Hillside Caves",
-        "1,7": "Unspoken Hills",
-        "1,8": "Western Glassrock Cliffs",
-        "1,9": "Mysterious Grotto",
-        "2,0": "Hermitage",
-        "2,1": "Lonesome Path",
-        "2,3": "Bath House",
-        "2,4": "Tea Cart",
-        "2,7": "Unspoken Hills",
-        "2,8": "Western Glassrock Cliffs",
-        "3,3": "Upper Mountain Path",
-        "3,4": "Lower Mountain Path",
-        "3,8": "Western Beach",
-        "4,4": "Mountain Train Station",
-        "4,5": "Slime City Train Station",
-        "4,8": "Western Beach",
-        "5,3": "Slime City Uptown",
-        "5,4": "Slime City Downtown",
-        "5,5": "Slime City Transport Center",
-        "5,6": "Slime City Bus Stop",
-        "5,7": "Beach Bus Stop",
-        "5,8": "Central Beach",
-        "5,9": "Pier",
-        "6,2": "Slime Commons",
-        "6,3": "Peace of Pizza",
-        "6,4": "Slime Park",
-        "6,5": "Botanical Garden",
-        "6,8": "Awakening Beach",
-        "7,2": "Your Apartment",
-        "7,3": "Slime Apartments",
-        "7,4": "Confectioner",
-        "7,5": "Therapist",
-        "7,8": "Eastern Glassrock Cliffs",
-        "8,0": "Farm North",
-        "8,1": "Farm South",
-        "8,2": "Town Hall",
-        "8,3": "General Store", 
-        "8,4": "Casino",
-        "8,5": "Club",
-        "8,9": "Island"
-    }
+# Function to generate a unique identifier for each user
+def generate_unique_id():
+    return str(uuid.uuid4())
+
+# Function to save game progress to a CSV file
+def save_game_progress(unique_id, game_progress):
+    filename = f"{unique_id}_game_progress.csv"
+    
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        
+        # Assuming 'introspect' and 'inventory' are keys in game_progress
+        writer.writerow(['introspect', 'inventory'])
+
+        # Write data to the corresponding columns
+        writer.writerow([game_progress.get('introspect', False), game_progress.get('inventory', {'Apple':0})])
+
+
+# Function to load game progress from a CSV file
+def load_game_progress(unique_id):
+    filename = f"{unique_id}_game_progress.csv"
+
+    try:
+        with open(filename, mode='r', newline='') as file:
+            reader = csv.reader(file)
+            keys = next(reader)  # Read the header row
+            values = next(reader)  # Read the data row
+
+            # Create a dictionary from keys and values
+            game_progress = dict(zip(keys, values))
+
+            # Ensure 'inventory' is a dictionary
+            game_progress['inventory'] = eval(game_progress['inventory']) if 'inventory' in game_progress else {}
+
+            return game_progress
+    except FileNotFoundError:
+        # Return an empty dictionary if the file is not found
+        return {}
+
+def load_location_from_csv(csv_filename):
+    location_dict = {}
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            x = int(row['x'])
+            y = int(row['y'])
+            location_dict[f"{x},{y}"] = row['place']
+    return location_dict
 
 def where_action(session, user_input):
-    global location_dict
+    # Load location_dict from CSV file
+    location_dict = load_location_from_csv('locations.csv')
+
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
 
     if current_key in location_dict:
         current_place = location_dict[current_key]
-        adjacent_places = get_adjacent_places(current_location, location_dict)
+        adjacent_places = get_adjacent_places(current_location)
         return f"You are at {current_place.upper()}. {adjacent_places}"
     else:
         return "You are in an unknown location."
 
-
-def get_adjacent_places(current_location, location_dict):
+def get_adjacent_places(current_location):
+    location_dict = load_location_from_csv('locations.csv')
     adjacent_places = []
 
     x = current_location['x']
@@ -116,9 +121,12 @@ def xy_action(session, user_input):
 
 # Function for navigating the world and moving around
 def go_action(session, user_input, direction):
-    global location_dict
+    # Load location_dict from CSV file
+    location_dict = load_location_from_csv('locations.csv')
+
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     prev_location = dict(current_location)  # Store previous location for comparison
+
     if direction == 'north':
         current_location['y'] -= 1
     elif direction == 'south':
@@ -131,8 +139,7 @@ def go_action(session, user_input, direction):
         current_location = session.setdefault('location', {'x': 6, 'y': 8})
         current_key = f"{current_location['x']},{current_location['y']}"
         if current_key in location_dict:
-            current_place = location_dict[current_key]
-            adjacent_places = get_adjacent_places(current_location, location_dict)
+            adjacent_places = get_adjacent_places(current_location)
             return f"Where do you want to go? {adjacent_places}"
 
     # Check if the new location is within valid bounds (0 to 9)
@@ -164,7 +171,7 @@ def go_action(session, user_input, direction):
     if current_location['x'] == 1 and current_location['y'] == 9:
         if latenight_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
-            return "The tide is too high to access the MYSTERIOUR GROTTO."
+            return "The tide is too high to access the MYSTERIOUS GROTTO."
     # Dream Temple only open during new and full moons
     if current_location['x'] == 1 and current_location['y'] == 2:
         if (7.4 <= phase_angle < 59.5) or (66.9 <= phase_angle <= 118.4):
@@ -190,16 +197,25 @@ def go_action(session, user_input, direction):
         return f'Already at {direction.upper()}.'
 
 # Function to introspect, should check player's location and game progress then display the relevant message
+
 def introspect_action(session, user_input):
-    global location_dict
+    # Load location_dict from CSV file
+    location_dict = load_location_from_csv('locations.csv')
+
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
-    game_progress = session.setdefault('game_progress', {'introspect': False})
+
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Introspect to begin the game
-    if current_key == "6,8" and game_progress["introspect"] == False:
+    if current_key == "6,8" and not game_progress.get("introspect", False):
         game_progress["introspect"] = True
-        session['game_progress'] = game_progress
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
     elif current_key == "6,8":
         return "Test"
@@ -302,7 +318,7 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 
     if current_key in location_dict:
         current_place = location_dict[current_key]
-        adjacent_places = get_adjacent_places(current_location, location_dict)
+        adjacent_places = get_adjacent_places(current_location)
 
         # Check if current_place is in look_dict
         if current_place in look_dict:
@@ -362,17 +378,20 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, an OBSERVATORY. 
              "Island": ''
              }
 
+
 def look_action(session, user_input):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
 
+    # Load location data from CSV
+    location_dict = load_location_from_csv('locations.csv')
+
     global look_dict
-    global location_dict
     global npc_dict
     
     if current_key in location_dict:
         current_place = location_dict[current_key]
-        adjacent_places = get_adjacent_places(current_location, location_dict)
+        adjacent_places = get_adjacent_places(current_location)
 
         # Check if current_place is in npc_dict
         if current_place in npc_dict:
@@ -382,7 +401,6 @@ def look_action(session, user_input):
         # Check if current_place is in look_dict
         if current_place in look_dict:
             value_in_look_dict = look_dict[current_place]
-
 
             return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
 
@@ -448,11 +466,11 @@ def talk_action(session, user_input):
     current_key = f"{current_location['x']},{current_location['y']}"
 
     global npc_dict
-    global location_dict
+    location_dict = load_location_from_csv('locations.csv')
 
     if current_key in location_dict:
         current_place = location_dict[current_key]
-        adjacent_places = get_adjacent_places(current_location, location_dict)
+        adjacent_places = get_adjacent_places(current_location)
 
         # Check if current_place is in npc_dict
         if current_place in npc_dict:
@@ -534,8 +552,14 @@ def get_moon_phase(session, user_input):
 
 # Function to handle "get" action
 def get_action(session, user_input):
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+
     # Get or initialize the player's inventory from the session
-    player_inventory = session.setdefault('inventory', {'apple': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0})
 
     # Check if the user input contains "get"
     if "get" in user_input:
@@ -552,7 +576,8 @@ def get_action(session, user_input):
             if item_status == 0:
                 # Item is obtainable, add it to the inventory
                 player_inventory[item_name] = 1
-                session['inventory'] = player_inventory
+                game_progress['inventory'] = player_inventory
+                save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
                 return f"You obtained {item_name}."
             elif item_status == 1:
                 # Item is already in the inventory

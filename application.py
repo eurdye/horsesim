@@ -1,12 +1,15 @@
 from deadhorse import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
+from collections import deque
+import csv
 
 app = Flask(__name__)
 app.secret_key = 'horsae'  # Change this to a secret key for secure sessions
 app.config['SESSION_COOKIE_MAX_SIZE'] = 4096  # Set a maximum size for the session cookie
 
 @app.route('/')
+
 def home():
     # Retrieve the response from the session or default to an empty string
     response_key = 'response'
@@ -15,6 +18,9 @@ def home():
     # Retrieve the list of previous responses from the session or initialize an empty list
     previous_responses_key = 'previous_responses'
     previous_responses = session.get(previous_responses_key, [])
+
+    # Keep only the last 20 responses
+    previous_responses = previous_responses[-20:]
 
     return render_template('index.html', response=response, previous_responses=previous_responses)
 
@@ -30,7 +36,7 @@ def update_input():
 
     # Use a fixed key for the list of previous responses
     previous_responses_key = 'previous_responses'
-
+    
     # Use a fixed key for the clear command
     clear_command = 'clear'
 
@@ -38,9 +44,9 @@ def update_input():
     if user_input.lower() == clear_command:
         # Clear the screen by removing all previous responses
         session[previous_responses_key] = []
+        return redirect(url_for('home'))
     else:
         session[response_key] = user_input_parser(user_input.lower())
-
     # Append the current response to the list of previous responses
     previous_responses = session.get(previous_responses_key, deque(maxlen=20))
     previous_responses.append("> " + f'{user_input}')
