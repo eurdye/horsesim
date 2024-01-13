@@ -748,7 +748,7 @@ def user_input_parser(user_input):
 
     action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
    
-    if (user_input.lower() != 'introspect' and user_input.lower() != 'help' and user_input.lower() != 'guide') and int(game_progress['introspect']) == 0:
+    if (user_input.lower() != 'introspect' and user_input.lower() != 'help' and user_input.lower() != 'guide' and user_input.lower() != 'status') and int(game_progress['introspect']) == 0:
         return "Type 'introspect' and press enter to begin your journey."
     else:
         return action_function(session, user_input)
