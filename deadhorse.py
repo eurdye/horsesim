@@ -409,7 +409,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
              "Slime City Bus Stop": 'The bus to the BEACH departs from here.',
              "Beach Bus Stop": 'The bus to the BEACH departs from here.',
-             "Central Beach": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
+             "Central Shoreline": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
              "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail.',
              "Slime Commons": 'Everybody hangs out here!',
              "Peace of Pizza": 'Your favorite restaurant ever.',
