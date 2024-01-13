@@ -12,6 +12,8 @@ def generate_unique_id():
 # Function to save game progress to a CSV file
 def save_game_progress(unique_id, game_progress):
     save_directory = "saves"
+    # Ensure the 'saves' directory exists
+    os.makedirs(save_directory, exist_ok=True)
     filename = os.path.join(save_directory, f"{unique_id}_game_progress.csv")
     
     with open(filename, mode='w', newline='') as file:
