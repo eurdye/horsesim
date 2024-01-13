@@ -9,3 +9,6 @@ builds
 virt
 .gitignore
 .ebignore
+saves
+dump.rdb
+Procfile
