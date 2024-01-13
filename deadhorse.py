@@ -195,7 +195,6 @@ def go_action(session, user_input, direction):
         return f'Already at {direction.upper()}.'
 
 # Function to introspect, should check player's location and game progress then display the relevant message
-
 def introspect_action(session, user_input):
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -236,11 +235,9 @@ def help_action(session, user_input):
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
     return("""Welcome to DEAD HORSE.\n
-    DEAD HORSE is a real-time afterlife simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
-    DEAD HORSE is an ambient game. There is no way to win or lose. All you can do is exist.\n
-    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. Don't be afraid to get personal -- the folks in DEAD HORSE love to chat, whether that's helping you talk about your feelings or attempting to divine your future.\n
-    When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing 'talk [npc name] [your message]'.\n
-    Example: 'talk monk hello, how are you?'""")
+    DEAD HORSE is a real-time (after)life simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
+    DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
+    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]'""")
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -623,25 +620,17 @@ def get_action(session, user_input):
 # Function to handle "emote" action
 def emote_action(session, user_input):
 
-
-
-
     # Get or initialize the player's emotion from the session
     player_emotion = session.setdefault('emotion', 'neutral')
     # Load game_progress from CSV file
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
-    
-
-
     player_emotion = game_progress.setdefault('feel', 'neutral')
     emote_name = user_input.split("get", 1)[-1].strip().lower()
-
 
     # Check if the item name is valid
     if emote_name:
         # Check the value of the item in the player's inventory
         emote_status = player_emotion
-
 
     # List of possible emotions
     possible_emotions = ['joy', 'sad', 'anger', 'fear', 'neutral', 'mirth', 'calm']
