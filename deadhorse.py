@@ -71,7 +71,7 @@ def where_action(session, user_input):
     if current_key in location_dict:
         current_place = location_dict[current_key]
         adjacent_places = get_adjacent_places(current_location)
-        return f"You are at {current_place.upper()}. {adjacent_places}"
+        return f"You are at {current_place.upper()}.\n\n{adjacent_places}"
     else:
         return "You are in an unknown location."
 
@@ -262,8 +262,7 @@ def help_action(session, user_input):
             status - shows game_progress var
             xy - shows current xy coords
             warp [x,y] - warp to xy coords
-            reset - starts a new save
-            """)
+            reset - starts a new save""")
 
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
@@ -274,8 +273,25 @@ def guide_action(session, user_input):
     Tip: Some beings will only want to talk if you're in the right mood.\n
     Introspection is another key part of the gameplay. Depending on your location and frame of mind, introspecting can lead to inner growth, unlocking new emotions and allowing you to go deeper within.""")
 
-# Find current moon phase
-def moon_action(session, user_input):
+
+# Global variables for time. Define time ranges and associated values.
+current_time = datetime.now().time()
+earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
+morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
+afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
+evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
+latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
+
+# Find current datetime and moon phase
+def time_action(session, user_input):
+    global current_time
+    global earlymorning_start
+    global morning_start
+    global afternoon_start
+    global evening_start
+    global latenight_start
+
+    # Find current moon phase
     observer = ephem.Observer()
     moon = ephem.Moon()
 
@@ -288,60 +304,45 @@ def moon_action(session, user_input):
     # Determine the moon phase
     phase_angle = moon.phase % 360
 
-    moon_response = "You're pretty sure it's a "
+    moon_response = "Looks like it's a "
 
     if 0 < phase_angle < 7.4 or 352.6 <= phase_angle <= 360:
-        return moon_response + "New Moon" + " right now."
+        moon_response = moon_response + "NEW" + " MOON right now."
     elif 7.4 <= phase_angle < 14.8:
-        return moon_response + "First Quarter Waxing Crescent" + " right now."
+        moon_respons = moon_response + "FIRST QUARTER WAXING CRESCENT" + " MOON right now."
     elif 14.8 <= phase_angle < 29.5:
-        return moon_response + "Waxing Crescent" + " right now."
+        moon_response = moon_response + "WAXING CRESCENT" + " MOON right now."
     elif 29.5 <= phase_angle < 44.8:
-        return moon_response + "First Quarter Waxing Gibbous" + " right now."
+        moon_response = moon_response + "FIRST QUARTER WAXING GIBBOUS" + " MOON right now."
     elif 44.8 <= phase_angle < 59.5:
-        return moon_response + "Waxing Gibbous" + " right now."
+        moon_response =  moon_response + "WAXING GIBBOUS" + " MOON right now."
     elif 59.5 <= phase_angle < 66.9:
-        return moon_response + "Full Moon" + " right now."
+        moon_response = moon_response + "FULL" + " MOON right now."
     elif 66.9 <= phase_angle < 88.9:
-        return moon_response + "Waning Gibbous" + " right now."
+        moon_response = moon_response + "WANING GIBBOUS" + " MOON right now."
     elif 88.9 <= phase_angle < 96.3:
-        return moon_response + "Last Quarter Waning Gibbous" + " right now."
+        moon_response = moon_response + "LAST QUARTER WANING GIBBOUS" + " MOON right now."
     elif 96.3 <= phase_angle < 118.4:
-        return moon_response + "Waning Crescent" + " right now."
+        moon_response = moon_response + "WANING CRESCENT" + " MOON right now."
     elif 118.4 <= phase_angle < 125.8:
-        return moon_response + "New Moon" + " right now."
+        moon_response = moon_response + "NEW" + " MOON right now."
     else:
-        return moon_response + "Unknown Moon Phase" + " right now."
-
-# Global variables for time. Define time ranges and associated values.
-current_time = datetime.now().time()
-earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
-morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
-afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
-evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
-latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
-
-# Find current datetime
-def time_action(session, user_input):
-    global current_time
-    global earlymorning_start
-    global morning_start
-    global afternoon_start
-    global evening_start
-    global latenight_start
+        moon_response = moon_response + "UNKNOWN MOON PHASE" + " MOON right now."
 
     if current_time < earlymorning_start:
-        return "It's late at night!"
+        time_response = "It's currently LATE NIGHT."
     elif current_time < morning_start:
-        return "It's early morning!"
+        time_response = "It's currently EARLY MORNING."
     elif current_time < afternoon_start:
-        return "It's morning!"
+        time_response = "It's currently MORNING."
     elif current_time < evening_start:
-        return "It's afternoon!"
+        time_response = "It's currently AFTERNOON."
     elif current_time < latenight_start:
-        return "It's evening!"
+        time_response = "It's currently EVENING."
     else:
-        return "It's night time!"
+        time_response = "It's currently NIGHT."
+
+    return time_response + "\n\n" + moon_response
 
 def where_action_with_dynamic_value(session, user_input, location_dict, look_dict):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
@@ -354,9 +355,9 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
         # Check if current_place is in look_dict
         if current_place in look_dict:
             dynamic_value = get_value_based_on_time()
-            return f"You are at {current_place}. {adjacent_places}. Look: {look_dict[current_place]} ({dynamic_value})"
+            return f"You are at {current_place}.\n\n{adjacent_places}. Look: {look_dict[current_place]} ({dynamic_value})"
         else:
-            return f"You are at {current_place}. {adjacent_places}. No additional information in look_dict."
+            return f"You are at {current_place}.\n\n{adjacent_places}. No additional information in look_dict."
     else:
         return "You are in an unknown location."
 
@@ -718,10 +719,9 @@ action_dict = {
     'where': where_action,
     'go': lambda session, user_input: go_action(session, user_input, user_input.split()[1] if len(user_input.split()) > 1 else ''),
     'get': get_action,
-    'moon': moon_action,
     'feel': emote_action,
     'talk': talk_action,
-    'time': time_action,
+    'when': time_action,
     'help': help_action,
     'guide': guide_action,
     'status': status_action,
@@ -740,9 +740,16 @@ def user_input_parser(user_input):
     save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
+    # Split user input into words
+    input_words = user_input.split()
+
+    # Check if there are any words in the input
+    if not input_words:
+        return 'ERROR: No command entered'
+
     action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
    
-    if (user_input.lower() != 'introspect' and user_input.lower() != 'help') and int(game_progress['introspect']) == 0:
+    if (user_input.lower() != 'introspect' and user_input.lower() != 'help' and user_input.lower() != 'guide') and int(game_progress['introspect']) == 0:
         return "Type 'introspect' and press enter to begin your journey."
     else:
         return action_function(session, user_input)
