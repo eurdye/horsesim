@@ -182,6 +182,14 @@ def go_action(session, user_input, direction):
         if evening_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
             return "The OBSERVATORY is only open at night."
+    if current_location['x'] == 4 and (current_location['y'] == 5 or current_location['y'] == 4):
+        if (evening_start <= current_time) and (current_time >= morning_start):
+            session['location'] = prev_location
+            return "The TRAIN STATION is closed at night."
+    if current_location['x'] == 5 and (current_location['y'] == 6 or current_location['y'] == 7):
+        if (evening_start <= current_time) and (current_time >= morning_start):
+            session['location'] = prev_location
+            return "The BUS STOP is closed at night."
 
     current_key = f"{current_location['x']},{current_location['y']}"
 
@@ -210,31 +218,44 @@ def introspect_action(session, user_input):
 
     # Load game_progress from CSV file
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    introspect_progress = int(game_progress['introspect'])
 
     # Introspect to begin the game
-    if current_key == "6,8" and game_progress.get("introspect", 0):
-        game_progress["introspect"] = 1
+    if (current_key == "6,8") and (introspect_progress == 0):
+        game_progress["introspect"] = '1'
         save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
-    elif current_key == "6,8":
-        game_progress["introspect"] = (int(game_progress["introspect"]) + 10)
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+    elif current_key == "6,8" and (10011 > introspect_progress > 0):
+        if introspect_progress == 1:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 10)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "This is where you found yourself when you awoke in this strange reality... And yet your first thoughts were of yourself. Your identity. What does that mean? What does that say about the sort of being you are?"
     elif current_key == "1,9":
-        game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        if introspect_progress < 100:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You gaze into the Abyss below. Something inside of you swells. Is that the remnant of your soul? Forced into this purgatory, this rough shape. Yes, you are certain you are being punished. What are you guilty of?"
     elif current_key == "1,1":
-        game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        if introspect_progress < 1000:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You find it hard to turn within here... a force pulls you into space, keeps your awareness on the material. What is it that makes you want to burst so? As though your insides long to come gushing out... You feel as though nothing can remain hidden in this space. As though the atoms would sooner rend apart than obstruct. A space of ultimate clarity. And yet here is where you are most opaque. What does this mean?"
     elif current_key == "0,0":
-        game_progress["introspect"] = (int(game_progress["introspect"]) + 10000)
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        if introspect_progress < 10000:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 10000)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "The peak of the world... wherever this place is. Up here, above the clouds, the firmament above is so clear... You lift an equine eye to the heavens. If heaven is still up there, where does that put you? You try not to think about it.\n\nThe OBSERVATORY here has a powerful telescope. Maybe the ASTROLOGER will let you take a look. Maybe they know more about what this place is."
-    elif current_key == "6,8" and game_progress.get("introspect", 11111):
-        game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+    elif current_key == "6,5" and (100 > introspect_progress > 10):
+        if introspect_progress < 100:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You sit among the gardens, wondering how you found yourself here. Before the ocean, you remember nothing. Were you born or made? How did you come to be? What could possibly have given birth to you? (Another horse? You dare not think it.)"
+    elif current_key == "6,5" and (introspect_progress > 1000):
+        return "Among the plants, you wonder if you are much different. A horse among God's garden. Growing desperately toward the sun. You do not know what forces have incarnated you here, but you imagine they may stop by sometime to water roots and prune branches."
+    elif current_key == "6,8" and (introspect_progress > 10000):
+        if introspect_progress > 10000:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You reflect on your travels, and what you've learned about yourself in turn. The beings you've met. The strange places you've been. You still feel no closer to any answers. Yet somehow you feel you know yourself a little better. These hooves don't seem so unfamiliar. This skin feels like it belongs. Perhaps this equine form is no punishment at all, but a chance to start again."
     else:
         return "You don't think you can INTROSPECT right now."
