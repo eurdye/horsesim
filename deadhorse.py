@@ -23,7 +23,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -273,6 +273,8 @@ def help_action(session, user_input):
             'get [item]' - obtain items
             'introspect' - reflect on your journey
             'look' - describes the area you are in
+            'look [item]' - describes item in your inventory
+            'what' - shows your inventory
             'where' - shows where you are
             'when' - check the time and moon
             'help' - shows command list
@@ -430,6 +432,10 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Island": 'Woah. Is this one of those dessert islands? No. It\'s made of sand. It\'s one of those stupid desert islands instead.'
              }
 
+item_desc_dict = {
+        "apple": "A delicious-looking apple. Seriously, now that you're a horse, it's really hard to resist eating it. Still, you decide to put it in your... pocket?... for later.",
+        'pillow': "A plain round pillow. You're not sure how you're supposed to sit on it, being a horse and all. Still, you figure it might come in handy. And it was so nice of that monk to give it to you. He seemed to truly take pity on your current state."
+        }
 
 def look_action(session, user_input):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
@@ -440,6 +446,37 @@ def look_action(session, user_input):
 
     global look_dict
     global npc_dict
+    global item_desc_dict
+
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+
+    # Get or initialize the player's inventory from the session
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+
+    # Load location_dict from CSV file
+    location_dict = load_location_from_csv('locations.csv')
+
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+
+    # Check if the user input contains "look" and an item
+    if user_input.startswith("look "):
+        item_to_look = user_input.split(" ", 1)[1]  # Extract the item from the user input
+
+        # Check if the item is in the user's inventory
+        if item_to_look in player_inventory.keys():
+            # Replace this with the actual description retrieval logic for items
+            item_description = item_desc_dict.get(item_to_look, f"Description for {item_to_look}.")
+            return item_description
+        else:
+            return f"You don't have {item_to_look} in your inventory."
     
     if current_key in location_dict:
         current_place = location_dict[current_key]
@@ -630,10 +667,6 @@ def get_moon_phase(session, user_input):
     phase_name = moon.phase
     return phase_name
 
-# Global variable to store player inventory
-# 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
-#player_inventory = session.setdefault('inventory', {'apple': 0})
-
 # Function to handle "get" action
 def get_action(session, user_input):
     # Check if UUID exists in the session, generate one if not
@@ -643,7 +676,29 @@ def get_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+
+    # Load location_dict from CSV file
+    location_dict = load_location_from_csv('locations.csv')
+
+    current_location = session.setdefault('location', {'x': 6, 'y': 8})
+    current_key = f"{current_location['x']},{current_location['y']}"
+
+    if current_key in location_dict:
+        current_place = location_dict[current_key]
+
+    # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
+    if player_inventory['apple'] != 1:
+        if current_place == "Botanical Garden":
+            player_inventory['apple'] = 0
+        else:
+            player_inventory['apple'] = 3
+
+    if player_inventory['pillow'] != 1:
+        if current_place == 'Dream Temple':
+            player_inventory['pillow'] = 0
+        else:
+            player_inventory['pillow'] = 3  
 
     # Check if the user input contains "get"
     if "get" in user_input:
@@ -679,7 +734,6 @@ def get_action(session, user_input):
 
 # Function to handle "emote" action
 def emote_action(session, user_input):
-
     # Check if UUID exists in the session, generate one if not
     if 'uuid' not in session:
         session['uuid'] = str(uuid.uuid4())
@@ -690,7 +744,7 @@ def emote_action(session, user_input):
     player_emotion = game_progress['feel']
 
     # List of possible emotions
-    possible_emotions = ['joy', 'sad', 'anger', 'fear', 'neutral', 'mirth', 'calm']
+    possible_emotions = ['joy', 'sadness', 'anger', 'fear', 'divine terror', 'neutral', 'mirth', 'calm']
 
     # Extract the emotion name after "feel"
     emotion_name = user_input.split("feel", 1)[-1].strip().lower()
@@ -731,7 +785,24 @@ def warp_action(session, user_input, location):
     # Return a message indicating the successful warp
     return f"You have warped to {x},{y}."
 
+# Function to display inventory
+def what_action(session, user_input):
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
+    # Get or initialize the player's inventory from the session
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+    player_inventory = [key for key, value in player_inventory.items() if value == 1]
+    if player_inventory == []:
+        return "You have nothing in your inventory."
+    else:
+        player_inventory = '\n(1) '.join(key.upper() for key in player_inventory)
+        player_inventory = "INVENTORY:\n(1) " + player_inventory
+        return player_inventory
+ 
 # Dictionary mapping user input to corresponding functions
 action_dict = {
     'introspect': introspect_action,
@@ -742,6 +813,7 @@ action_dict = {
     'feel': emote_action,
     'talk': talk_action,
     'when': time_action,
+    'what': what_action,
     'help': help_action,
     'guide': guide_action,
     'status': status_action,
