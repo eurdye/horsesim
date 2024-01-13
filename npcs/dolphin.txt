@@ -47,3 +47,6 @@ key: xnone
     reasmb: eeE eEe EEeEeEe Ee
     reasmb: Eee e Ee eEe
     reasmb: eEeE eEe Ee eee
+    reasmb: Take it easy, dude. You're already dead.
+    reasmb: eEee eeE EeEe e
+    reasmb: Don't let me interrupt your inner journey.

@@ -257,6 +257,8 @@ def introspect_action(session, user_input):
             game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You reflect on your travels, and what you've learned about yourself in turn. The beings you've met. The strange places you've been. You still feel no closer to any answers. Yet somehow you feel you know yourself a little better. These hooves don't seem so unfamiliar. This skin feels like it belongs. Perhaps this equine form is no punishment at all, but a chance to start again."
+    elif current_key == "5,8":
+        return "You get kind of self-conscious with the MERMAID over there. You feel so awkward in your ungulate form. You bet she could tell some more about this world, though, or give some tips to help you survive. You've heard that MERMAIDS only talk to beings who FEEL JOY. You better FEEL JOY before you go talk to her, or she'll just give you the silent treatment." 
     else:
         return "You don't think you can INTROSPECT right now."
 
@@ -393,7 +395,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Hillside Caves": 'There are a number of caves along the hillside here. Where do they lead?',
              "Unspoken Hills": 'The Unspoken Hills are unspeakable.',
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
-             "Sunken Grotto": 'What goes on here?',
+             "Sunken Grotto": 'A half-sunked cavern. Watery shadows dance on the walls. During high tide, the whole cave floods. At low tide each night it becomes accessible on hoof for a few hours. You feel an eerie presence here, as though you are witnessing something you\'re not supposed to. You feel on edge. Darkness pervades as you peer into the ABYSS.',
              "Hermitage": 'The most solitary place in the whole afterlife. Is someone home?',
              "Lonesome Path": 'A lonely path further up the mountain. You fear you are getting lost.',
              "Bath House": 'Ah, a refreshing bath house. Take a hot bath and sit in the sauna. Let your equine muscles release. Restore sheen to your mane. Unblock your energies.',
@@ -411,8 +413,8 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
              "Slime City Bus Stop": 'The bus to the BEACH departs from here.',
              "Beach Bus Stop": 'The bus to the BEACH departs from here.',
-             "Central Shoreline": 'The main stretch of beach, featuring a pier. There are some beings playing in the surf. It looks like this is where the bus lets everyone off, so most of the people who come to the beach stay around here.',
-             "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail.',
+             "Central Shoreline": 'The main stretch of beach, featuring a pier. The purple waters of the ENDLESS OCEAN lap rhythmically at the shore. A number of beings appear to have gathered here to observe the waters. Down by the water, A MERMAID lounges in the sand. She looks like she could give you some important information.',
+             "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail. In the waters below, a DOLPHIN taunts your land-stricken body by swimming and giggling enthusiastically.',
              "Slime Commons": 'Everybody hangs out here!',
              "Peace of Pizza": 'Your favorite restaurant ever.',
              "Slime Park": 'The park. You have a sudden urge to eat grass.',
@@ -590,6 +592,25 @@ def talk_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
     save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+
+    # Check if new location is available at the current time
+    global current_time
+    global earlymorning_start
+    global morning_start
+    global afternoon_start
+    global evening_start
+    global latenight_start
+    observer = ephem.Observer()
+    moon = ephem.Moon()
+
+    # Set the observer's location (latitude and longitude)
+    observer.lat = '34.135559'  # Replace with your latitude
+    observer.lon = '-116.054169'  # Replace with your longitude
+
+    # Compute the moon's phase
+    moon.compute(observer)
+    # Determine the moon phase
+    phase_angle = moon.phase % 360
     
     global npc_dict
     location_dict = load_location_from_csv('locations.csv')
@@ -618,15 +639,26 @@ def talk_action(session, user_input):
                             return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
                         elif npc_name == 'Hermit' and game_progress['feel'] != 'calm':
                             return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
-                        
-                        # Get the chatbot instance from the dictionary
-                        bot_instance = npc_bots[npc_name]
-                        
+                        elif npc_name == 'Abyss' and game_progress['feel'] != 'divine terror':
+                            return f'You\'re not in the right state of mind to commune with the ABYSS. Come back when you\'re experiencing DIVINE TERROR.'
+                       
                         # Sanitize user_input if it begins with "talk {npc_name.lower()} "
                         prefix = f"talk {npc_name.lower()} "
                         if user_input.lower().startswith(prefix):
                             user_input = user_input[len(prefix):].strip()
 
+                        if npc_name.lower() == "mermaid" and (evening_start >= current_time < morning_start):
+                            return "MERMAID has returned to the sea for the night"
+                        elif npc_name.lower() == "astrologer" and (morning_start <= current_time < evening_start):
+                            return "The ASTROLOGER is unavailable during the day."
+                        elif npc_name.lower() == 'deer' and (96.3 <= phase_angle < 118.4):
+                            return "The DEER spirit ignores you."
+                        elif npc_name.lower() == 'stranger' and ((0 < phase_angle < 1) or (19 < phase_angle < 20) or (42 < phase_angle < 45) or (66.7 < phase_angle < 72)):
+                            return "The STRANGER is not here today."
+     
+                        # Get the chatbot instance from the dictionary
+                        bot_instance = npc_bots[npc_name]
+ 
                         # Use the chatbot instance to respond
                         npc_response = bot_instance.respond(user_input)
                         return npc_response
