@@ -250,7 +250,7 @@ def introspect_action(session, user_input):
             game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You sit among the gardens, wondering how you found yourself here. Before the ocean, you remember nothing. Were you born or made? How did you come to be? What could possibly have given birth to you? (Another horse? You dare not think it.)"
-    elif current_key == "6,5" and (introspect_progress > 1000):
+    elif current_key == "6,5" and (introspect_progress > 100):
         return "Among the plants, you wonder if you are much different. A horse among God's garden. Growing desperately toward the sun. You do not know what forces have incarnated you here, but you imagine they may stop by sometime to water roots and prune branches."
     elif current_key == "6,8" and (introspect_progress > 10000):
         if introspect_progress > 10000:
