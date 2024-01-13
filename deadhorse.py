@@ -699,6 +699,55 @@ def get_moon_phase(session, user_input):
     phase_name = moon.phase
     return phase_name
 
+# Dictionary of available items in each location
+item_dict = {
+    "Summit Observatory": [],
+    "Devil's Tail": [],
+    "Hallowed Ground": [],
+    "Dream Temple": ['pillow'],
+    "Hidden Path": [],
+    "Hillside Caves": [],
+    "Unspoken Hills": [],
+    "Western Glassrock Cliffs": [],
+    "Sunken Grotto": [],
+    "Hermitage": [],
+    "Lonesome Path": [],
+    "Bath House": [],
+    "Tea Cart": [],
+    "Unspoken Hills": [],
+    "Western Glassrock Cliffs": [],
+    "Upper Mountain Path": [],
+    "Lower Mountain Path": [],
+    "Chiron's Cove": [],
+    "Mountain Train Station": [],
+    "Slime City Train Station": [],
+    "Western Shore": [],
+    "Slime City Uptown": [],
+    "Slime City Downtown": [],
+    "Slime City Transport Center": [],
+    "Slime City Bus Stop": [],
+    "Beach Bus Stop": [],
+    "Central Shoreline": [],
+    "Pier": [],
+    "Slime Commons": [],
+    "Peace-a-Pizza": ["pizza"],
+    "Slime Park": [],
+    "Botanical Garden": ["apple", "pear"],
+    "Odd Beach": [],
+    "Your Apartment": [],
+    "Slime Apartments": [],
+    "Confectioner": [],
+    "Therapist": [],
+    "Eastern Glassrock Cliffs": [],
+    "Farm North": [],
+    "Farm South": [],
+    "Town Hall": [],
+    "General Store": [], 
+    "Casino": [],
+    "Club": [],
+    "Island": []
+}
+
 # Function to handle "get" action
 def get_action(session, user_input):
     # Check if UUID exists in the session, generate one if not
@@ -734,13 +783,13 @@ def get_action(session, user_input):
 
     # Check if the user input contains "get"
     if "get" in user_input:
+        global item_dict
         # Extract the item name after "get"
         item_name = user_input.split("get", 1)[-1].strip().lower()
-
+        item_status = player_inventory.get(item_name)
         # Check if the item name is valid
         if item_name:
             # Check the value of the item in the player's inventory
-            item_status = player_inventory.get(item_name)
             if item_status is None:
                 # Item not in dictionary
                 return f"{item_name} not found."
@@ -759,8 +808,23 @@ def get_action(session, user_input):
             else:
                 # Item is unobtainable
                 return f"{item_name} is unobtainable."
+        elif item_dict[current_place] == '' or item_dict[current_place] == []:
+            return "There is nothing for you to GET here."
         else:
-            return "Please specify an item to get."
+            obtainable_items = []
+            for location, items in item_dict.items():
+                for item in items:
+                    if game_progress['inventory'][item] != 0:
+                        return 'test'
+                    else:
+                        obtainable_items.append(item)
+            return obtainable_items
+            obtainable_items = ', '.join(obtainable_items)
+            obtainable_items = obtainable_items.upper()
+            if obtainable_items == '':
+                return f"There is nothing left for you to GET at {current_place.upper()}."
+            else:
+                return f"You can GET the following at {current_place.upper()}:\n\n{obtainable_items}"
     else:
         return "You can use the 'get' command to obtain items."
 
