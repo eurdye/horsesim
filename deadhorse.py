@@ -253,10 +253,9 @@ def help_action(session, user_input):
             'introspect' - reflect on your journey
             'look' - describes the area you are in
             'where' - shows where you are
-            'moon' - gaze at the moon
-            'time' - check the time
-            'help' - displays help
-            'guide' - displays tips
+            'when' - check the time and moon
+            'help' - shows command list
+            'guide' - shows game manual
 
             DEBUG:
             status - shows game_progress var
