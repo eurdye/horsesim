@@ -165,19 +165,19 @@ def go_action(session, user_input, direction):
     # Determine the moon phase
     phase_angle = moon.phase % 360
 
-    # Mysterious Grotto only available in early morning
+    # Sunken Grotto only available in early morning
     if current_location['x'] == 1 and current_location['y'] == 9:
-        if latenight_start >= current_time >= earlymorning_start:
+        if latenight_start >= current_time >= morning_start:
             session['location'] = prev_location
-            return "The tide is too high to access the MYSTERIOUS GROTTO."
+            return "The tide is too high to access the SUNKEN GROTTO. Maybe in the early morning..."
     # Dream Temple only open during new and full moons
     if current_location['x'] == 1 and current_location['y'] == 2:
         if (7.4 <= phase_angle < 59.5) or (66.9 <= phase_angle <= 118.4):
             session['location'] = prev_location
-            return "The DREAM TEMPLE is only open during lunar maxima."
+            return "The DREAM TEMPLE is only open during full and new moons."
     # Observatory only open at night
     if current_location['x'] == 0 and current_location['y'] == 0:
-        if evening_start >= current_time >= morning_start:
+        if evening_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
             return "The OBSERVATORY is only open at night."
 
@@ -215,9 +215,27 @@ def introspect_action(session, user_input):
         save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
     elif current_key == "6,8":
-        return "Test"
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 10)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "This is where you found yourself when you awoke in this strange reality... And yet your first thoughts were of yourself. Your identity. What does that mean? What does that say about the sort of being you are?"
+    elif current_key == "1,9":
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You gaze into the Abyss below. Something inside of you swells. Is that the remnant of your soul? Forced into this purgatory, this rough shape. Yes, you are certain you are being punished. What are you guilty of?"
+    elif current_key == "1,1":
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You find it hard to turn within here... a force pulls you into space, keeps your awareness on the material. What is it that makes you want to burst so? As though your insides long to come gushing out... You feel as though nothing can remain hidden in this space. As though the atoms would sooner rend apart than obstruct. A space of ultimate clarity. And yet here is where you are most opaque. What does this mean?"
     elif current_key == "0,0":
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 10000)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "The peak of the world... wherever this place is. Up here, above the clouds, the firmament above is so clear... You lift an equine eye to the heavens. If heaven is still up there, where does that put you? You try not to think about it.\n\nThe OBSERVATORY here has a powerful telescope. Maybe the ASTROLOGER will let you take a look. Maybe they know more about what this place is."
+    elif current_key == "6,8" and game_progress.get("introspect", 11111):
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You reflect on your travels, and what you've learned about yourself in turn. The beings you've met. The strange places you've been. You still feel no closer to any answers. Yet somehow you feel you know yourself a little better. These hooves don't seem so unfamiliar. This skin feels like it belongs. Perhaps this equine form is no punishment at all, but a chance to start again."
+    else:
+        return "You don't think you can INTROSPECT right now."
 
 # Help command lists possible actions
 def help_action(session, user_input):
@@ -250,7 +268,9 @@ def guide_action(session, user_input):
     return("""Welcome to DEAD HORSE.\n
     DEAD HORSE is a real-time (after)life simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
     DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
-    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]'""")
+    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]\n
+    Tip: Some beings will only want to talk if you're in the right mood.\n
+    Introspection is another key part of the gameplay. Depending on your location and frame of mind, introspecting can lead to inner growth, unlocking new emotions and allowing you to go deeper within.""")
 
 # Find current moon phase
 def moon_action(session, user_input):
@@ -348,7 +368,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Hillside Caves": 'There are a number of caves along the hillside here. Where do they lead?',
              "Unspoken Hills": 'The Unspoken Hills are unspeakable.',
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
-             "Mysterious Grotto": 'What goes on here?',
+             "Sunken Grotto": 'What goes on here?',
              "Hermitage": 'The most solitary place in the whole afterlife. Is someone home?',
              "Lonesome Path": 'A lonely path further up the mountain. You fear you are getting lost.',
              "Bath House": 'Ah, a refreshing bath house. Take a hot bath and sit in the sauna. Let your equine muscles release. Restore sheen to your mane. Unblock your energies.',
@@ -430,7 +450,7 @@ npc_dict = {
     "Hillside Caves": [],
     "Unspoken Hills": [],
     "Western Glassrock Cliffs": [],
-    "Mysterious Grotto": ["Abyss"],
+    "Sunken Grotto": ["Abyss"],
     "Hermitage": ["Hermit"],
     "Lonesome Path": [],
     "Bath House": ["Stranger"],
@@ -667,9 +687,9 @@ def emote_action(session, user_input):
                 save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
                 return f"You are now feeling {emotion_name.upper()}."
         else:
-            return f"You don't know how to feel {emotion_name.upper()}."
+            return f"You don't know how to FEEL {emotion_name.upper()}."
     else:
-        return f"You are currently feeling {player_emotion}."
+        return f"You are currently feeling {player_emotion.upper()}."
 
 def warp_action(session, user_input, location):
     # Extract X and Y coordinates from the input
