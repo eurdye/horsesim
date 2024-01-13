@@ -550,6 +550,9 @@ def talk_action(session, user_input):
         return "You are in an unknown location."
 
 def status_action(session, user_input):
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    return game_progress
+
     # Get the player's current emotion from the session
     player_emotion = session.get('emotion', 'neutral')
 
@@ -620,17 +623,14 @@ def get_action(session, user_input):
 # Function to handle "emote" action
 def emote_action(session, user_input):
 
-    # Get or initialize the player's emotion from the session
-    player_emotion = session.setdefault('emotion', 'neutral')
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
     # Load game_progress from CSV file
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
-    player_emotion = game_progress.setdefault('feel', 'neutral')
-    emote_name = user_input.split("get", 1)[-1].strip().lower()
-
-    # Check if the item name is valid
-    if emote_name:
-        # Check the value of the item in the player's inventory
-        emote_status = player_emotion
+    save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    player_emotion = game_progress['feel']
 
     # List of possible emotions
     possible_emotions = ['joy', 'sad', 'anger', 'fear', 'neutral', 'mirth', 'calm']
