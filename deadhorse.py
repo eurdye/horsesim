@@ -294,7 +294,7 @@ def guide_action(session, user_input):
     DEAD HORSE is a real-time (after)life simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
     DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
     The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]\n
-    Tip: Some beings will only want to talk if you're in the right mood.\n
+    Some beings will converse with you if you bring up the right topic or if you're in the right mood.\n
     Introspection is another key part of the gameplay. Depending on your location and frame of mind, introspecting can lead to inner growth, unlocking new emotions and allowing you to go deeper within.""")
 
 
@@ -494,9 +494,9 @@ def look_action(session, user_input):
             elif npc_dict[current_place] is not []:
                 available_npcs = npc_dict[current_place]
                 available_npcs = [item.upper() for item in available_npcs]
-                return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}.\n\n{adjacent_places}"
+                return f"You are at {current_place.upper()}. {value_in_look_dict}\n\nYou can TALK to {', '.join(available_npcs)}."
         else:
-            return f"You are at {current_place.upper()}.\n\n{adjacent_places}."
+            return f"You are at {current_place.upper()}."
     else:
         return "You are in an unknown location."
 
