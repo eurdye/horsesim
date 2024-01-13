@@ -21,7 +21,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', False), game_progress.get('inventory', {'apple': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -210,9 +210,8 @@ def introspect_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Introspect to begin the game
-    if current_key == "6,8" and not game_progress.get("introspect", False):
-        game_progress["introspect"] = True
-        load_game_progress(session.get('uuid', 'default_uuid'))
+    if current_key == "6,8" and game_progress.get("introspect", 0):
+        game_progress["introspect"] = 1
         save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
         return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
     elif current_key == "6,8":
@@ -222,15 +221,29 @@ def introspect_action(session, user_input):
 
 # Help command lists possible actions
 def help_action(session, user_input):
-    game_progress = session.setdefault('game_progress', {'introspect': False})
     action_list = list(action_dict.keys())
     print_actions = lambda keys: '\n'.join(keys)
         
-    if game_progress['introspect'] == False:
-        return "COMMAND LIST:\n" + print_actions(action_list) + "\n\nType 'introspect' and press enter to begin your adventure."
-    else:
-        #return ("COMMAND LIST:\n" + print_actions(action_list))
-        return ("COMMAND LIST:\n introspect\ngo [north/south/east/west]\nwhere\nlook\ntalk [npc] [message]\nfeel [emotion]\nget [item]\nmoon\ntime\nhelp\nguide\n\nDEBUG:\nstatus\nxy\nwarp [x,y]\nreset")
+    #return ("COMMAND LIST:\n" + print_actions(action_list))
+    return ("""COMMAND LIST:
+            'go [north/south/east/west]' - navigate the world
+            'talk [npc] [message]' - talk to npc
+            'feel [emotion]' - feel emotions
+            'get [item]' - obtain items
+            'introspect' - reflect on your journey
+            'look' - describes the area you are in
+            'where' - shows where you are
+            'moon' - gaze at the moon
+            'time' - check the time
+            'help' - displays help
+            'guide' - displays tips
+
+            DEBUG:
+            status - shows game_progress var
+            xy - shows current xy coords
+            warp [x,y] - warp to xy coords
+            reset - starts a new save
+            """)
 
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
@@ -344,9 +357,10 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
              "Upper Mountain Path": 'This path leads further up the mountain.',
              "Lower Mountain Path": 'This is the path at the base of the mountain.',
-             "Western Beach": 'The beach on the west side. Sandy.',
+             "Chiron's Cove": 'The beach on the west side. Sandy.',
              "Mountain Train Station": 'There are few travelers here. The train station lets you off at the base of the mountain, a short walk to the village to the WEST.',
              "Slime City Train Station": 'The train station in SLIME CITY. Boy, you wonder where all these beings came from and where they are going. Are they all dead, too? Death is full of mysteries.',
+             "Western Shore": 'The broad expanse of the WESTERN SHORE stretches on. There is a lot of sand and water.',
              "Slime City Uptown": 'Uptown Slime City, baby! Money, fame, and plenty of fortune, too. Ah--who are you kidding--it\'s empty here, too.',
              "Slime City Downtown": 'Slime City Downtown, baby! Hustle, bustle, and plenty of old-school funk.',
              "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
@@ -358,7 +372,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Peace of Pizza": 'Your favorite restaurant ever.',
              "Slime Park": 'The park. You have a sudden urge to eat grass.',
              "Botanical Garden": 'So many plants! You resist the urge to eat them.',
-             "Awakening Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
+             "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
              "Your Apartment": 'You live here?',
              "Slime Apartments": 'Other people live here',
              "Confectioner": 'Do horses have sweet tooths? You\'re not sure. Do you want to find out? You\'re also not sure.',
@@ -425,22 +439,22 @@ npc_dict = {
     "Western Glassrock Cliffs": [],
     "Upper Mountain Path": [],
     "Lower Mountain Path": [],
-    "Western Beach": [],
+    "Chiron's Cove": [],
     "Mountain Train Station": ["Conductor"],
     "Slime City Train Station": ["Conductor"],
-    "Western Beach": [],
+    "Western Shore": [],
     "Slime City Uptown": [],
     "Slime City Downtown": [],
     "Slime City Transport Center": [],
     "Slime City Bus Stop": ["Driver"],
     "Beach Bus Stop": ["Driver"],
-    "Central Beach": ["Mermaid"],
+    "Central Shoreline": ["Mermaid"],
     "Pier": ["Dolphin"],
     "Slime Commons": [],
     "Peace of Pizza": ["Girl"],
     "Slime Park": [],
     "Botanical Garden": [],
-    "Awakening Beach": [],
+    "Odd Beach": [],
     "Your Apartment": [],
     "Slime Apartments": [],
     "Confectioner": [],
@@ -695,6 +709,19 @@ action_dict = {
 }
 
 def user_input_parser(user_input):
+
+    # Check if UUID exists in the session, generate one if not
+    if 'uuid' not in session:
+        session['uuid'] = str(uuid.uuid4())
+    # Load game_progress from CSV file
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+    save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+    game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
+
     action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
-    return action_function(session, user_input)
+   
+    if (user_input.lower() != 'introspect' and user_input.lower() != 'help') and int(game_progress['introspect']) == 0:
+        return "Type 'introspect' and press enter to begin your journey."
+    else:
+        return action_function(session, user_input)
 
