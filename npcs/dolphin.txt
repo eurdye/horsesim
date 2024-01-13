@@ -46,7 +46,23 @@ key: xnone
     reasmb: EeEee eEe e eEEeE
     reasmb: eeE eEe EEeEeEe Ee
     reasmb: Eee e Ee eEe
-    reasmb: eEeE eEe Ee eee
     reasmb: Take it easy, dude. You're already dead.
+    reasmb: eEeE eEe Ee eee
+    reasmb: Have you asked the MERMAID about ATLANTIS?
     reasmb: eEee eeE EeEe e
     reasmb: Don't let me interrupt your inner journey.
+key: atlantis
+  decomp: *
+    reasmb: Yeah, I've been there. It's way cooler than anything you've got on land.
+key: mermaid
+  decomp: *
+    reasmb: That MERMAID by the shore... she spends too much time on land.
+    reasmb: If you spend a lot of time out of the water, you become weak.
+    reasmb: Land dwellers are so degenerate. No offense, of course.
+key: apple
+  decomp: *
+    reasmb: I know all about apples. Classic symbol of knowledge.
+    reasmb: Have you... have you seen one?
+key: pillow
+  decomp: *
+    reasmb: What's a pillow?

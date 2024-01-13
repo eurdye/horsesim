@@ -330,10 +330,10 @@ def time_action(session, user_input):
 
     moon_response = "Looks like it's a "
 
-    if 0 < phase_angle < 7.4 or 352.6 <= phase_angle <= 360:
+    if (0 < phase_angle < 7.4) or (352.6 <= phase_angle <= 360):
         moon_response = moon_response + "NEW" + " MOON right now."
     elif 7.4 <= phase_angle < 14.8:
-        moon_respons = moon_response + "FIRST QUARTER WAXING CRESCENT" + " MOON right now."
+        moon_response = moon_response + "FIRST QUARTER WAXING CRESCENT" + " MOON right now."
     elif 14.8 <= phase_angle < 29.5:
         moon_response = moon_response + "WAXING CRESCENT" + " MOON right now."
     elif 29.5 <= phase_angle < 44.8:
@@ -352,7 +352,7 @@ def time_action(session, user_input):
         moon_response = moon_response + "NEW" + " MOON right now."
     else:
         moon_response = moon_response + "UNKNOWN MOON PHASE" + " MOON right now."
-
+    
     if current_time < earlymorning_start:
         time_response = "It's currently LATE NIGHT."
     elif current_time < morning_start:
@@ -416,7 +416,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Central Shoreline": 'The main stretch of beach, featuring a pier. The purple waters of the ENDLESS OCEAN lap rhythmically at the shore. A number of beings appear to have gathered here to observe the waters. Down by the water, A MERMAID lounges in the sand. She looks like she could give you some important information.',
              "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail. In the waters below, a DOLPHIN taunts your land-stricken body by swimming and giggling enthusiastically.',
              "Slime Commons": 'Everybody hangs out here!',
-             "Peace of Pizza": 'Your favorite restaurant ever.',
+             "Peace-a-Pizza": 'Your favorite restaurant ever.',
              "Slime Park": 'The park. You have a sudden urge to eat grass.',
              "Botanical Garden": 'Tall agave, cacti, sage, various trees, grasses, flowers... you see an APPLE fall from a tree.',
              "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
@@ -533,7 +533,7 @@ npc_dict = {
     "Central Shoreline": ["Mermaid"],
     "Pier": ["Dolphin"],
     "Slime Commons": [],
-    "Peace of Pizza": ["Girl"],
+    "Peace-a-Pizza": ["Girl"],
     "Slime Park": [],
     "Botanical Garden": [],
     "Odd Beach": [],

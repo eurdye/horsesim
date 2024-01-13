@@ -40,3 +40,19 @@ synon: be am is are was
 key: xnone
   decomp: *
     reasmb: ...
+key: reality
+  decomp: *
+    reasmb: *no response*
+key: apple
+  decomp: *
+    reasmb: This means something.
+key: pillow
+  decomp: *
+    reasmb: This means nothing.
+key: atlantis
+  decomp: *
+    reasmb: There is truth in myth.
+key: pizza
+  decomp: *
+    reasmb: I do love a good slice of PIZZA. Have you been to PEACE-A-PIZZA in SLIME CITY? They're my favorite.
+    reasmb: The GIRL at PEACE-A-PIZZA sure knows a lot about PIZZA.

@@ -45,5 +45,6 @@ key: xnone
   decomp: *
     reasmb: All aboard!
     reasmb: Are you getting on board?
+    reasmb: Yes, horses are allowed on.
     reasmb: Last call!
     reasmb: Watch your step, please.

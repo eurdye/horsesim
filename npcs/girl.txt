@@ -43,10 +43,14 @@ synon: be am is are was
 synon: love romance loving
 key: xnone
   decomp: *
-    reasmb: Welcome to Peace-a-Pizza!
-    reasmb: I LOVE PIZZA!
-    reasmb: I'm so excited about pizza!
-    reasmb: What kind of pizza do you like?
-    reasmb: I want world peace and a big slice of pizza!
-    reasmb: Peace? Pizza? Peace-a-Pizza, please!
-    reasmb: PIZZA!!!!!!!!!!!!!!
+    reasmb: Welcome to PEACE-A-PIZZA!
+    reasmb: I'm so excited about PIZZA!
+    reasmb: What kind of PIZZA do you like?
+    reasmb: I want world peace and a big slice of PIZZA!
+    reasmb: Peace? PIZZA? PEACE-A-PIZZA! Please!
+    reasmb: I LOVE PIZZA!!!!!!!!!!!!!!!!!!!!!!
+key: pizza
+  decomp: *
+    reasmb: Do you want a slice of PIZZA?
+    reasmb: What kind of PIZZA is your favorite?
+    reasmb: Do you love PIZZA too?

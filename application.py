@@ -21,8 +21,8 @@ def home():
     previous_responses_key = 'previous_responses'
     previous_responses = session.get(previous_responses_key, [])
 
-    # Keep only the last 20 responses
-    previous_responses = previous_responses[-20:]
+    # Keep only the last 40 responses
+    previous_responses = previous_responses[-40:]
 
     return render_template('index.html', response=response, previous_responses=previous_responses)
 
@@ -55,7 +55,7 @@ def update_input():
     else:
         session[response_key] = user_input_parser(user_input.lower())
     # Append the current response to the list of previous responses
-    previous_responses = session.get(previous_responses_key, deque(maxlen=20))
+    previous_responses = session.get(previous_responses_key, deque(maxlen=40))
     previous_responses.append("> " + f'{user_input}')
     previous_responses.append(session[response_key])
     session[previous_responses_key] = list(previous_responses)

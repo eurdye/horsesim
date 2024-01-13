@@ -45,17 +45,28 @@ key: xnone
   decomp: *
     reasmb: I'm just a simple mermaid.
     reasmb: Are you a horse? I've heard of your kind before.
-    reasmb: Do you ever feel mirth?
+    reasmb: JOY is my favorite emotion.
     reasmb: I don't want anything fancy. I'm just a simple fish lady.
     reasmb: *Hums a simple melody*
-    reasmb: I always feel mirth when I want to talk to dolphins... otherwise, they won't talk to me!
+    reasmb: I always FEEL MIRTH when I want to talk to the DOLPHIN. Otherwise, it won't talk to me!
     reasmb: I can actually survive on land for short periods of time.
 key: horse
   decomp: * horse *
     reasmb: I'm afraid I don't know much about horses.
-    reasmb: I'm just a mermaid. I've never heard of horse (2) .
-  decomp: * horse
-    reasmb: What? I'm sorry.
-key: reality
+key: atlantis
+  decomp: *
+    reasmb: Oh, that's where I'm from.
+    reasmb: I haven't been there in a while. Actually, I'm not totally sure I remember how to get there.
+    reasmb: Where is it from here? Um...
+    reasmb: I don't remember much about it.
+    reasmb: Did the DOLPHIN tell you about it? I wonder what it knows...
+key: the
   decomp: * @reality *
     reasmb: I really don't know about (2) . I'm just a mermaid. 
+key: apple
+  decomp: *
+    reasmb: I've heard apples are sweet, delightful treats. I've never seen one, though.
+key: pillow
+  decomp: *
+    reasmb: Oh, I like pillows.
+    reasmb: Sometimes I use a pufferfish as a pillow. Just kidding!

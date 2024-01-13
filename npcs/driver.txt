@@ -43,7 +43,7 @@ synon: be am is are was
 synon: love romance loving
 key: xnone
   decomp: *
-    reasmb: Climb aboard, ponyboy.
+    reasmb: Climb aboard, pony boy.
     reasmb: Don't worry about the fare. It's free here.
     reasmb: You heading to the city?
     reasmb: Sit anywhere.
