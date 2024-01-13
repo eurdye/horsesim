@@ -9,6 +9,10 @@
     margin-bottom: 10px;
 }
 
+a {
+    color: #00ff00;
+}
+
 body {
     background-color: #000;
     font-family: 'Courier', 'Courier New', monospace;
@@ -23,21 +27,38 @@ body {
     line-height: 1.6;
     position: relative;
     z-index: 0;
-    pointer-events: none;
+    /*pointer-events: none;*/
 }
 
 .responses {
-    overflow-y: hidden;
+    overflow-y: scroll;
     white-space: pre-line;
     height: inherit;
     margin-top: -3em;
+    scrollbar-width: none; /*for firefox*/
+    z-index: 9;
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.responses::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Optional: Customize other scrollbar styles */
+.responses::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.responses::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 .terminal {
     background-color: #000;
-    border: 1px solid rgba(200, 200, 200, 0.5);
+    border: 1px solid #00ff00;
     padding: 20px;
     width: 100%;
+    max-width: 72em;
     height: 95vh;
     min-height: 500px;
     box-sizing: border-box;
@@ -98,13 +119,17 @@ body {
 
 .input-container {
     display: flex;
+    width: 95%;
+    height: 2em;
     align-items: center;
     margin-top: 10px; /* Adjust the margin as desired */
     position: sticky; /* Add sticky positioning to keep it visible */
     bottom: 0; /* Stick it to the bottom */
     background-color: #000;
-    padding: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     pointer-events: auto;
+    z-index: 999;
 }
 
 .input-container span {
@@ -156,13 +181,13 @@ body {
     const inputBox = document.getElementById('input-form');
 
     // Input box autofocus coder
-    document.addEventListener('click', function(event) {
+    //document.addEventListener('click', function(event) {
       // Check if the clicked element is not the input box
-      if (event.target.id !== 'user_input') {
+      //if (event.target.id !== 'user_input') {
         // Focus on the input box
-        document.getElementById('user_input').focus();
-      }
-    });
+        //document.getElementById('user_input').focus();
+      //}
+    //});
 
 </script>
 
@@ -187,7 +212,7 @@ body {
   ░ ░  ░     ░    ░   ▒   ░ ░  ░     ░  ░░ ░░ ░ ░ ▒    ░░   ░ ░  ░  ░      ░  
     ░    ░   ░        ░     ░        ░  ░  ░    ░ ░     ░           ░  ░   ░  
 
-                                                                v0.1.0 Alpha
+                                                                v0.2.0 Alpha
 </div>
             </p>
               SCENARIO:<br>
@@ -211,6 +236,9 @@ STATUS:
                 This game takes place in real time.<br>
                 It is recommended to take notes.<br>
                 <br>
+                SOURCE:<br>
+                <a href="https://github.com/eurdye/horsesim">Made with  <3</a>
+                by <a href="https://eurydice.me">Eurydice</a><br>
             </div>
             <br>
         <div class="terminal">
@@ -222,11 +250,11 @@ STATUS:
 
         <div id="output"></div>
 
-        <pre>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</pre>
-            <div class="input-container">
-                <pre>> </pre>
-                <form id="input-form" method="post" action="{{ url_for('update_input') }}">
-                    <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus style="width: 27em;"/>
+        <div style="border-top: 1px solid #00ff00; width: 100%;"></div>
+            <div class="input-container" style="width: 100%; margin-right: -5%;">
+                ><pre> </pre> 
+                <form id="input-form" method="post" action="{{ url_for('update_input') }}" style="width: 100%; height: 200%; /pointer">
+                    <input type="text" id="user_input" name="user_input" value="{{ user_input }}" autocomplete="off" autofocus style="width: 100%; height: 100%;"/>
                 </form>
             </div>
         </div>
