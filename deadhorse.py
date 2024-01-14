@@ -781,7 +781,8 @@ def get_action(session, user_input):
         item_name = user_input.split("get", 1)[-1].strip().lower()
 
         # Check if the item name is valid
-        if item_name:
+
+        if item_name in item_dict[current_place]:
             # Check the value of the item in the player's inventory
             item_status = player_inventory.get(item_name)
             if item_status is None:
@@ -803,7 +804,6 @@ def get_action(session, user_input):
                 # Item is unobtainable
                 return f"{item_name.upper()} is not currently obtainable at {current_place.upper()}."
         elif item_dict[current_place] == '' or item_dict[current_place] == []:
-            return item_dict
             return "There is nothing for you to GET here."
         else:
             available_items = item_dict[current_place]
