@@ -23,7 +23,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -259,6 +259,16 @@ def introspect_action(session, user_input):
         return "You reflect on your travels, and what you've learned about yourself in turn. The beings you've met. The strange places you've been. You still feel no closer to any answers. Yet somehow you feel you know yourself a little better. These hooves don't seem so unfamiliar. This skin feels like it belongs. Perhaps this equine form is no punishment at all, but a chance to start again."
     elif current_key == "5,8":
         return "You get kind of self-conscious with the MERMAID over there. You feel so awkward in your ungulate form. You bet she could tell some more about this world, though, or give some tips to help you survive. You've heard that MERMAIDS only talk to beings who FEEL JOY. You better FEEL JOY before you go talk to her, or she'll just give you the silent treatment." 
+    elif current_key == "5,2":
+        return "You nestle into a small nook in the corner of the LIBRARY and find your thoughts drifting within. Here you are--a strange library in a stranger town. Yet most strange of all: you still do not know yourself. Who are you? Your thoughts return to the first words that came into your equine mind. You do not have an answer."
+    elif current_key == "4,8":
+        return "As you walk along the sand, your mind wanders, lulled by the soft rumble of the waves. You look back at the hoofprints in the sand. Markers of where you've been. Here you have a presence. Here you leave traces of your past. You cannot say the same for wherever it is you came from. The ocean left no evidence of where you had been before. You wonder if that may be a blessing.",
+    elif current_key == "7,2":
+        return "This is your apartment, yet you don't feel at home. You don't remember ever being here before in your life. Or in your death. So why is it still yours? Did something happen here? Or... was that a memory? You catch the smell of... someone familiar... but it vanishes before you can recall any more."
+    elif current_key == "7,8":
+        return "You wonder why you even bothered walking out here."
+    elif current_key == "5,4":
+        return "You know, you'd think it would be hard to introspect in a crowded city like this, but you find yourself feeling more alone than ever. You walk down the streets gazing at the beings passing you by, all strangers, all wandering souls. You have nothing more than this fleeting connection with them before they're gone forever. And yet you can't help but feel that you are the same and the whole city is one large super-being that you are all small pieces of. The busy streets give you a FEELING of SONDER."
     else:
         return "You don't think you can INTROSPECT right now."
 
@@ -291,11 +301,10 @@ def help_action(session, user_input):
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
     return("""Welcome to DEAD HORSE.\n
-    DEAD HORSE is a real-time (after)life simulation game. Locations open and close, NPCs come and go, and topics of conversation vary based on the time of day and current moon phase.\n
+    DEAD HORSE is a real-time (after)life simulation game. Locations open and close and beings come and go based on the time of day and current moon phase.\n
     DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
-    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]\n
-    Some beings will converse with you if you bring up the right topic or if you're in the right mood.\n
-    Introspection is another key part of the gameplay. Depending on your location and frame of mind, introspecting can lead to inner growth, unlocking new emotions and allowing you to go deeper within.""")
+    The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]'\n
+    Some beings will only converse with you if you bring up the right topic or if you're in the right mood.""")
 
 
 # Global variables for time. Define time ranges and associated values.
@@ -404,14 +413,14 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
              "Upper Mountain Path": 'This path leads further up the mountain.',
              "Lower Mountain Path": 'This is the path at the base of the mountain.',
-             "Chiron's Cove": 'The beach on the west side. Sandy.',
+             "Chiron's Cove": "You're not sure who CHIRON is, but this COVE is quite nice. In the shadow of the WESTERN GLASSROCK CLIFFS, it gives you a feeling of security and ease. The water here is quiet and calm.",
              "Mountain Train Station": 'There are few travelers here. The train station lets you off at the base of the mountain, a short walk to the village to the WEST.',
              "Slime City Train Station": 'The train station in SLIME CITY. Boy, you wonder where all these beings came from and where they are going. Are they all dead, too? Death is full of mysteries.',
-             "Western Shore": 'The broad expanse of the WESTERN SHORE stretches on. There is a lot of sand and water.',
+             "Western Shore": "This is the boring part of the beach. There's nothing here but just a bunch of sand.",
              "Library": 'Wow, look at all these books. You aren\'t sure if you know how to read. The architecture is nice, though. Hmm--what\'s that? Maybe there is a BOOK you can read.',
-             "Slime City Uptown": 'Uptown Slime City, baby! Money, fame, and plenty of fortune, too. Ah--who are you kidding--it\'s empty here, too.',
-             "Slime City Downtown": 'Slime City Downtown, baby! Hustle, bustle, and plenty of old-school funk.',
-             "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
+             "Slime City Uptown": 'It\'s UPTOWN SLIME CITY, baby! Money, fame, and plenty of fortune, too. Ah--who are you kidding--it\'s empty here, too.',
+             "Slime City Downtown": 'It\'s SLIME CITY DOWNTOWN, baby! Hustle, bustle, and plenty of old-school funk.',
+             "Slime City Transport Center": 'Trains and buses stop here from all over, bringing souls to SLIME CITY.',
              "Slime City Bus Stop": 'The bus to the BEACH departs from here.',
              "Beach Bus Stop": 'The bus to the BEACH departs from here.',
              "Central Shoreline": 'The main stretch of beach, featuring a pier. The purple waters of the ENDLESS OCEAN lap rhythmically at the shore. A number of beings appear to have gathered here to observe the waters. Down by the water, A MERMAID lounges in the sand. She looks like she could give you some important information.',
@@ -419,13 +428,13 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Slime Commons": 'Everybody hangs out here!',
              "Peace-a-Pizza": 'Your favorite restaurant ever.',
              "Slime Park": 'The park. You have a sudden urge to eat grass.',
-             "Botanical Garden": 'Tall agave, cacti, sage, various trees, grasses, flowers... you see an APPLE fall from a tree.',
+             "Botanical Garden": 'Tall agave, cacti, sage, various trees, grasses, and flowers line the walkways. This garden is meticulously tended and hideously well cared for. The lush foliage and rich variety imparts you a strange FEELING of GUILT. You see an APPLE fall from a tree.',
              "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
-             "Your Apartment": 'You live here?',
-             "Slime Apartments": 'Other people live here',
+             "Your Apartment": "You don't totally understand, but you guess you live here now. Your stuff is here? Not that you really have anything. It looks like a normal, plain apartment. There's a fridge and a sink, though you're not sure what good they'll do you now. There's a MIRROR here, too...",
+             "Slime Apartments": 'Other people live here.',
              "Confectioner": 'Do horses have sweet tooths? You\'re not sure. Do you want to find out? You\'re also not sure.',
              "Therapist": 'You know, you could probably use some therapy, being dead and all.',
-             "Eastern Glassrock Cliffs": 'Yeeowch.',
+             "Eastern Glassrock Cliffs": 'The CLIFFS rise incredibly high. The rock is unbelievably sharp. You can only walk a little ways in before it gets to be too much.',
              "Farm North": 'This is where they grow food.',
              "Farm South": 'This is where they keep the farm animals. No horses, hopefully.',
              "Town Hall": 'The seat of the local government, you guess. Who\'s really in charge here, anyway?',
@@ -438,6 +447,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
 item_desc_dict = {
         "apple": "A delicious-looking APPLE. Seriously, now that you're a horse, it's really hard to resist eating it. Still, you decide to put it in your... pocket?... for later.",
         "book": "This BOOK is about... well... you'll get around to reading it soon. The librarian gave it her highest recommendation. And just look at that cover! You're sure this will be a real page-turner, even if you did get it from the philosophy section.",
+        "mirror": "A small handheld MIRROR that reflects your equine form. A reminder of your past sins.",
         'pear': "A simple-looking PEAR. You're sure it would be quite delicious, but for some reason it's not all that appealing to you right now.",
         'pillow': "A plain round PILLOW. You're not sure how you're supposed to sit on it, being a horse and all. Still, you figure it might come in handy. And it was so nice of that monk to give it to you. He seemed to truly take pity on your current state.",
         'pizza': "A delicious slice of piping-hot fresh-out-the-oven PIZZA!"
@@ -461,7 +471,7 @@ def look_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -477,12 +487,14 @@ def look_action(session, user_input):
         item_to_look = user_input.split(" ", 1)[1]  # Extract the item from the user input
 
         # Check if the item is in the user's inventory
-        if item_to_look in player_inventory.keys():
+        if item_to_look in player_inventory.keys() and player_inventory[item_to_look] == 1:
             # Replace this with the actual description retrieval logic for items
             item_description = item_desc_dict.get(item_to_look, f"Description for {item_to_look}.")
             return item_description
+        elif item_to_look in player_inventory.keys() and player_inventory[item_to_look] != 1:
+            return f"You don't have {item_to_look.upper()} in your inventory."
         else:
-            return f"You don't have {item_to_look} in your inventory."
+            return f"ERROR: Invalid item."
     
     if current_key in location_dict:
         current_place = location_dict[current_key]
@@ -542,7 +554,7 @@ npc_dict = {
     "Slime Park": [],
     "Botanical Garden": [],
     "Odd Beach": [],
-    "Your Apartment": [],
+    "Your Apartment": ["Reflection"],
     "Slime Apartments": [],
     "Confectioner": [],
     "Therapist": ['Eliza'],
@@ -743,7 +755,7 @@ def get_action(session, user_input):
         "Slime Park": [],
         "Botanical Garden": ["apple", "pear"],
         "Odd Beach": [],
-        "Your Apartment": [],
+        "Your Apartment": ["mirror"],
         "Slime Apartments": [],
         "Confectioner": [],
         "Therapist": [],
@@ -765,7 +777,7 @@ def get_action(session, user_input):
 
     # Get or initialize the player's inventory from the session
     # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -839,7 +851,7 @@ def emote_action(session, user_input):
     player_emotion = game_progress['feel']
 
     # List of possible emotions
-    possible_emotions = ['joy', 'sadness', 'anger', 'fear', 'divine terror', 'neutral', 'mirth', 'calm']
+    possible_emotions = ['joy', 'guilt', 'divine terror', 'neutral', 'mirth', 'calm', 'sonder']
 
     # Extract the emotion name after "feel"
     emotion_name = user_input.split("feel", 1)[-1].strip().lower()
@@ -889,7 +901,7 @@ def what_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
     player_inventory = [key for key, value in player_inventory.items() if value == 1]
     if player_inventory == []:
         return "You have nothing in your inventory."
