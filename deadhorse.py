@@ -23,7 +23,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -408,6 +408,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Mountain Train Station": 'There are few travelers here. The train station lets you off at the base of the mountain, a short walk to the village to the WEST.',
              "Slime City Train Station": 'The train station in SLIME CITY. Boy, you wonder where all these beings came from and where they are going. Are they all dead, too? Death is full of mysteries.',
              "Western Shore": 'The broad expanse of the WESTERN SHORE stretches on. There is a lot of sand and water.',
+             "Library": 'Wow, look at all these books. You aren\'t sure if you know how to read. The architecture is nice, though. Hmm--what\'s that? Maybe there is a BOOK you can read.',
              "Slime City Uptown": 'Uptown Slime City, baby! Money, fame, and plenty of fortune, too. Ah--who are you kidding--it\'s empty here, too.',
              "Slime City Downtown": 'Slime City Downtown, baby! Hustle, bustle, and plenty of old-school funk.',
              "Slime City Transport Center": 'The transport center. Trains and buses stop here from all over, bringing souls to SLIME CITY.',
@@ -433,10 +434,13 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Club": 'What else is there to do when you\'re dead but dance the night away?',
              "Island": 'Woah. Is this one of those dessert islands? No. It\'s made of sand. It\'s one of those stupid desert islands instead.'
              }
-
+# Item descriptions for if the user types 'look [item]'
 item_desc_dict = {
-        "apple": "A delicious-looking apple. Seriously, now that you're a horse, it's really hard to resist eating it. Still, you decide to put it in your... pocket?... for later.",
-        'pillow': "A plain round pillow. You're not sure how you're supposed to sit on it, being a horse and all. Still, you figure it might come in handy. And it was so nice of that monk to give it to you. He seemed to truly take pity on your current state."
+        "apple": "A delicious-looking APPLE. Seriously, now that you're a horse, it's really hard to resist eating it. Still, you decide to put it in your... pocket?... for later.",
+        "book": "This BOOK is about... well... you'll get around to reading it soon. The librarian gave it her highest recommendation. And just look at that cover! You're sure this will be a real page-turner, even if you did get it from the philosophy section.",
+        'pear': "A simple-looking PEAR. You're sure it would be quite delicious, but for some reason it's not all that appealing to you right now.",
+        'pillow': "A plain round PILLOW. You're not sure how you're supposed to sit on it, being a horse and all. Still, you figure it might come in handy. And it was so nice of that monk to give it to you. He seemed to truly take pity on your current state.",
+        'pizza': "A delicious slice of piping-hot fresh-out-the-oven PIZZA!"
         }
 
 def look_action(session, user_input):
@@ -457,7 +461,7 @@ def look_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -525,6 +529,7 @@ npc_dict = {
     "Mountain Train Station": ["Conductor"],
     "Slime City Train Station": ["Conductor"],
     "Western Shore": [],
+    "Library": ["Librarian"],
     "Slime City Uptown": [],
     "Slime City Downtown": [],
     "Slime City Transport Center": [],
@@ -699,8 +704,6 @@ def get_moon_phase(session, user_input):
     phase_name = moon.phase
     return phase_name
 
-
-
 # Function to handle "get" action
 def get_action(session, user_input):
 
@@ -727,6 +730,7 @@ def get_action(session, user_input):
         "Mountain Train Station": [],
         "Slime City Train Station": [],
         "Western Shore": [],
+        "Library": ["book"],
         "Slime City Uptown": [],
         "Slime City Downtown": [],
         "Slime City Transport Center": [],
@@ -760,7 +764,8 @@ def get_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
+    # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -771,9 +776,6 @@ def get_action(session, user_input):
     if current_key in location_dict:
         current_place = location_dict[current_key]
 
-    # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
-    already_have_response = "You already have "
-    already_have_response_2 = " in your inventory."
 
     # Check if the user input contains "get"
     if "get" in user_input:
@@ -887,7 +889,7 @@ def what_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
     player_inventory = [key for key, value in player_inventory.items() if value == 1]
     if player_inventory == []:
         return "You have nothing in your inventory."
@@ -932,7 +934,7 @@ def user_input_parser(user_input):
     if not input_words:
         return 'ERROR: No command entered'
 
-    action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found')
+    action_function = action_dict.get(user_input.split()[0], lambda session, user_input: 'ERROR: Command not found. Type \'help\' for a list of commands.')
    
     if (user_input.lower() != 'introspect' and user_input.lower() != 'reset' and user_input.lower() != 'help' and user_input.lower() != 'guide' and user_input.lower() != 'status') and int(game_progress['introspect']) == 0:
         return "Type 'introspect' and press enter to begin your journey."
