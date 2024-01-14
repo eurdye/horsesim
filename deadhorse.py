@@ -172,26 +172,26 @@ def go_action(session, user_input, direction):
     if current_location['x'] == 1 and current_location['y'] == 9:
         if latenight_start >= current_time >= morning_start:
             session['location'] = prev_location
-            return "The tide is too high to access the SUNKEN GROTTO. Maybe in the early morning..."
+            return "The tide is too high to access the SUNKEN GROTTO. Try coming back late at night."
     # Dream Temple only open during new and full moons
     if current_location['x'] == 1 and current_location['y'] == 2:
         if (7.4 <= phase_angle < 59.5) or (66.9 <= phase_angle <= 118.4):
             session['location'] = prev_location
-            return "The DREAM TEMPLE is only open during full and new moons."
+            return "The DREAM TEMPLE is only open during the new and full moon."
     # Observatory only open at night
     if current_location['x'] == 0 and current_location['y'] == 0:
         if evening_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
-            return "The OBSERVATORY is only open at night."
+            return "The OBSERVATORY is only open at night. Try coming back in the evening."
     # Train Station and Bus Stop closed at night
     if current_location['x'] == 4 and (current_location['y'] == 5 or current_location['y'] == 4):
         if (evening_start <= current_time) and (current_time >= morning_start):
             session['location'] = prev_location
-            return "The TRAIN STATION is closed at night."
+            return "The TRAIN STATION is closed at night. Try coming back in the morning."
     if current_location['x'] == 5 and (current_location['y'] == 6 or current_location['y'] == 7):
         if (evening_start <= current_time) and (current_time >= morning_start):
             session['location'] = prev_location
-            return "The BUS STOP is closed at night."
+            return "The BUS STOP is closed at night. Try coming back in the morning."
 
     current_key = f"{current_location['x']},{current_location['y']}"
 
@@ -264,7 +264,7 @@ def introspect_action(session, user_input):
     elif current_key == "5,2":
         return "You nestle into a small nook in the corner of the LIBRARY and find your thoughts drifting within. Here you are--a strange library in a stranger town. Yet most strange of all: you still do not know yourself. Who are you? Your thoughts return to the first words that came into your equine mind. You do not have an answer."
     elif current_key == "4,8":
-        return "As you walk along the sand, your mind wanders, lulled by the soft rumble of the waves. You look back at the hoofprints in the sand. Markers of where you've been. Here you have a presence. Here you leave traces of your past. You cannot say the same for wherever it is you came from. The ocean left no evidence of where you had been before. You wonder if that may be a blessing.",
+        return """As you walk along the sand, your mind wanders, lulled by the soft rumble of the waves. You look back at the hoofprints in the sand. Markers of where you've been. Here you have a presence. Here you leave traces of your past. You cannot say the same for wherever it is you came from. The ocean left no evidence of where you had been before. You wonder if that may be a blessing."""
     elif current_key == "7,2":
         return "This is your apartment, yet you don't feel at home. You don't remember ever being here before in your life. Or in your death. So why is it still yours? Did something happen here? Or... was that a memory? You catch the smell of... someone familiar... but it vanishes before you can recall any more."
     elif current_key == "7,8":
