@@ -1,6 +1,7 @@
 from flask import Flask, session
 import ephem
 from datetime import datetime
+import pytz
 import random
 import csv
 import uuid, os
@@ -309,12 +310,15 @@ def guide_action(session, user_input):
 
 
 # Global variables for time. Define time ranges and associated values.
-current_time = datetime.now().time()
 earlymorning_start = datetime.strptime('04:00:00', '%H:%M:%S').time()
 morning_start = datetime.strptime('06:00:00', '%H:%M:%S').time()
 afternoon_start = datetime.strptime('12:00:00', '%H:%M:%S').time()
 evening_start = datetime.strptime('18:00:00', '%H:%M:%S').time()
 latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
+
+# Set the time zone to 'America/Los_Angeles'
+desired_timezone = pytz.timezone('America/Los_Angeles')
+current_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(desired_timezone).time()
 
 # Find current datetime and moon phase
 def time_action(session, user_input):
@@ -324,6 +328,9 @@ def time_action(session, user_input):
     global afternoon_start
     global evening_start
     global latenight_start
+
+    # Get the current time in UTC
+    current_time_utc = datetime.utcnow()
 
     # Find current moon phase
     observer = ephem.Observer()
@@ -377,7 +384,6 @@ def time_action(session, user_input):
         time_response = "It's currently NIGHT."
 
     return time_response + "\n\n" + moon_response
-
 def where_action_with_dynamic_value(session, user_input, location_dict, look_dict):
     current_location = session.setdefault('location', {'x': 6, 'y': 8})
     current_key = f"{current_location['x']},{current_location['y']}"
