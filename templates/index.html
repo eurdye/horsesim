@@ -180,15 +180,15 @@ body {
   
     const inputBox = document.getElementById('input-form');
 
-    // Input box autofocus coder
-    //document.addEventListener('click', function(event) {
-      // Check if the clicked element is not the input box
-      //if (event.target.id !== 'user_input') {
-        // Focus on the input box
-        //document.getElementById('user_input').focus();
-      //}
-    //});
 
+    // Input box autofocus coder
+    document.addEventListener('click', function(event) {
+      // Check if the clicked element has the class 'terminal'
+      if (event.target.classList.contains('responses')) {
+        // Focus on the input box
+        document.getElementById('user_input').focus();
+      }
+    });
 </script>
 
     </head>
