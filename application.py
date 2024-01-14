@@ -23,7 +23,7 @@ def home():
 
     # Keep only the last 40 responses
     previous_responses = previous_responses[-40:]
-
+    session['previous_responses'] = previous_responses
     return render_template('index.html', response=response, previous_responses=previous_responses)
 
 from collections import deque
@@ -42,18 +42,13 @@ def update_input():
     # Use a fixed key for the clear command
     clear_command = 'clear'
    
-    # Check session size and trigger clear command if it exceeds 4000 bytes
-    if sys.getsizeof(session) > 4000:
-        session[previous_responses_key] = []
-    
     # Check if the user input is the clear command
     if user_input.lower() == clear_command:
         # Clear the screen by removing all previous responses
         session[previous_responses_key] = []
         return redirect(url_for('home'))
-    
-    else:
-        session[response_key] = user_input_parser(user_input.lower())
+   
+    session[response_key] = user_input_parser(user_input.lower())
     # Append the current response to the list of previous responses
     previous_responses = session.get(previous_responses_key, deque(maxlen=40))
     previous_responses.append("> " + f'{user_input}')

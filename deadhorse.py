@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask, session, jsonify
 import ephem
 from datetime import datetime
 import pytz
@@ -700,8 +700,17 @@ def talk_action(session, user_input):
         return "You are in an unknown location."
 
 def status_action(session, user_input):
+    # Get all keys in the session
+    keys = session.keys()
+    # return(str(keys))
+    # Create a list to store all values
+    all_values = [session[key] for key in keys]
+
+    # Calculate the total size of all data
+    total_size = sum(len(jsonify(session[key]).get_data(as_text=True)) for key in keys)
+
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
-    return game_progress
+    return f"Game progress:\n{game_progress}\n\ntotal_size:\n{total_size}"
 
     # Get the player's current emotion from the session
     player_emotion = session.get('emotion', 'neutral')
