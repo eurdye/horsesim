@@ -329,9 +329,6 @@ def time_action(session, user_input):
     global evening_start
     global latenight_start
 
-    # Get the current time in UTC
-    current_time_utc = datetime.utcnow()
-
     # Find current moon phase
     observer = ephem.Observer()
     moon = ephem.Moon()
@@ -369,7 +366,7 @@ def time_action(session, user_input):
         moon_response = moon_response + "NEW" + " MOON right now."
     else:
         moon_response = moon_response + "UNKNOWN MOON PHASE" + " MOON right now."
-    
+
     if current_time < earlymorning_start:
         time_response = "It's currently LATE NIGHT."
     elif current_time < morning_start:
