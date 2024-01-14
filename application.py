@@ -1,3 +1,11 @@
+'''
+DEAD HORSE
+
+Hacker beware, here be dragons.
+
+This code is made out of snippets from ChatGPT duct-taped together. I did some things very wrong because this is my first big game like this and I wasn't thinking ahead. Look, this isn't Finnegan's Wake, it's a text adventure about a horse who died. It's hacky and it works.
+'''
+
 from deadhorse import user_input_parser
 from flask import Flask, render_template, session, request, redirect, url_for
 import ephem
