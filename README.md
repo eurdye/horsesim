@@ -5,9 +5,10 @@ DEAD HORSE is a spiritual sequel to my 2014 student game *Horse Simulator*. DEAD
 
 ### Features
 * Exhilarating command line gameplay
-* Large game world featuring unique locations
+* Original game world full of unique NPCs
 * Real-time time of day and moon phase system
-* Smart NPCs based on Eliza chatbot
+* Smart NPCs that can converse in natural language
+* Cutting-edge simulation of over 6 emotions, including `guilt`, `mirth`, and `sonder`.
 * Industry-leading text-based horse-themed afterlife simulation software
 
 ### Installation Instructions
@@ -24,15 +25,16 @@ DEAD HORSE is a spiritual sequel to my 2014 student game *Horse Simulator*. DEAD
 * Add `use` and `give` commands
 * Improve dialogue system
     * ~~Implement Eliza chatbot~~
-    * Have Eliza suggest emotions
-    * Have NPCs give keywords for each other to trigger loredumps
+    * ~~Have Eliza suggest emotions~~
+    * ~~Have NPCs give keywords for each other to trigger loredumps~~
 * Have introspection reveal new emotions to player
-    * More introspections = further into story, unlock new esoteric emotions
-* Add non-chatbot NPCs?
+    * ~~More introspections = further into story, unlock new esoteric emotions~~
+* ~~Add non-chatbot NPCs?~~
 * Add events (observatory new moon, hermitage full moon, grotto low tide, pier high tide)
 * Add things to interact with at various locations
-    * Make user take the bus or train when going to/from town
-    * Add customizable apartment
+    * Make user take the bus or train when going to/from town?
+    * Add customizable apartment?
+    * Other minigames? Poetry slam?
 
 ### Known Bugs
 * The amount of data stored in the browser cookie grows over time, eventually hitting the limit of 4093 bytes with enough playtime. Cookie size resets if the user inputs 'clear', so as a workaround I've coded a function that automatically calls 'clear' if the cookie size reaches 4000 bytes.

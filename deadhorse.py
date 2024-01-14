@@ -182,6 +182,7 @@ def go_action(session, user_input, direction):
         if evening_start >= current_time >= earlymorning_start:
             session['location'] = prev_location
             return "The OBSERVATORY is only open at night."
+    # Train Station and Bus Stop closed at night
     if current_location['x'] == 4 and (current_location['y'] == 5 or current_location['y'] == 4):
         if (evening_start <= current_time) and (current_time >= morning_start):
             session['location'] = prev_location
