@@ -23,7 +23,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -457,7 +457,7 @@ def look_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -699,57 +699,60 @@ def get_moon_phase(session, user_input):
     phase_name = moon.phase
     return phase_name
 
-# Dictionary of available items in each location
-item_dict = {
-    "Summit Observatory": [],
-    "Devil's Tail": [],
-    "Hallowed Ground": [],
-    "Dream Temple": ['pillow'],
-    "Hidden Path": [],
-    "Hillside Caves": [],
-    "Unspoken Hills": [],
-    "Western Glassrock Cliffs": [],
-    "Sunken Grotto": [],
-    "Hermitage": [],
-    "Lonesome Path": [],
-    "Bath House": [],
-    "Tea Cart": [],
-    "Unspoken Hills": [],
-    "Western Glassrock Cliffs": [],
-    "Upper Mountain Path": [],
-    "Lower Mountain Path": [],
-    "Chiron's Cove": [],
-    "Mountain Train Station": [],
-    "Slime City Train Station": [],
-    "Western Shore": [],
-    "Slime City Uptown": [],
-    "Slime City Downtown": [],
-    "Slime City Transport Center": [],
-    "Slime City Bus Stop": [],
-    "Beach Bus Stop": [],
-    "Central Shoreline": [],
-    "Pier": [],
-    "Slime Commons": [],
-    "Peace-a-Pizza": ["pizza"],
-    "Slime Park": [],
-    "Botanical Garden": ["apple", "pear"],
-    "Odd Beach": [],
-    "Your Apartment": [],
-    "Slime Apartments": [],
-    "Confectioner": [],
-    "Therapist": [],
-    "Eastern Glassrock Cliffs": [],
-    "Farm North": [],
-    "Farm South": [],
-    "Town Hall": [],
-    "General Store": [], 
-    "Casino": [],
-    "Club": [],
-    "Island": []
-}
+
 
 # Function to handle "get" action
 def get_action(session, user_input):
+
+    # Dictionary of available items in each location
+    item_dict = {
+        "Summit Observatory": [],
+        "Devil's Tail": [],
+        "Hallowed Ground": [],
+        "Dream Temple": ['pillow'],
+        "Hidden Path": [],
+        "Hillside Caves": [],
+        "Unspoken Hills": [],
+        "Western Glassrock Cliffs": [],
+        "Sunken Grotto": [],
+        "Hermitage": [],
+        "Lonesome Path": [],
+        "Bath House": [],
+        "Tea Cart": [],
+        "Unspoken Hills": [],
+        "Western Glassrock Cliffs": [],
+        "Upper Mountain Path": [],
+        "Lower Mountain Path": [],
+        "Chiron's Cove": [],
+        "Mountain Train Station": [],
+        "Slime City Train Station": [],
+        "Western Shore": [],
+        "Slime City Uptown": [],
+        "Slime City Downtown": [],
+        "Slime City Transport Center": [],
+        "Slime City Bus Stop": [],
+        "Beach Bus Stop": [],
+        "Central Shoreline": [],
+        "Pier": [],
+        "Slime Commons": [],
+        "Peace-a-Pizza": ["pizza"],
+        "Slime Park": [],
+        "Botanical Garden": ["apple", "pear"],
+        "Odd Beach": [],
+        "Your Apartment": [],
+        "Slime Apartments": [],
+        "Confectioner": [],
+        "Therapist": [],
+        "Eastern Glassrock Cliffs": [],
+        "Farm North": [],
+        "Farm South": [],
+        "Town Hall": [],
+        "General Store": [], 
+        "Casino": [],
+        "Club": [],
+        "Island": []
+    }
+
     # Check if UUID exists in the session, generate one if not
     if 'uuid' not in session:
         session['uuid'] = str(uuid.uuid4())
@@ -757,7 +760,7 @@ def get_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -769,27 +772,18 @@ def get_action(session, user_input):
         current_place = location_dict[current_key]
 
     # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
-    if player_inventory['apple'] != 1:
-        if current_place == "Botanical Garden":
-            player_inventory['apple'] = 0
-        else:
-            player_inventory['apple'] = 3
-
-    if player_inventory['pillow'] != 1:
-        if current_place == 'Dream Temple':
-            player_inventory['pillow'] = 0
-        else:
-            player_inventory['pillow'] = 3  
+    already_have_response = "You already have "
+    already_have_response_2 = " in your inventory."
 
     # Check if the user input contains "get"
     if "get" in user_input:
-        global item_dict
         # Extract the item name after "get"
         item_name = user_input.split("get", 1)[-1].strip().lower()
-        item_status = player_inventory.get(item_name)
+
         # Check if the item name is valid
         if item_name:
             # Check the value of the item in the player's inventory
+            item_status = player_inventory.get(item_name)
             if item_status is None:
                 # Item not in dictionary
                 return f"{item_name} not found."
@@ -798,33 +792,36 @@ def get_action(session, user_input):
                 player_inventory[item_name] = 1
                 game_progress['inventory'] = player_inventory
                 save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
-                return f"You obtained {item_name}."
+                return f"You obtained {item_name.upper()}."
             elif item_status == 1:
                 # Item is already in the inventory
-                return f"You already have {item_name} in your inventory."
+                return f"You already have {item_name.upper()} in your inventory."
             elif item_status == 2:
                 # Item was given to NPC
-                return f"You no longer have {item_name}."
+                return f"You no longer have {item_name.upper()}."
             else:
                 # Item is unobtainable
-                return f"{item_name} is unobtainable."
+                return f"{item_name.upper()} is not currently obtainable at {current_place.upper()}."
         elif item_dict[current_place] == '' or item_dict[current_place] == []:
+            return item_dict
             return "There is nothing for you to GET here."
         else:
-            obtainable_items = []
-            for location, items in item_dict.items():
-                for item in items:
-                    if game_progress['inventory'][item] != 0:
-                        return 'test'
-                    else:
-                        obtainable_items.append(item)
-            return obtainable_items
-            obtainable_items = ', '.join(obtainable_items)
-            obtainable_items = obtainable_items.upper()
-            if obtainable_items == '':
-                return f"There is nothing left for you to GET at {current_place.upper()}."
-            else:
-                return f"You can GET the following at {current_place.upper()}:\n\n{obtainable_items}"
+            available_items = item_dict[current_place]
+            obtainable_items = available_items
+            items_to_remove = []
+
+            for item in obtainable_items:
+                if player_inventory[item] == 1:
+                    items_to_remove.append(item)
+
+            for item in items_to_remove:
+                obtainable_items.remove(item)
+
+            if not obtainable_items:
+                return f"There is nothing left for you to GET at {current_place.upper()}"
+            
+            obtainable_items_upper = '\n '.join(available_items).upper()
+            return f"You can GET the following at {current_place.upper()}:\n\n{obtainable_items_upper}"
     else:
         return "You can use the 'get' command to obtain items."
 
@@ -890,7 +887,7 @@ def what_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'pizza': 0, 'pillow': 0})
     player_inventory = [key for key, value in player_inventory.items() if value == 1]
     if player_inventory == []:
         return "You have nothing in your inventory."
