@@ -292,13 +292,14 @@ def help_action(session, user_input):
             'where' - shows where you are
             'when' - check the time and moon
             'help' - shows command list
-            'guide' - shows game manual
-
+            'guide' - shows game manual""")
+'''
             DEBUG:
             status - shows game_progress var
             xy - shows current xy coords
             warp [x,y] - warp to xy coords
             reset - starts a new save""")
+'''
 
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
