@@ -24,7 +24,7 @@ def save_game_progress(unique_id, game_progress):
         writer.writerow(['introspect', 'inventory', 'feel'])
 
         # Write data to the corresponding columns
-        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
+        writer.writerow([game_progress.get('introspect', 0), game_progress.get('inventory', {'apple': 0, 'tea': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0}), game_progress.get('feel', 'neutral')])
 
 # Function to load game progress from a CSV file
 def load_game_progress(unique_id):
@@ -193,6 +193,12 @@ def go_action(session, user_input, direction):
             session['location'] = prev_location
             return "The BUS STOP is closed at night. Try coming back in the morning."
 
+    # Change feeling at certain locations
+    '''
+    if current_location['x'] == 5 and (current_location['y'] == 8):
+        emote_action(session, "feel sonder")
+    '''
+
     current_key = f"{current_location['x']},{current_location['y']}"
 
     if current_key not in location_dict:
@@ -222,57 +228,130 @@ def introspect_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
     introspect_progress = int(game_progress['introspect'])
 
-    # Introspect to begin the game
-    if (current_key == "6,8") and (introspect_progress == 0):
-        game_progress["introspect"] = '1'
-        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
-        return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless sea... \n\nYou think you should take a LOOK around."
-    elif current_key == "6,8" and (10011 > introspect_progress > 0):
-        if introspect_progress == 1:
-            game_progress["introspect"] = (int(game_progress["introspect"]) + 10)
-            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
-        return "This is where you found yourself when you awoke in this strange reality... And yet your first thoughts were of yourself. Your identity. What does that mean? What does that say about the sort of being you are?"
-    elif current_key == "1,9":
-        if introspect_progress < 100:
-            game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
-            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
-        return "You gaze into the Abyss below. Something inside of you swells. Is that the remnant of your soul? Forced into this purgatory, this rough shape. Yes, you are certain you are being punished. What are you guilty of?"
-    elif current_key == "1,1":
-        if introspect_progress < 1000:
-            game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
-            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
-        return "You find it hard to turn within here... a force pulls you into space, keeps your awareness on the material. What is it that makes you want to burst so? As though your insides long to come gushing out... You feel as though nothing can remain hidden in this space. As though the atoms would sooner rend apart than obstruct. A space of ultimate clarity. And yet here is where you are most opaque. What does this mean?"
-    elif current_key == "0,0":
+    if (current_key == "0,0") and (introspect_progress > 0):
         if introspect_progress < 10000:
             game_progress["introspect"] = (int(game_progress["introspect"]) + 10000)
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "The peak of the world... wherever this place is. Up here, above the clouds, the firmament above is so clear... You lift an equine eye to the heavens. If heaven is still up there, where does that put you? You try not to think about it.\n\nThe OBSERVATORY here has a powerful telescope. Maybe the ASTROLOGER will let you take a look. Maybe they know more about what this place is."
-    elif current_key == "6,5" and (100 > introspect_progress > 10):
+    elif (current_key == "0,1") and (introspect_progress > 0):
+        return "You wonder why call it the DEVIL'S TAIL. Who even is the DEVIL anyway? Is he real? What's his deal? You find it kind of hard to imagine a being made of pure evil. Perhaps it is just a reference to an old myth..."
+    elif (current_key == "1,1") and (introspect_progress > 0):
+        if introspect_progress < 1000:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You find it hard to turn within here... a force pulls you into space, keeps your awareness on the material. What is it that makes you want to burst so? As though your insides long to come gushing out... You feel as though nothing can remain hidden in this space. As though the atoms would sooner rend apart than obstruct. A space of ultimate clarity. And yet here is where you are most opaque. What does this mean?"
+    elif (current_key == "1,2"):
+        return "The DREAM TEMPLE make you reflect on your dreams recently. Now that you think of it, what have your dreams been recently? You woke up here... and now you're a horse... have you even had time to dream? Perhaps the journey here has been one long dream. Perhaps the MONK could chat about where you've been, or the dreamlike nature of REALITY. Then again, you're not sure you want to know the truth, if the truth exists..."
+    elif (current_key == "1,3"):
+        emote_action(session, "feel vexed")
+        return "The small HIDDEN PATH leaves you FEELING strangely VEXED. You're not sure why, but you think your presence here is unappreciated. You feel as though you should hurry along lest you disturb something better left alone."
+    elif (current_key == "1,6"):
+        return "You sit within the mouth of a cave and ponder your current state of existence. Here you are, a horse, sitting in a cave. You let out a whinny, listening to it echo back. The sound feels at once unfamiliar and intimate. The view here is nice. You wonder if there could be peace in death."
+    elif (current_key == "1,7") or (current_key == "2,7"):
+        return "As you climb through the UNSPOKEN HILLS, you find yourself reflecting on the struggles in your life. You can't remember much, though, so you mostly think about how hard it was to walk this far. You think about your life as an uphill struggle. You feel as though you are constantly climbing up cliffs. Perhaps being a horse who is dead is the latest one."
+    elif (current_key == "1,8") or (current_key == "2,8"):
+        return "The WESTERN GLASSROCK CLIFFS are a little gentler than you had anticipated. You find your thoughts turning to your tendency to overestimate obstacles. Are you holding yourself back? Are you inventing things to be afraid of? You remember being afraid of death... somewhere in your mind, you are certain of it... yet, here you are. A horse. Dead. And, somehow, you are still doing things."
+    elif (current_key == "1,9"):
+        if introspect_progress < 100:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "You gaze into the Abyss below. Something inside of you swells. Is that the remnant of your soul? Forced into this purgatory, this rough shape. Yes, you are certain you are being punished. What are you guilty of?"
+    elif (current_key == "2,0"):
+        emote_action(session, "feel calm")
+        return "You clear your mind and go inwards. You FEEL perfectly CALM. There is no voice that responds, no thoughts that arise, nothing. You are your body and your body is the world."
+    elif (current_key == "2,1"):
+        return "Walking the LONESOME PATH, your mind turns to your relationships. Who have you met thus far in your journey? What conversations have you had? Have you been a good horse and kind to other beings? Who has helped you and who have you helped? What have you taken and what have you given? You realize you are not so alone."
+    elif (current_key == "2,3"):
+        return "While in the BATH HOUSE, you think about your body, the way it aches and shivers, the coldness of your hooves and the softness of your mane. You think about the way it feels unhomely, like something not meant to exist. You think about the existence of the BATH HOUSE as a shrine dedicated to bodies -- to caring for bodies and giving them love. You think that is pretty cool."
+    elif (current_key == "2,4"):
+        player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'tea': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+        if player_inventory['tea'] == 0:
+            return "You find it hard to concentrate on anything without a cup of TEA. You think you should go GET some before INTROSPECTING here."
+        elif player_inventory['tea'] == 1:
+            emote_action(session, "feel jouissance")
+            return "You sip your TEA and think about times you were happy. You wonder if you will ever feel that way again. Here, sipping your tea, you FEEL a JOUISSANCE overcome you as you reach a state of pure contentment. You aren't sure if you feel happy, but you feel grateful to exist, grateful for the fact of being."
+        else:
+            return "You think about that cup of TEA and remember how content you felt to hold it, the JOUISSANCE you experienced while drinking it."
+    elif (current_key == "3,3") or (current_key == "3,4"):
+        return "You tread the MOUNTAIN PATH, wondering where it will take you. What could be awaiting you, wherever you are going? Why do you go where you go? What compels you to move, to do anything at all? You wonder all these questions, but never come to any satisfying conclusion."
+    #elif (current_key == "3,8"):
+        #return "asdf"
+    #elif (current_key == "4,4") or (current_key == "4,5"):
+        #return "asdf"
+    elif (current_key == "4,8"):
+        return """As you walk along the sand, your mind wanders, lulled by the soft rumble of the waves. You look back at the hoofprints in the sand. Markers of where you've been. Here you have a presence. Here you leave traces of your past. You cannot say the same for wherever it is you came from. The ocean left no evidence of where you had been before. You wonder if that may be a blessing."""
+    elif (current_key == "5,2"):
+        return "You nestle into a small nook in the corner of the LIBRARY and find your thoughts drifting within. Here you are--a strange library in a stranger town. Yet most strange of all: you still do not know yourself. Who are you? Your thoughts return to the first words that came into your equine mind. You do not have an answer."
+    #elif (current_key == "5,3"):
+        #return "asdf"
+    elif (current_key == "5,4"):
+        emote_action(session, "feel sonder")
+        return "You know, you'd think it would be hard to introspect in a crowded city like this, but you find yourself feeling more alone than ever. You walk down the streets gazing at the beings passing you by, all strangers, all wandering souls. You have nothing more than this fleeting connection with them before they're gone forever. And yet you can't help but feel that you are the same and the whole city is one large super-being that you are all small pieces of. The busy streets give you a FEELING of SONDER."
+    #elif (current_key == "5,5"):
+        #return "asdf"
+    #elif (current_key == "5,6") or (current_key == "5,7"):
+        #return "asdf"
+    elif (current_key == "5,8"):
+        return "You get kind of self-conscious with the MERMAID over there. You feel so awkward in your ungulate form. You bet she could tell some more about this world, though, or give some tips to help you survive. You've heard that MERMAIDS only talk to beings who FEEL JOY. You better FEEL JOY before you go talk to her, or she'll just give you the silent treatment." 
+    elif (current_key == "5,9"):
+        emote_action(session, "feel mirth")
+        return "You try to turn your focus inward, but that DOLPHIN keeps you on edge. It is so full of MIRTH that you find your mind FEELING oppressively MIRTHFUL in turn."
+    #elif (current_key == "6,2"):
+    #    return "asdf"
+    #elif (current_key == "6,3"):
+    #    return "asdf"
+    #elif (current_key == "6,4"):
+    #    return "asdf"
+    elif (current_key == "6,5") and (100 > introspect_progress > 10):
         if introspect_progress < 100:
             game_progress["introspect"] = (int(game_progress["introspect"]) + 100)
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You sit among the gardens, wondering how you found yourself here. Before the ocean, you remember nothing. Were you born or made? How did you come to be? What could possibly have given birth to you? (Another horse? You dare not think it.)"
-    elif current_key == "6,5" and (introspect_progress > 100):
+    elif (current_key == "6,5") and (introspect_progress >= 100):
         return "Among the plants, you wonder if you are much different. A horse among God's garden. Growing desperately toward the sun. You do not know what forces have incarnated you here, but you imagine they may stop by sometime to water roots and prune branches."
-    elif current_key == "6,8" and (introspect_progress > 10000):
-        if introspect_progress > 10000:
-            game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
+    # Introspect to begin the game
+    elif (current_key == "6,8") and (introspect_progress == 0):
+        game_progress["introspect"] = '1'
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)       
+        return "Who are you? A fragile equine body lies heaped beneath you. You do not remember these muscles, this skin. You remember an argument. Fighting. A loss. Feelings, only vague, receding from you even now as your gaze drifts out over the endless ocean... \n\nYou think you should take a LOOK around."
+    elif (current_key == "6,8") and (10011 > introspect_progress > 0):
+        if introspect_progress == 1:
+            game_progress["introspect"] = (int(game_progress["introspect"]) + 10)
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
+        return "This is where you found yourself when you awoke in this strange reality... And yet your first thoughts were of yourself. Your identity. What does that mean? What does that say about the sort of being you are?"
+    elif (current_key == "6,8") and (introspect_progress > 10000):
+        game_progress["introspect"] = (int(game_progress["introspect"]) + 100000)
+        save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "You reflect on your travels, and what you've learned about yourself in turn. The beings you've met. The strange places you've been. You still feel no closer to any answers. Yet somehow you feel you know yourself a little better. These hooves don't seem so unfamiliar. This skin feels like it belongs. Perhaps this equine form is no punishment at all, but a chance to start again."
-    elif current_key == "5,8":
-        return "You get kind of self-conscious with the MERMAID over there. You feel so awkward in your ungulate form. You bet she could tell some more about this world, though, or give some tips to help you survive. You've heard that MERMAIDS only talk to beings who FEEL JOY. You better FEEL JOY before you go talk to her, or she'll just give you the silent treatment." 
-    elif current_key == "5,2":
-        return "You nestle into a small nook in the corner of the LIBRARY and find your thoughts drifting within. Here you are--a strange library in a stranger town. Yet most strange of all: you still do not know yourself. Who are you? Your thoughts return to the first words that came into your equine mind. You do not have an answer."
-    elif current_key == "4,8":
-        return """As you walk along the sand, your mind wanders, lulled by the soft rumble of the waves. You look back at the hoofprints in the sand. Markers of where you've been. Here you have a presence. Here you leave traces of your past. You cannot say the same for wherever it is you came from. The ocean left no evidence of where you had been before. You wonder if that may be a blessing."""
-    elif current_key == "7,2":
+    elif (current_key == "7,2"):
         return "This is your apartment, yet you don't feel at home. You don't remember ever being here before in your life. Or in your death. So why is it still yours? Did something happen here? Or... was that a memory? You catch the smell of... someone familiar... but it vanishes before you can recall any more."
-    elif current_key == "7,8":
-        return "You wonder why you even bothered walking out here."
-    elif current_key == "5,4":
-        return "You know, you'd think it would be hard to introspect in a crowded city like this, but you find yourself feeling more alone than ever. You walk down the streets gazing at the beings passing you by, all strangers, all wandering souls. You have nothing more than this fleeting connection with them before they're gone forever. And yet you can't help but feel that you are the same and the whole city is one large super-being that you are all small pieces of. The busy streets give you a FEELING of SONDER."
+    elif (current_key == "7,3"):
+        emote_action(session, "feel sonder")
+        return "Walking past the rows of APARTMENTS makes you FEEL SONDER. You wonder how many of the beings that live here you will get to meet. You wonder if any of the beings you've already met live here. You wonder who built the apartments, and who maintains them, and how property law works here. You find it all a bit much for your equine mind."
+    elif (current_key == "7,4"):
+        return "The CONFECTIONER does not make you feel safe. You find yourself wondering how to get out of here."
+    elif (current_key == "7,5"):
+        emote_action(session, "feel calm")
+        return "Being at the THERAPIST'S office brings you a strange FEELING of CALM. It's like all your problems disappeared because you walked in here. What were you even upset about?"
+    elif (current_key == "7,8"):
+        emote_action(session, "feel petulance")
+        return "You find yourself FEELING PETULANCE as you scale the cliffs. The glassrock digs into your hooves. You tell yourself you deserve it, but you know you do not. You wonder why you decided to go this way. You think about how much better you would be feeling if you were on the BEACH right now." 
+    elif (current_key == "8,1"):
+        emote_action(session, "feel vexed")
+        return "The FARM. Is this where you belong now? Should you stay here forever? Are all animals just people who are dead? You don't know the answers to any of these questions. But they leave you FEELING quite VEXED."
+    #elif (current_key == "8,2"):
+    #    return "asdf"
+    #elif (current_key == "8,3"):
+    #    return "asdf"
+    elif (current_key == "8,4"):
+        return "You think about whether gambling is ethical or not, and find yourself wondering what sort of arrangement the CASINO has with the local government. Maybe you will stop by TOWN HALL later on to ask. You feel like the CASINO could be ethical, but it probably isn't. You're not really sure what sort of money they even have in this strange world, or the sorts of CASINO games people play. Also, it smells like smoke in here, and you find it irritating your equine nostrils."
+    elif (current_key == "8,5"):
+        emote_action(session, "feel ecstasy")
+        return "You take some time to INTROSPECT at the CLUB. CLUB 7 OF CLUBS is chill with it. The loud beats and thumping bass give you something that FEELS like ECSTASY. You feel like all your problems are melting away, disappeared, unimportant. Who cares you're a horse anyway? You're here to dance! And you're feeling the music! You find yourself losing all inhibitions. You feel dangerous yet relieved."
+    elif (current_key == "8,10"):
+        return "You finally made it to the ISLAND. You thought you would be more excited. You feel like you should be more excited. Why aren't you excited? Did you hype yourself up too much? Is it your own fault you're not enjoying this as much as you could be, as much as you expected to? Are you the reason you're sad and dead and a horse?"
     else:
-        return "You don't think you can INTROSPECT right now."
+        return "You do not feel like you can INTROSPECT here. You decide to journey further."
 
 # Help command lists possible actions
 def help_action(session, user_input):
@@ -304,7 +383,7 @@ def help_action(session, user_input):
 # Guide command for more in depth game guide manual info
 def guide_action(session, user_input):
     return("""Welcome to DEAD HORSE.\n
-    DEAD HORSE is a real-time (after)life simulation game. Locations open and close and beings come and go based on the time of day and current moon phase.\n
+    DEAD HORSE is a real-time afterlife simulation game. Locations open and close and beings come and go based on the time of day and current moon phase.\n
     DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
     The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]'\n
     Some beings will only converse with you if you bring up the right topic or if you're in the right mood.""")
@@ -319,7 +398,8 @@ latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
 
 # Set the time zone to 'America/Los_Angeles'
 desired_timezone = pytz.timezone('America/Los_Angeles')
-current_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(desired_timezone).time()
+#current_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(desired_timezone).time()
+current_time = datetime.now().time()
 
 # Find current datetime and moon phase
 def time_action(session, user_input):
@@ -369,6 +449,7 @@ def time_action(session, user_input):
         moon_response = moon_response + "UNKNOWN MOON PHASE" + " MOON right now."
 
     if current_time < earlymorning_start:
+        return current_time
         time_response = "It's currently LATE NIGHT."
     elif current_time < morning_start:
         time_response = "It's currently EARLY MORNING."
@@ -404,10 +485,10 @@ def where_action_with_dynamic_value(session, user_input, location_dict, look_dic
 look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome houses a large TELESCOPE. Beneath you, clouds. Above, stars.',
              "Devil's Tail": 'A precarious trail up to the top of the world. Careful--it\'s narrow. Your hooves quiver. The air sure is thin up here.',
              "Hallowed Ground": 'Even death has grounds it respects. This area is hallowed. You aren\'t quite sure what that means, but you believe it. Every hair on your equine torso stands on end. You are in the presence of... something...',
-             "Dream Temple": 'A spacious yet plain space. You feel a tingly energy coarsing through you, as though you could bend the laws of reality but suddenly do not care to. The monks here each have a PILLOW on which they sit.',
-             "Hidden Path": 'A small hidden path further up the mountain. Only the most dedicated seekers uncover this trail.',
-             "Hillside Caves": 'There are a number of caves along the hillside here. Where do they lead?',
-             "Unspoken Hills": 'The Unspoken Hills are unspeakable.',
+             "Dream Temple": 'A spacious yet plain space. It feels very intentional, as though every inch of space here was the result of intense concentration and rigorous knowledge. You feel a tingly energy rushing through you, as though you could bend the laws of reality but suddenly do not care to. The monks here each have a PILLOW on which they sit.',
+             "Hidden Path": "A small hidden path further up the mountain. Only the most dedicated seekers uncover this trail. It is overgrown with vegetation. Doesn't look like it gets traveled much, if ever, these days.",
+             "Hillside Caves": "There are a number of caves along the hillside here. Where do they lead? You don't think you want to go into one. You feel like you would get stuck, still unsure of the particulars of your equine form. You decide to stay near the surface, grateful for the shelter the cave mouths bring.",
+             "Unspoken Hills": 'The Unspoken Hills are unspeakable. You cannot find the words to describe them. A hush falls upon you as you walk. Even your hoofsteps sound dampened.',
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
              "Sunken Grotto": 'A half-sunked cavern. Watery shadows dance on the walls. During high tide, the whole cave floods. At low tide each night it becomes accessible on hoof for a few hours. You feel an eerie presence here, as though you are witnessing something you\'re not supposed to. You feel on edge. Darkness pervades as you peer into the ABYSS.',
              "Hermitage": 'The most solitary place in the whole afterlife. Is someone home?',
@@ -431,21 +512,20 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Central Shoreline": 'The main stretch of beach, featuring a pier. The purple waters of the ENDLESS OCEAN lap rhythmically at the shore. A number of beings appear to have gathered here to observe the waters. Down by the water, A MERMAID lounges in the sand. She looks like she could give you some important information.',
              "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail. In the waters below, a DOLPHIN taunts your land-stricken body by swimming and giggling enthusiastically.',
              "Slime Commons": 'Everybody hangs out here!',
-             "Peace-a-Pizza": 'Your favorite restaurant ever.',
-             "Slime Park": 'The park. You have a sudden urge to eat grass.',
+             "Peace-a-Pizza": "A restaurant themed around pizza and peace. You suppose the two go together if you don't think about it too hard. The GIRL who works here seems really enthusiastic about pizza. Maybe you should GET a slice... you are kind of hungry. Horses can eat pizza, right?",
+             "Slime Park": 'The park in the middle of SLIME CITY. You have a sudden urge to eat grass, but you are worried they may use some extra-deadly afterlife pestacides here that would wreak havoc on your equine digestive system.',
              "Botanical Garden": 'Tall agave, cacti, sage, various trees, grasses, and flowers line the walkways. This garden is meticulously tended and hideously well cared for. The lush foliage and rich variety imparts you a strange FEELING of GUILT. You see an APPLE fall from a tree.',
-             "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. In the distance, you think you see an ISLAND. At your hooves, nothing but coarse sand.',
+             "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. At your hooves, nothing but coarse sand.',
              "Your Apartment": "You don't totally understand, but you guess you live here now. Your stuff is here? Not that you really have anything. It looks like a normal, plain apartment. There's a fridge and a sink, though you're not sure what good they'll do you now. There's a MIRROR here, too...",
-             "Slime Apartments": 'Other people live here.',
-             "Confectioner": 'Do horses have sweet tooths? You\'re not sure. Do you want to find out? You\'re also not sure.',
-             "Therapist": 'You know, you could probably use some therapy, being dead and all.',
+             "Slime Apartments": 'Tall rows of apartments line the streets. Other beings live here.',
+             "Confectioner": 'Rows of multicolored candy lines the shelves. A haunting jingle plays continuously on a music box. There is a smell so sweet it seems dangerous. Do horses like sugar? You\'re not sure. Do you want to find out? You\'re also not sure.',
+             "Therapist": 'You know, you could probably use some therapy, being dead and all. You seem like you have a lot of problems and stuff to work through. This building seems nice enough, and the therapist ELIZA has some good reviews.',
              "Eastern Glassrock Cliffs": 'The CLIFFS rise incredibly high. The rock is unbelievably sharp. You can only walk a little ways in before it gets to be too much.',
-             "Farm North": 'This is where they grow food.',
-             "Farm South": 'This is where they keep the farm animals. No horses, hopefully.',
+             "Farm South": 'This is where they keep the farm animals. No horses, as far as you can see. You wonder about the other farm animals. They also have some crop fields.',
              "Town Hall": 'The seat of the local government, you guess. Who\'s really in charge here, anyway?',
              "General Store": 'Buy, sell, trade. Your three favorite things.', 
              "Casino": 'Gambling is legal in the afterlife. Not that you have any money to gamble with.',
-             "Club": 'What else is there to do when you\'re dead but dance the night away?',
+             "Club 7 of Clubs": "What else is there to do when you\'re dead but dance the night away? CLUB 7 OF CLUBS is the hottest club in the afterlife, with banging tunes dropping 24/7. Stop by any time, any day for a party you'll never forget.",
              "Island": 'Woah. Is this one of those dessert islands? No. It\'s made of sand. It\'s one of those stupid desert islands instead.'
              }
 # Item descriptions for if the user types 'look [item]'
@@ -453,7 +533,7 @@ item_desc_dict = {
         "apple": "A delicious-looking APPLE. Seriously, now that you're a horse, it's really hard to resist eating it. Still, you decide to put it in your... pocket?... for later.",
         "book": "This BOOK is about... well... you'll get around to reading it soon. The librarian gave it her highest recommendation. And just look at that cover! You're sure this will be a real page-turner, even if you did get it from the philosophy section.",
         "mirror": "A small handheld MIRROR that reflects your equine form. A reminder of your past sins.",
-        'pear': "A simple-looking PEAR. You're sure it would be quite delicious, but for some reason it's not all that appealing to you right now.",
+        'tea': "A cup of TEA freshly brewed.",
         'pillow': "A plain round PILLOW. You're not sure how you're supposed to sit on it, being a horse and all. Still, you figure it might come in handy. And it was so nice of that monk to give it to you. He seemed to truly take pity on your current state.",
         'pizza': "A delicious slice of piping-hot fresh-out-the-oven PIZZA!"
         }
@@ -476,7 +556,7 @@ def look_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'tea': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -564,12 +644,11 @@ npc_dict = {
     "Confectioner": [],
     "Therapist": ['Eliza'],
     "Eastern Glassrock Cliffs": [],
-    "Farm North": [],
     "Farm South": [],
     "Town Hall": ["Princess"],
     "General Store": [], 
     "Casino": [],
-    "Club": [],
+    "Club 7 of Clubs": [],
     "Island": []
 }
 
@@ -669,7 +748,7 @@ def talk_action(session, user_input):
                         if user_input.lower().startswith(prefix):
                             user_input = user_input[len(prefix):].strip()
 
-                        if npc_name.lower() == "mermaid" and (evening_start >= current_time < morning_start):
+                        if npc_name.lower() == "mermaid" and (night_start >= current_time < morning_start):
                             return "MERMAID has returned to the sea for the night"
                         elif npc_name.lower() == "astrologer" and (morning_start <= current_time < evening_start):
                             return "The ASTROLOGER is unavailable during the day."
@@ -747,7 +826,7 @@ def get_action(session, user_input):
         "Hermitage": [],
         "Lonesome Path": [],
         "Bath House": [],
-        "Tea Cart": [],
+        "Tea Cart": ["tea"],
         "Unspoken Hills": [],
         "Western Glassrock Cliffs": [],
         "Upper Mountain Path": [],
@@ -767,19 +846,18 @@ def get_action(session, user_input):
         "Slime Commons": [],
         "Peace-a-Pizza": ["pizza"],
         "Slime Park": [],
-        "Botanical Garden": ["apple", "pear"],
+        "Botanical Garden": ["apple"],
         "Odd Beach": [],
         "Your Apartment": ["mirror"],
         "Slime Apartments": [],
         "Confectioner": [],
         "Therapist": [],
         "Eastern Glassrock Cliffs": [],
-        "Farm North": [],
         "Farm South": [],
         "Town Hall": [],
         "General Store": [], 
         "Casino": [],
-        "Club": [],
+        "Club 7 of Clubs": [],
         "Island": []
     }
 
@@ -791,7 +869,7 @@ def get_action(session, user_input):
 
     # Get or initialize the player's inventory from the session
     # 0 = obtainable, 1 = in inventory, 2 = taken out of inventory, 3 = unobtainable
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'tea': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
 
     # Load location_dict from CSV file
     location_dict = load_location_from_csv('locations.csv')
@@ -865,7 +943,7 @@ def emote_action(session, user_input):
     player_emotion = game_progress['feel']
 
     # List of possible emotions
-    possible_emotions = ['joy', 'guilt', 'divine terror', 'neutral', 'mirth', 'calm', 'sonder']
+    possible_emotions = ['joy', 'guilt', 'divine terror', 'neutral', 'mirth', 'calm', 'petulance', 'wrath', 'sonder', 'jouissance', 'ecstasy', 'vexed']
 
     # Extract the emotion name after "feel"
     emotion_name = user_input.split("feel", 1)[-1].strip().lower()
@@ -915,7 +993,7 @@ def what_action(session, user_input):
     game_progress = load_game_progress(session.get('uuid', 'default_uuid'))
 
     # Get or initialize the player's inventory from the session
-    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'pear': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
+    player_inventory = game_progress.setdefault('inventory', {'apple': 0, 'tea': 0, 'mirror': 0, 'book': 0, 'pizza': 0, 'pillow': 0})
     player_inventory = [key for key, value in player_inventory.items() if value == 1]
     if player_inventory == []:
         return "You have nothing in your inventory."
@@ -944,7 +1022,6 @@ action_dict = {
 }
 
 def user_input_parser(user_input):
-
     # Check if UUID exists in the session, generate one if not
     if 'uuid' not in session:
         session['uuid'] = str(uuid.uuid4())

@@ -39,13 +39,13 @@ synon: everyone everybody nobody noone
 synon: be am is are was
 key: xnone
   decomp: *
-    reasmb: I'm not sure I understand you fully.
+    reasmb: Tell me more.
     reasmb: Please go on.
     reasmb: What does that suggest to you?
-    reasmb: Do you feel strongly about discussing such things?
+    reasmb: How does that make you feel? 
 key: feel
   decomp: * @feel *
-    reasmb: There are many different ways to FEEL. JOY, SAD, ANGER... some even talk of MIRTH!
+    reasmb: There are many different ways to FEEL. JOY, MIRTH... some even talk of SONDER...
 key: sorry
   decomp: *
     reasmb: Please don't apologise.
