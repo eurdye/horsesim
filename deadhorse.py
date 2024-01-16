@@ -246,7 +246,9 @@ def introspect_action(session, user_input):
         emote_action(session, "feel vexed")
         return "The small HIDDEN PATH leaves you FEELING strangely VEXED. You're not sure why, but you think your presence here is unappreciated. You feel as though you should hurry along lest you disturb something better left alone."
     elif (current_key == "1,6"):
-        return "You sit within the mouth of a cave and ponder your current state of existence. Here you are, a horse, sitting in a cave. You let out a whinny, listening to it echo back. The sound feels at once unfamiliar and intimate. The view here is nice. You wonder if there could be peace in death."
+        emote_action(session, "feel divine terror")
+        return "You sit within the mouth of a cave and ponder your current state of existence. Here you are, a horse, sitting in a cave. You let out a whinny, listening to it echo back. The sound feels at once unfamiliar and intimate. You feel the presence of something else beside you. Your body feels weak. You FEEL DIVINE TERROR. Something horrible must have happened here."
+    # The view here is nice. You wonder if there could be peace in death."
     elif (current_key == "1,7") or (current_key == "2,7"):
         return "As you climb through the UNSPOKEN HILLS, you find yourself reflecting on the struggles in your life. You can't remember much, though, so you mostly think about how hard it was to walk this far. You think about your life as an uphill struggle. You feel as though you are constantly climbing up cliffs. Perhaps being a horse who is dead is the latest one."
     elif (current_key == "1,8") or (current_key == "2,8"):
@@ -268,8 +270,10 @@ def introspect_action(session, user_input):
         if player_inventory['tea'] == 0:
             return "You find it hard to concentrate on anything without a cup of TEA. You think you should go GET some before INTROSPECTING here."
         elif player_inventory['tea'] == 1:
+            player_inventory['tea'] = 2
+            save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
             emote_action(session, "feel jouissance")
-            return "You sip your TEA and think about times you were happy. You wonder if you will ever feel that way again. Here, sipping your tea, you FEEL a JOUISSANCE overcome you as you reach a state of pure contentment. You aren't sure if you feel happy, but you feel grateful to exist, grateful for the fact of being."
+            return "You sip your TEA and think about times you were happy. You wonder if you will ever feel that way again. Here, sipping your tea, you FEEL a JOUISSANCE overcome you as you reach a state of pure contentment. You aren't sure if you feel happy, but you feel grateful to exist, grateful for the fact of being.\n\nYum, what a good tea!"
         else:
             return "You think about that cup of TEA and remember how content you felt to hold it, the JOUISSANCE you experienced while drinking it."
     elif (current_key == "3,3") or (current_key == "3,4"):
@@ -499,7 +503,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Western Glassrock Cliffs": 'The sharp rock of the beach digs into your hooves, discovering where they are still soft. Beneath you, the ocean churns.',
              "Upper Mountain Path": 'This path leads further up the mountain.',
              "Lower Mountain Path": 'This is the path at the base of the mountain.',
-             "Chiron's Cove": "You're not sure who CHIRON is, but this COVE is quite nice. In the shadow of the WESTERN GLASSROCK CLIFFS, it gives you a feeling of security and ease. The water here is quiet and calm.",
+             "Chiron's Cove": "This COVE is quite nice. In the shadow of the WESTERN GLASSROCK CLIFFS, it gives you a feeling of security and ease. The water here is quiet and calm. CHIRON seems to be here an awful lot, but he keeps mostly to himself.",
              "Mountain Train Station": 'There are few travelers here. The train station lets you off at the base of the mountain, a short walk to the village to the WEST.',
              "Slime City Train Station": 'The train station in SLIME CITY. Boy, you wonder where all these beings came from and where they are going. Are they all dead, too? Death is full of mysteries.',
              "Western Shore": "This is the boring part of the beach. There's nothing here but just a bunch of sand.",
@@ -622,7 +626,7 @@ npc_dict = {
     "Western Glassrock Cliffs": [],
     "Upper Mountain Path": [],
     "Lower Mountain Path": [],
-    "Chiron's Cove": [],
+    "Chiron's Cove": ["Chiron"],
     "Mountain Train Station": ["Conductor"],
     "Slime City Train Station": ["Conductor"],
     "Western Shore": [],
@@ -737,11 +741,13 @@ def talk_action(session, user_input):
                         if npc_name == 'Mermaid' and game_progress['feel'] != 'joy':
                             return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
                         elif npc_name == 'Dolphin' and game_progress['feel'] != 'mirth':
-                            return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
-                        elif npc_name == 'Hermit' and game_progress['feel'] != 'calm':
-                            return f'The {npc_name} refuses to speak with you. Your vibes must be off!'
+                            return f'The {npc_name} refuses to speak with you. It doesn\'t respect your attitude enough to converse!'
+                        elif npc_name == 'Monk' and game_progress['feel'] != 'calm':
+                            return f'The {npc_name} refuses to speak with you. You have a wild aura about you that disturbs the dream-fields."'
+                        elif npc_name == 'Hermit' and game_progress['feel'] != 'guilt':
+                            return f'The {npc_name} refuses to speak with you. Come back when you are sorry for what you have done.'
                         elif npc_name == 'Abyss' and game_progress['feel'] != 'divine terror':
-                            return f'You\'re not in the right state of mind to commune with the ABYSS. Come back when you\'re experiencing DIVINE TERROR.'
+                            return f'You\'re not in the right state of mind to commune with the ABYSS.'
                        
                         # Sanitize user_input if it begins with "talk {npc_name.lower()} "
                         prefix = f"talk {npc_name.lower()} "
