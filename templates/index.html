@@ -18,7 +18,7 @@ body {
     font-family: 'Courier', 'Courier New', monospace;
     font-size: 1em;
     color: #00ff00;
-    padding: 20px;
+    padding: 0px;
     margin: 0;
     display: flex;
     /*align-items: center;*/
@@ -212,16 +212,23 @@ body {
             }
             .terminal {
                 padding: none;
-                height: 80vh;
+                height: 75vh;
             }
             .mobilelogo-pre {
                 display: block;
         }
+            body {
+                padding: 0;
+            }
         }
 
         @media (min-width: 768px) {
             .mobilelogo {
                 display: none;
+            }
+
+            body {
+                padding: 20px;
             }
 }
 </style>
