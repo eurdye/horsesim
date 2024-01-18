@@ -4,43 +4,43 @@ x,y,place
 1,1,Hallowed Ground
 1,2,Dream Temple
 1,3,Hidden Path
-1,6,Hillside Caves
-1,7,Unspoken Hills
-1,8,Western Glassrock Cliffs
-1,9,Sunken Grotto
 2,0,Hermitage
 2,1,Lonesome Path
 2,3,Bath House
 2,4,Tea Cart
+2,6,Hillside Caves
 2,7,Unspoken Hills
 2,8,Western Glassrock Cliffs
+2,9,Sunken Grotto
 3,3,Upper Mountain Path
-3,4,Lower Mountain Path
-3,8,Chiron's Cove
-4,4,Mountain Train Station
-4,5,Slime City Train Station
-4,8,Western Shore
-5,2,Library
-5,3,Slime City Uptown
-5,4,Slime City Downtown
-5,5,Slime City Transport Center
-5,6,Slime City Bus Stop
-5,7,Beach Bus Stop
-5,8,Central Shoreline
-5,9,Pier
-6,2,Slime Commons
-6,3,Peace-a-Pizza
-6,4,Slime Park
-6,5,Botanical Garden
-6,8,Odd Beach
-7,2,Your Apartment
-7,3,Slime Apartments
-7,4,Confectioner
-7,5,Therapist
-7,8,Eastern Glassrock Cliffs
-8,1,Farm South
-8,2,Town Hall
-8,3,General Store
-8,4,Casino
-8,5,Club 7 of Clubs
-8,10,Island
+3,7,Unspoken Hills
+3,8,Western Glassrock Cliffs
+4,4,Lower Mountain Path
+4,5,Mountain Train Station
+4,8,Chiron's Cove
+5,5,Slime City Train Station
+5,8,Western Shore
+6,2,Library
+6,3,Slime City Uptown
+6,4,Slime City Downtown
+6,5,Slime City Transport Center
+6,6,Slime City Bus Stop
+6,7,Beach Bus Stop
+6,8,Central Shoreline
+6,9,Pier
+7,2,Slime Commons
+7,3,Peace-a-Pizza
+7,4,Slime Park
+7,5,Botanical Garden
+7,8,Odd Beach
+8,2,Your Apartment
+8,3,Slime Apartments
+8,4,Confectioner
+8,5,Therapist
+8,8,Eastern Glassrock Cliffs
+9,1,Farm South
+9,2,Town Hall
+9,3,General Store
+9,4,Casino
+9,5,Club 7 of Clubs
+9,9,Island
