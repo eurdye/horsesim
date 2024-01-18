@@ -195,9 +195,14 @@ body {
             right: 10px;
             cursor: pointer;
         }
+ 
+        .mobilelogo {
+            display: flex;
+            flex-direction: column;
+        }
 
-        .mobilehelp{
-            display: none;
+        .mobilelogo-pre {
+            width: 100%;
         }
 
         /* Media query for mobile devices */
@@ -209,11 +214,16 @@ body {
                 padding: none;
                 height: 80vh;
             }
-            .mobilehelp {
+            .mobilelogo-pre {
                 display: block;
-            }
-
         }
+        }
+
+        @media (min-width: 768px) {
+            .mobilelogo {
+                display: none;
+            }
+}
 </style>
 
 <script>
@@ -283,6 +293,22 @@ STATUS:
                 by <a href="https://eurydice.me">Eurydice</a><br>
             </div>
             <br>
+            <div class="mobilelogo-pre">
+            <div class="mobilelogo">
+<div style="font-family: monospace; font-size: 0.5em; text-align: center; white-space: pre; line-height: 1em; margin-bottom: 0.5em;">
+ ▓█████▄  ▓█████ ▄▄▄     ▓█████▄     ██░ ██  ▒█████   ██▀███    ██████  ▓█████
+ ▒██▀ ██▌ ▓█   ▀▒████▄   ▒██▀ ██▌  ▒▓██░ ██ ▒██▒  ██▒▓██ ▒ ██▒▒██    ▒  ▓█   ▀
+ ░██   █▌ ▒███  ▒██  ▀█▄ ░██   █▌  ░▒██▀▀██ ▒██░  ██▒▓██ ░▄█ ▒░ ▓██▄    ▒███  
+▒░▓█▄   ▌ ▒▓█  ▄░██▄▄▄▄██░▓█▄   ▌   ░▓█ ░██ ▒██   ██░▒██▀▀█▄    ▒   ██▒ ▒▓█  ▄
+░░▒████▓ ▒░▒████▒▓█   ▓██░▒████▓    ░▓█▒░██▓░ ████▓▒░░██▓ ▒██▒▒██████▒▒▒░▒████
+░ ▒▒▓  ▒ ░░░ ▒░ ░▒▒   ▓▒█ ▒▒▓  ▒     ▒ ░░▒░▒░ ▒░▒░▒░ ░ ▒▓ ░▒▓░▒ ▒▓▒ ▒ ░░░░ ▒░ 
+  ░ ▒  ▒ ░ ░ ░  ░ ░   ▒▒  ░ ▒  ▒     ▒ ░▒░ ░  ░ ▒ ▒░   ░▒ ░ ▒ ░ ░▒  ░ ░░ ░ ░  
+  ░ ░  ░     ░    ░   ▒   ░ ░  ░     ░  ░░ ░░ ░ ░ ▒    ░░   ░ ░  ░  ░      ░  
+    ░    ░   ░        ░     ░        ░  ░  ░    ░ ░     ░           ░  ░   ░  
+
+                                                                v0.7.0 Alpha
+</div>
+            </div>
         <div class="terminal">
 
 <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
