@@ -196,11 +196,23 @@ body {
             cursor: pointer;
         }
 
+        .mobilehelp{
+            display: none;
+        }
+
         /* Media query for mobile devices */
         @media (max-width: 768px) {
             .helptext {
                 display: none;
             }
+            .terminal {
+                padding: none;
+                height: 80vh;
+            }
+            .mobilehelp {
+                display: block;
+            }
+
         }
 </style>
 
@@ -276,7 +288,8 @@ STATUS:
 <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
     <div class="popup-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closePopup()">X</span>
-        <p>DEAD HORSE is best played at a resolution of 1280x720 or greater. Please visit DEAD HORSE on a computer or tablet for the best experience..</p>
+        <p>DEAD HORSE is a real-time text adventure best played on a screen 1280x720 or larger.
+        <br><br>Type 'help' for a list of commands.</p>
     </div>
 </div>
 
@@ -298,20 +311,22 @@ STATUS:
                 </form>
             </div>
         </div>
-
-<script>
+        <script>
     function openPopup() {
         document.getElementById('popupOverlay').style.display = 'flex';
     }
 
     function closePopup() {
         document.getElementById('popupOverlay').style.display = 'none';
+        // Set a flag in localStorage to indicate that the popup has been shown
+        localStorage.setItem('popupShown', 'true');
     }
 
-    // Show the popup on screens with width less than 720px
-    //if (window.innerWidth < 720) {
-    //    openPopup();
-    //}
+    // Show the popup only if it hasn't been shown before
+    const popupShown = localStorage.getItem('popupShown');
+    if (!popupShown && window.innerWidth < 720) {
+        openPopup();
+    }
 </script>
     </body>
 </html>
