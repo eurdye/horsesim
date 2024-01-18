@@ -177,6 +177,7 @@ body {
             background: rgba(0, 0, 0, 0.7);
             align-items: center;
             justify-content: center;
+            z-index: 999;
         }
 
         .popup-content {
@@ -193,6 +194,13 @@ body {
             top: 10px;
             right: 10px;
             cursor: pointer;
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            .helptext {
+                display: none;
+            }
         }
 </style>
 
@@ -221,7 +229,7 @@ body {
 
     </head>
     <body>
-        <div style="padding: 20px; padding-right: 2em;">
+        <div class="helptext" style="padding: 20px; padding-right: 2em;">
             <p style="margin-bottom: 3em">
             <div style="font-family: monospace; font-size: 8px; white-space: pre; line-height: 1em; margin-top: -8em;">
  ▓█████▄  ▓█████ ▄▄▄     ▓█████▄     ██░ ██  ▒█████   ██▀███    ██████  ▓█████
@@ -264,6 +272,16 @@ STATUS:
             </div>
             <br>
         <div class="terminal">
+
+<div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closePopup()">X</span>
+        <p>DEAD HORSE is best played at a resolution of 1280x720 or greater. Please visit DEAD HORSE on a computer or tablet for the best experience..</p>
+    </div>
+</div>
+
+
+
             <div class="responses" id="responses">
                 {% for previous_response in previous_responses %}
                 {{ previous_response }}
@@ -280,16 +298,6 @@ STATUS:
                 </form>
             </div>
         </div>
-<script>
-    
-</script>
-
-<div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
-    <div class="popup-content" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="closePopup()">X</span>
-        <p>DEAD HORSE is best played at a resolution of 1280x720 or greater. Please visit DEAD HORSE on a computer or tablet for the best experience..</p>
-    </div>
-</div>
 
 <script>
     function openPopup() {
@@ -300,10 +308,10 @@ STATUS:
         document.getElementById('popupOverlay').style.display = 'none';
     }
 
-    // Show the popup on mobile devices
-    if (/Mobi/.test(navigator.userAgent)) {
-        openPopup();
-    }
+    // Show the popup on screens with width less than 720px
+    //if (window.innerWidth < 720) {
+    //    openPopup();
+    //}
 </script>
     </body>
 </html>
