@@ -531,7 +531,7 @@ look_dict = {"Summit Observatory": 'At the top of the mountain, a half-dome hous
              "Pier": 'The wood groans beneath you, begging to give way. Waves pound at the ancient structure. Your hooves echo with each step. A cold ocean spray chills your tail. In the waters below, a DOLPHIN taunts your land-stricken body by swimming and giggling enthusiastically.',
              "Slime Commons": 'Everybody hangs out here!',
              "Peace-a-Pizza": "A restaurant themed around pizza and peace. You suppose the two go together if you don't think about it too hard. The GIRL who works here seems really enthusiastic about pizza. Maybe you should GET a slice... you are kind of hungry. Horses can eat pizza, right?",
-             "Slime Park": 'The park in the middle of SLIME CITY. You have a sudden urge to eat grass, but you are worried they may use some extra-deadly afterlife pestacides here that would wreak havoc on your equine digestive system.',
+             "Slime Park": 'The park in the middle of SLIME CITY. You have a sudden urge to eat grass, but you are worried they may use some extra-deadly afterlife pesticides here that would wreak havoc on your equine digestive system.',
              "Botanical Garden": 'Tall agave, cacti, sage, various trees, grasses, and flowers line the walkways. This garden is meticulously tended and hideously well cared for. The lush foliage and rich variety imparts you a strange FEELING of GUILT. You see an APPLE fall from a tree.',
              "Odd Beach": 'A sandy beach upon which you awoke. The waves pound at the shore, throbbing in unison with your skull. The water stretches to the horizon. At your hooves, nothing but coarse sand.',
              "Your Apartment": "You don't totally understand, but you guess you live here now. Your stuff is here? Not that you really have anything. It looks like a normal, plain apartment. There's a fridge and a sink, though you're not sure what good they'll do you now. There's a MIRROR here, too...",
@@ -762,11 +762,11 @@ def talk_action(session, user_input):
                         elif npc_name == 'Dolphin' and game_progress['feel'] != 'mirth':
                             return f'The {npc_name} refuses to speak with you. It doesn\'t respect your attitude enough to converse!'
                         elif npc_name == 'Monk' and game_progress['feel'] != 'calm':
-                            return f'The {npc_name} refuses to speak with you. You have a wild aura about you that disturbs the dream-fields."'
+                            return f'The {npc_name} refuses to speak with you. You have a wild aura about you that disturbs the dream-fields. Maybe if you FELT more CALM...'
                         elif npc_name == 'Hermit' and game_progress['feel'] != 'guilt':
                             return f'The {npc_name} refuses to speak with you. Come back when you are sorry for what you have done.'
                         elif npc_name == 'Abyss' and game_progress['feel'] != 'divine terror':
-                            return f'You\'re not in the right state of mind to commune with the ABYSS.'
+                            return f'You can only communicate with the ABYSS when you are FEELING DIVING TERROR." 
                        
                         # Sanitize user_input if it begins with "talk {npc_name.lower()} "
                         prefix = f"talk {npc_name.lower()} "
