@@ -432,6 +432,8 @@ def time_action(session, user_input):
     global evening_start
     global latenight_start
 
+    return current_time
+
     # Find current moon phase
     observer = ephem.Observer()
     moon = ephem.Moon()
