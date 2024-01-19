@@ -766,7 +766,7 @@ def talk_action(session, user_input):
                         elif npc_name == 'Hermit' and game_progress['feel'] != 'guilt':
                             return f'The {npc_name} refuses to speak with you. Come back when you are sorry for what you have done.'
                         elif npc_name == 'Abyss' and game_progress['feel'] != 'divine terror':
-                            return f'You can only communicate with the ABYSS when you are FEELING DIVING TERROR." 
+                            return f'You can only communicate with the ABYSS when you are FEELING DIVING TERROR.'
                        
                         # Sanitize user_input if it begins with "talk {npc_name.lower()} "
                         prefix = f"talk {npc_name.lower()} "
