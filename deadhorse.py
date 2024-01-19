@@ -420,8 +420,8 @@ latenight_start = datetime.strptime('22:00:00', '%H:%M:%S').time()
 
 # Set the time zone to 'America/Los_Angeles'
 desired_timezone = pytz.timezone('America/Los_Angeles')
-#current_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(desired_timezone).time()
-current_time = datetime.now().time()
+current_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(desired_timezone).time()
+#current_time = datetime.now().time()
 
 # Find current datetime and moon phase
 def time_action(session, user_input):
@@ -431,8 +431,6 @@ def time_action(session, user_input):
     global afternoon_start
     global evening_start
     global latenight_start
-
-    return current_time
 
     # Find current moon phase
     observer = ephem.Observer()
