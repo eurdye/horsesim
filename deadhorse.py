@@ -250,7 +250,7 @@ def introspect_action(session, user_input):
             save_game_progress(session.get('uuid', 'default_uuid'), game_progress)
         return "The peak of the world... wherever this place is. Up here, above the clouds, the firmament above is so clear... You lift an equine eye to the heavens. If heaven is still up there, where does that put you? You try not to think about it.\n\nThe OBSERVATORY here has a powerful telescope. Maybe the ASTROLOGER will let you take a look. Maybe they know more about what this place is."
     elif (current_key == "0,1") and (introspect_progress > 0):
-        return "You wonder why call it the DEVIL'S TAIL. Who even is the DEVIL anyway? Is he real? What's his deal? You find it kind of hard to imagine a being made of pure evil. Perhaps it is just a reference to an old myth..."
+        return "You wonder why they call it the DEVIL'S TAIL. Who even is the DEVIL anyway? Is he real? What's his deal? You find it kind of hard to imagine a being made of pure evil. Maybe it is just a reference to an old myth or local legend."
     elif (current_key == "1,1") and (introspect_progress > 0):
         if introspect_progress < 1000:
             game_progress["introspect"] = (int(game_progress["introspect"]) + 1000)
@@ -393,7 +393,8 @@ def help_action(session, user_input):
             'where' - shows where you are
             'when' - check the time and moon
             'help' - shows command list
-            'guide' - shows game manual""")
+            'guide' - shows game manual
+            'reset' - resets your game""")
 '''
             DEBUG:
             status - shows game_progress var
