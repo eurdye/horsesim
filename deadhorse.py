@@ -394,7 +394,8 @@ def help_action(session, user_input):
             'when' - check the time and moon
             'help' - shows command list
             'guide' - shows game manual
-            'reset' - resets your game""")
+            'reset' - resets your game
+            'clear' - clears the screen""")
 '''
             DEBUG:
             status - shows game_progress var
@@ -409,7 +410,7 @@ def guide_action(session, user_input):
     DEAD HORSE is a real-time afterlife simulation game. Locations open and close and beings come and go based on the time of day and current moon phase.\n
     DEAD HORSE is an ambient game. It cannot be beaten and there is no way to lose. After all, you're already dead.\n
     The core gameplay of DEAD HORSE consists of exploring the world and talking to the various beings you will meet. When you meet someone you want to converse with, use the 'talk' command to talk with them. You can talk using natural language by typing a command like this:\n\n'talk [npc name] [your message]'\n
-    Some beings will only converse with you if you bring up the right topic or if you're in the right mood.""")
+    Some beings will only converse with you if you bring up the right topic or if you're in the right mood.\n""")
 
 
 # Global variables for time. Define time ranges and associated values.
